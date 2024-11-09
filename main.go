@@ -4,11 +4,13 @@ import (
 	"log"
 
 	_ "github.com/135yshr/ctfsendai2024/docs/openapi"
+
 	"github.com/135yshr/ctfsendai2024/internal/application/usecases"
 	"github.com/135yshr/ctfsendai2024/internal/infrastructure/repositories"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/controllers"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/dig"
 )
