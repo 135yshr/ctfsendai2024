@@ -1,0 +1,13 @@
+services:
+  ctfsendai2024:
+    image: ghcr.io/135yshr/ctfsendai2024:latest
+    ports:
+      - 8080:8080
+
+  stepci:
+    image: ghcr.io/stepci/stepci
+    volumes:
+      - ../tests:/tests
+    depends_on:
+      - ctfsendai2024
+    command: ["/tests/workflow.yaml"]

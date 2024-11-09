@@ -1,0 +1,19 @@
+version: 3
+
+includes:
+  docker-compose:
+    taskfile: ./deployments
+    dir: ./deployments
+    aliases: [dc]
+
+tasks:
+  build:
+    cmds:
+      - goreleaser build --snapshot --clean
+
+  run:
+    env:
+      BIN: ./out/ctfsendai2024
+      MAIN_GO: main.go
+    cmds:
+      - air --build.cmd "go build -o {{ .BIN }} {{ .MAIN_GO }}" --build.bin "{{ .BIN }}"
