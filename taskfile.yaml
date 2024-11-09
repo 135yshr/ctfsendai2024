@@ -12,12 +12,24 @@ tasks:
       - goreleaser build --snapshot --clean
 
   run:
-    env:
+    vars:
       BIN: ./out/ctfsendai2024
       MAIN_GO: main.go
     cmds:
-      - air --build.cmd "go build -o $BIN $MAIN_GO" --build.bin "$BIN"
+      - air --build.cmd "go build -o {{ .BIN }} {{ .MAIN_GO }}" --build.bin "{{ .BIN }}"
 
   swag:
     cmds:
       - swag init -g ./main.go -o ./docs/openapi/
+
+  ci:
+    vars:
+      LOCAL_HOST:
+        sh: ifconfig en0 | grep inet | grep -v inet6 | sed -E "s/inet ([0-9]{1,3}.[0-9]{1,3}.[0-9].{1,3}.[0-9]{1,3}) .*$/\1/" | tr -d "\t"
+    cmds:
+      - |
+        docker run --rm \
+          --add-host=ctfsendai2024:{{ .LOCAL_HOST }} \
+          -v $(pwd)/tests:/tests \
+          ghcr.io/stepci/stepci \
+          /tests/workflow.yaml -e scheme=http
