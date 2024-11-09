@@ -16,4 +16,8 @@ tasks:
       BIN: ./out/ctfsendai2024
       MAIN_GO: main.go
     cmds:
-      - air --build.cmd "go build -o {{ .BIN }} {{ .MAIN_GO }}" --build.bin "{{ .BIN }}"
+      - air --build.cmd "go build -o $BIN $MAIN_GO" --build.bin "$BIN"
+
+  swag:
+    cmds:
+      - swag init -g ./main.go -o ./docs/openapi/
