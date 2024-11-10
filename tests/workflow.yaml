@@ -1,0 +1,20 @@
+version: "1.1"
+name: Status Check
+env:
+  scheme: https
+  host: ctfsendai2024:8080
+
+tests:
+  status_check:
+    steps:
+      - name: GET reservations
+        http:
+          url: ${{env.scheme}}://${{env.host}}/api/v1/reservations?user_id=user1
+          method: GET
+          headers:
+            Content-Type: application/json
+          check:
+            status: /^20/
+            jsonpath:
+              $.status: success
+

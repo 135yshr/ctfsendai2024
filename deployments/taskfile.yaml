@@ -1,0 +1,10 @@
+version: 3
+
+tasks:
+  ci:
+    cmds:
+      - docker compose up --build
+
+  down:
+    cmds:
+      - docker compose down --volumes
