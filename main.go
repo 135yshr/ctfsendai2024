@@ -39,7 +39,7 @@ func buildContainer() *dig.Container {
 		return gin.Default()
 	})
 	container.Provide(func() domainrepositories.ReservationRepository {
-		impl := repositories.NewJSONReservationRepositoryImpl("./configs/json/reservation.json")
+		impl := repositories.NewJSONReservationRepositoryImpl("./configs/json/database.json")
 		return repositories.NewJSONReservationRepository(impl)
 	})
 
