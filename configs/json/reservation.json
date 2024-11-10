@@ -2,9 +2,9 @@
   "reservations": [
     {
       "id": "r001",
-      "user_id": "u001",
+      "user_id": "u00100",
       "user": {
-        "id": "u001",
+        "id": "u00100",
         "name": "田中太郎",
         "email": "tanaka@example.com",
         "phone": "090-1111-2222"
@@ -22,9 +22,9 @@
     },
     {
       "id": "r002",
-      "user_id": "u002",
+      "user_id": "u00200",
       "user": {
-        "id": "u002",
+        "id": "u00200",
         "name": "鈴木花子",
         "email": "suzuki@example.com",
         "phone": "090-2222-3333"
@@ -42,9 +42,9 @@
     },
     {
       "id": "r003",
-      "user_id": "u003",
+      "user_id": "u00300",
       "user": {
-        "id": "u003",
+        "id": "u00300",
         "name": "佐藤一郎",
         "email": "sato@example.com",
         "phone": "090-3333-4444"
@@ -62,9 +62,9 @@
     },
     {
       "id": "r004",
-      "user_id": "u004",
+      "user_id": "u00400",
       "user": {
-        "id": "u004",
+        "id": "u00400",
         "name": "山田優子",
         "email": "yamada@example.com",
         "phone": "090-4444-5555"
@@ -82,9 +82,9 @@
     },
     {
       "id": "r005",
-      "user_id": "u005",
+      "user_id": "u00500",
       "user": {
-        "id": "u005",
+        "id": "u00500",
         "name": "伊藤健一",
         "email": "ito@example.com",
         "phone": "090-5555-6666"
@@ -102,9 +102,9 @@
     },
     {
       "id": "r006",
-      "user_id": "u006",
+      "user_id": "u00600",
       "user": {
-        "id": "u006",
+        "id": "u00600",
         "name": "渡辺美咲",
         "email": "watanabe@example.com",
         "phone": "090-6666-7777"
@@ -122,9 +122,9 @@
     },
     {
       "id": "r007",
-      "user_id": "u007",
+      "user_id": "u00700",
       "user": {
-        "id": "u007",
+        "id": "u00700",
         "name": "小林正人",
         "email": "kobayashi@example.com",
         "phone": "090-7777-8888"
@@ -142,9 +142,9 @@
     },
     {
       "id": "r008",
-      "user_id": "u008",
+      "user_id": "u00800",
       "user": {
-        "id": "u008",
+        "id": "u00800",
         "name": "加藤裕子",
         "email": "kato@example.com",
         "phone": "090-8888-9999"
@@ -162,9 +162,9 @@
     },
     {
       "id": "r009",
-      "user_id": "u009",
+      "user_id": "u00900",
       "user": {
-        "id": "u009",
+        "id": "u00900",
         "name": "松本さくら",
         "email": "matsumoto@example.com",
         "phone": "090-9999-0000"
@@ -182,9 +182,9 @@
     },
     {
       "id": "r010",
-      "user_id": "u010",
+      "user_id": "u01000",
       "user": {
-        "id": "u010",
+        "id": "u01000",
         "name": "井上大輔",
         "email": "inoue@example.com",
         "phone": "090-0000-1111"
@@ -202,9 +202,9 @@
     },
     {
       "id": "r011",
-      "user_id": "u011",
+      "user_id": "u01100",
       "user": {
-        "id": "u011",
+        "id": "u01100",
         "name": "木村真理",
         "email": "kimura@example.com",
         "phone": "090-1234-5678"
@@ -222,9 +222,9 @@
     },
     {
       "id": "r012",
-      "user_id": "u012",
+      "user_id": "u01200",
       "user": {
-        "id": "u012",
+        "id": "u01200",
         "name": "斎藤健二",
         "email": "saito@example.com",
         "phone": "090-2345-6789"
@@ -242,9 +242,9 @@
     },
     {
       "id": "r013",
-      "user_id": "u013",
+      "user_id": "u01300",
       "user": {
-        "id": "u013",
+        "id": "u01300",
         "name": "高橋美香",
         "email": "takahashi@example.com",
         "phone": "090-3456-7890"
@@ -262,9 +262,9 @@
     },
     {
       "id": "r014",
-      "user_id": "u014",
+      "user_id": "u01400",
       "user": {
-        "id": "u014",
+        "id": "u01400",
         "name": "中村洋介",
         "email": "nakamura@example.com",
         "phone": "090-4567-8901"
@@ -282,9 +282,9 @@
     },
     {
       "id": "r015",
-      "user_id": "u015",
+      "user_id": "u01500",
       "user": {
-        "id": "u015",
+        "id": "u01500",
         "name": "吉田明子",
         "email": "yoshida@example.com",
         "phone": "090-5678-9012"
@@ -302,9 +302,9 @@
     },
     {
       "id": "r016",
-      "user_id": "u001",
+      "user_id": "u00100",
       "user": {
-        "id": "u001",
+        "id": "u00100",
         "name": "田中太郎",
         "email": "tanaka@example.com",
         "phone": "090-1111-2222"
@@ -322,9 +322,9 @@
     },
     {
       "id": "r017",
-      "user_id": "u002",
+      "user_id": "u00200",
       "user": {
-        "id": "u002",
+        "id": "u00200",
         "name": "鈴木花子",
         "email": "suzuki@example.com",
         "phone": "090-2222-3333"
@@ -342,9 +342,9 @@
     },
     {
       "id": "r018",
-      "user_id": "u003",
+      "user_id": "u00300",
       "user": {
-        "id": "u003",
+        "id": "u00300",
         "name": "佐藤一郎",
         "email": "sato@example.com",
         "phone": "090-3333-4444"
@@ -362,9 +362,9 @@
     },
     {
       "id": "r019",
-      "user_id": "u004",
+      "user_id": "u00400",
       "user": {
-        "id": "u004",
+        "id": "u00400",
         "name": "山田優子",
         "email": "yamada@example.com",
         "phone": "090-4444-5555"
@@ -382,9 +382,9 @@
     },
     {
       "id": "r020",
-      "user_id": "u005",
+      "user_id": "u00500",
       "user": {
-        "id": "u005",
+        "id": "u00500",
         "name": "伊藤健一",
         "email": "ito@example.com",
         "phone": "090-5555-6666"
@@ -402,9 +402,9 @@
     },
     {
       "id": "r021",
-      "user_id": "u006",
+      "user_id": "u00600",
       "user": {
-        "id": "u006",
+        "id": "u00600",
         "name": "渡辺美咲",
         "email": "watanabe@example.com",
         "phone": "090-6666-7777"
@@ -422,9 +422,9 @@
     },
     {
       "id": "r022",
-      "user_id": "u007",
+      "user_id": "u00700",
       "user": {
-        "id": "u007",
+        "id": "u00700",
         "name": "小林正人",
         "email": "kobayashi@example.com",
         "phone": "090-7777-8888"
@@ -442,9 +442,9 @@
     },
     {
       "id": "r023",
-      "user_id": "u008",
+      "user_id": "u00800",
       "user": {
-        "id": "u008",
+        "id": "u00800",
         "name": "加藤裕子",
         "email": "kato@example.com",
         "phone": "090-8888-9999"
@@ -462,9 +462,9 @@
     },
     {
       "id": "r024",
-      "user_id": "u009",
+      "user_id": "u00900",
       "user": {
-        "id": "u009",
+        "id": "u00900",
         "name": "松本さくら",
         "email": "matsumoto@example.com",
         "phone": "090-9999-0000"
@@ -482,9 +482,9 @@
     },
     {
       "id": "r025",
-      "user_id": "u010",
+      "user_id": "u01000",
       "user": {
-        "id": "u010",
+        "id": "u01000",
         "name": "井上大輔",
         "email": "inoue@example.com",
         "phone": "090-0000-1111"
@@ -502,9 +502,9 @@
     },
     {
       "id": "r026",
-      "user_id": "u011",
+      "user_id": "u01100",
       "user": {
-        "id": "u011",
+        "id": "u01100",
         "name": "木村真理",
         "email": "kimura@example.com",
         "phone": "090-1234-5678"
@@ -522,9 +522,9 @@
     },
     {
       "id": "r027",
-      "user_id": "u012",
+      "user_id": "u01200",
       "user": {
-        "id": "u012",
+        "id": "u01200",
         "name": "斎藤健二",
         "email": "saito@example.com",
         "phone": "090-2345-6789"
@@ -542,9 +542,9 @@
     },
     {
       "id": "r028",
-      "user_id": "u013",
+      "user_id": "u01300",
       "user": {
-        "id": "u013",
+        "id": "u01300",
         "name": "高橋美香",
         "email": "takahashi@example.com",
         "phone": "090-3456-7890"
@@ -562,9 +562,9 @@
     },
     {
       "id": "r029",
-      "user_id": "u014",
+      "user_id": "u01400",
       "user": {
-        "id": "u014",
+        "id": "u01400",
         "name": "中村洋介",
         "email": "nakamura@example.com",
         "phone": "090-4567-8901"
@@ -582,9 +582,9 @@
     },
     {
       "id": "r030",
-      "user_id": "admin",
+      "user_id": "u00000",
       "user": {
-        "id": "admin",
+        "id": "u00000",
         "name": "管理者",
         "email": "admin@example.com",
         "phone": "090-5678-9012"
