@@ -6,6 +6,7 @@ import (
 	_ "github.com/135yshr/ctfsendai2024/docs/openapi"
 
 	"github.com/135yshr/ctfsendai2024/internal/application/usecases"
+	domainrepositories "github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 	"github.com/135yshr/ctfsendai2024/internal/infrastructure/repositories"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/controllers"
@@ -37,7 +38,10 @@ func buildContainer() *dig.Container {
 	container.Provide(func() *gin.Engine {
 		return gin.Default()
 	})
-	container.Provide(repositories.NewMemoryReservationRepository)
+	container.Provide(func() domainrepositories.ReservationRepository {
+		impl := repositories.NewJSONReservationRepositoryImpl("./configs/json/reservation.json")
+		return repositories.NewJSONReservationRepository(impl)
+	})
 
 	// アプリケーション層
 	container.Provide(usecases.NewGetUserReservationsUseCase)

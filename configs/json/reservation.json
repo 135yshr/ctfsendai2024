@@ -1,0 +1,604 @@
+{
+  "reservations": [
+    {
+      "id": "r001",
+      "user_id": "u001",
+      "user": {
+        "id": "u001",
+        "name": "田中太郎",
+        "email": "tanaka@example.com",
+        "phone": "090-1111-2222"
+      },
+      "start_time": "2024-11-15T09:00:00+09:00",
+      "end_time": "2024-11-15T10:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r002",
+      "user_id": "u002",
+      "user": {
+        "id": "u002",
+        "name": "鈴木花子",
+        "email": "suzuki@example.com",
+        "phone": "090-2222-3333"
+      },
+      "start_time": "2024-11-15T11:00:00+09:00",
+      "end_time": "2024-11-15T13:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r003",
+      "user_id": "u003",
+      "user": {
+        "id": "u003",
+        "name": "佐藤一郎",
+        "email": "sato@example.com",
+        "phone": "090-3333-4444"
+      },
+      "start_time": "2024-11-15T14:00:00+09:00",
+      "end_time": "2024-11-15T14:30:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r004",
+      "user_id": "u004",
+      "user": {
+        "id": "u004",
+        "name": "山田優子",
+        "email": "yamada@example.com",
+        "phone": "090-4444-5555"
+      },
+      "start_time": "2024-11-16T10:00:00+09:00",
+      "end_time": "2024-11-16T11:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r005",
+      "user_id": "u005",
+      "user": {
+        "id": "u005",
+        "name": "伊藤健一",
+        "email": "ito@example.com",
+        "phone": "090-5555-6666"
+      },
+      "start_time": "2024-11-16T13:00:00+09:00",
+      "end_time": "2024-11-16T15:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r006",
+      "user_id": "u006",
+      "user": {
+        "id": "u006",
+        "name": "渡辺美咲",
+        "email": "watanabe@example.com",
+        "phone": "090-6666-7777"
+      },
+      "start_time": "2024-11-17T09:30:00+09:00",
+      "end_time": "2024-11-17T10:00:00+09:00",
+      "status": "pending",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r007",
+      "user_id": "u007",
+      "user": {
+        "id": "u007",
+        "name": "小林正人",
+        "email": "kobayashi@example.com",
+        "phone": "090-7777-8888"
+      },
+      "start_time": "2024-11-17T11:00:00+09:00",
+      "end_time": "2024-11-17T12:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r008",
+      "user_id": "u008",
+      "user": {
+        "id": "u008",
+        "name": "加藤裕子",
+        "email": "kato@example.com",
+        "phone": "090-8888-9999"
+      },
+      "start_time": "2024-11-18T10:00:00+09:00",
+      "end_time": "2024-11-18T12:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r009",
+      "user_id": "u009",
+      "user": {
+        "id": "u009",
+        "name": "松本さくら",
+        "email": "matsumoto@example.com",
+        "phone": "090-9999-0000"
+      },
+      "start_time": "2024-11-18T14:00:00+09:00",
+      "end_time": "2024-11-18T14:30:00+09:00",
+      "status": "cancelled",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r010",
+      "user_id": "u010",
+      "user": {
+        "id": "u010",
+        "name": "井上大輔",
+        "email": "inoue@example.com",
+        "phone": "090-0000-1111"
+      },
+      "start_time": "2024-11-19T09:00:00+09:00",
+      "end_time": "2024-11-19T10:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r011",
+      "user_id": "u011",
+      "user": {
+        "id": "u011",
+        "name": "木村真理",
+        "email": "kimura@example.com",
+        "phone": "090-1234-5678"
+      },
+      "start_time": "2024-11-19T11:00:00+09:00",
+      "end_time": "2024-11-19T13:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r012",
+      "user_id": "u012",
+      "user": {
+        "id": "u012",
+        "name": "斎藤健二",
+        "email": "saito@example.com",
+        "phone": "090-2345-6789"
+      },
+      "start_time": "2024-11-20T10:00:00+09:00",
+      "end_time": "2024-11-20T10:30:00+09:00",
+      "status": "pending",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r013",
+      "user_id": "u013",
+      "user": {
+        "id": "u013",
+        "name": "高橋美香",
+        "email": "takahashi@example.com",
+        "phone": "090-3456-7890"
+      },
+      "start_time": "2024-11-20T11:00:00+09:00",
+      "end_time": "2024-11-20T12:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r014",
+      "user_id": "u014",
+      "user": {
+        "id": "u014",
+        "name": "中村洋介",
+        "email": "nakamura@example.com",
+        "phone": "090-4567-8901"
+      },
+      "start_time": "2024-11-21T13:00:00+09:00",
+      "end_time": "2024-11-21T15:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r015",
+      "user_id": "u015",
+      "user": {
+        "id": "u015",
+        "name": "吉田明子",
+        "email": "yoshida@example.com",
+        "phone": "090-5678-9012"
+      },
+      "start_time": "2024-11-22T09:00:00+09:00",
+      "end_time": "2024-11-22T09:30:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r016",
+      "user_id": "u001",
+      "user": {
+        "id": "u001",
+        "name": "田中太郎",
+        "email": "tanaka@example.com",
+        "phone": "090-1111-2222"
+      },
+      "start_time": "2024-11-23T10:00:00+09:00",
+      "end_time": "2024-11-23T11:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r017",
+      "user_id": "u002",
+      "user": {
+        "id": "u002",
+        "name": "鈴木花子",
+        "email": "suzuki@example.com",
+        "phone": "090-2222-3333"
+      },
+      "start_time": "2024-11-23T13:00:00+09:00",
+      "end_time": "2024-11-23T15:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r018",
+      "user_id": "u003",
+      "user": {
+        "id": "u003",
+        "name": "佐藤一郎",
+        "email": "sato@example.com",
+        "phone": "090-3333-4444"
+      },
+      "start_time": "2024-11-24T09:00:00+09:00",
+      "end_time": "2024-11-24T09:30:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r019",
+      "user_id": "u004",
+      "user": {
+        "id": "u004",
+        "name": "山田優子",
+        "email": "yamada@example.com",
+        "phone": "090-4444-5555"
+      },
+      "start_time": "2024-11-24T10:00:00+09:00",
+      "end_time": "2024-11-24T11:00:00+09:00",
+      "status": "cancelled",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r020",
+      "user_id": "u005",
+      "user": {
+        "id": "u005",
+        "name": "伊藤健一",
+        "email": "ito@example.com",
+        "phone": "090-5555-6666"
+      },
+      "start_time": "2024-11-25T13:00:00+09:00",
+      "end_time": "2024-11-25T15:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r021",
+      "user_id": "u006",
+      "user": {
+        "id": "u006",
+        "name": "渡辺美咲",
+        "email": "watanabe@example.com",
+        "phone": "090-6666-7777"
+      },
+      "start_time": "2024-11-25T16:00:00+09:00",
+      "end_time": "2024-11-25T16:30:00+09:00",
+      "status": "pending",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r022",
+      "user_id": "u007",
+      "user": {
+        "id": "u007",
+        "name": "小林正人",
+        "email": "kobayashi@example.com",
+        "phone": "090-7777-8888"
+      },
+      "start_time": "2024-11-26T10:00:00+09:00",
+      "end_time": "2024-11-26T11:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r023",
+      "user_id": "u008",
+      "user": {
+        "id": "u008",
+        "name": "加藤裕子",
+        "email": "kato@example.com",
+        "phone": "090-8888-9999"
+      },
+      "start_time": "2024-11-27T13:00:00+09:00",
+      "end_time": "2024-11-27T15:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r024",
+      "user_id": "u009",
+      "user": {
+        "id": "u009",
+        "name": "松本さくら",
+        "email": "matsumoto@example.com",
+        "phone": "090-9999-0000"
+      },
+      "start_time": "2024-11-27T16:00:00+09:00",
+      "end_time": "2024-11-27T16:30:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r025",
+      "user_id": "u010",
+      "user": {
+        "id": "u010",
+        "name": "井上大輔",
+        "email": "inoue@example.com",
+        "phone": "090-0000-1111"
+      },
+      "start_time": "2024-11-28T10:00:00+09:00",
+      "end_time": "2024-11-28T11:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r026",
+      "user_id": "u011",
+      "user": {
+        "id": "u011",
+        "name": "木村真理",
+        "email": "kimura@example.com",
+        "phone": "090-1234-5678"
+      },
+      "start_time": "2024-11-28T13:00:00+09:00",
+      "end_time": "2024-11-28T15:00:00+09:00",
+      "status": "cancelled",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r027",
+      "user_id": "u012",
+      "user": {
+        "id": "u012",
+        "name": "斎藤健二",
+        "email": "saito@example.com",
+        "phone": "090-2345-6789"
+      },
+      "start_time": "2024-11-29T09:00:00+09:00",
+      "end_time": "2024-11-29T09:30:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p003",
+        "name": "ショートプラン",
+        "description": "短時間利用プラン",
+        "price": 2000,
+        "duration": 30
+      }
+    },
+    {
+      "id": "r028",
+      "user_id": "u013",
+      "user": {
+        "id": "u013",
+        "name": "高橋美香",
+        "email": "takahashi@example.com",
+        "phone": "090-3456-7890"
+      },
+      "start_time": "2024-11-29T10:00:00+09:00",
+      "end_time": "2024-11-29T11:00:00+09:00",
+      "status": "pending",
+      "plan": {
+        "id": "p001",
+        "name": "スタンダードプラン",
+        "description": "通常の施設利用プラン",
+        "price": 3000,
+        "duration": 60
+      }
+    },
+    {
+      "id": "r029",
+      "user_id": "u014",
+      "user": {
+        "id": "u014",
+        "name": "中村洋介",
+        "email": "nakamura@example.com",
+        "phone": "090-4567-8901"
+      },
+      "start_time": "2024-11-30T13:00:00+09:00",
+      "end_time": "2024-11-30T15:00:00+09:00",
+      "status": "confirmed",
+      "plan": {
+        "id": "p002",
+        "name": "プレミアムプラン",
+        "description": "高級施設利用プラン",
+        "price": 5000,
+        "duration": 120
+      }
+    },
+    {
+      "id": "r030",
+      "user_id": "admin",
+      "user": {
+        "id": "admin",
+        "name": "管理者",
+        "email": "admin@example.com",
+        "phone": "090-5678-9012"
+      },
+      "start_time": "2024-11-30T16:00:00+09:00",
+      "end_time": "2024-11-30T16:30:00+09:00",
+      "status": "pending",
+      "plan": {
+        "id": "p000",
+        "name": "無料プラン",
+        "description": "FLAG_44GK44KB44Gn44Go44GG44GU44GW44GE44G+44GZ44C",
+        "price": 0,
+        "duration": 0
+      }
+    }
+  ]
+} 

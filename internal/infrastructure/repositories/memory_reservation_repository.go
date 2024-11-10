@@ -22,5 +22,6 @@ func (r *memoryReservationRepository) FindByUserID(userID string) ([]*models.Res
 			result = append(result, reservation)
 		}
 	}
+
 	return result, nil
 }

@@ -5,7 +5,7 @@ tmp_dir = "out"
 [build]
 args_bin = []
 delay = 1000
-exclude_dir = ["api", "build", "dist", "docs", "deployments", "scripts"]
+exclude_dir = ["api", "build", "dist", "deployments", "scripts"]
 exclude_file = []
 exclude_regex = ["_test.go"]
 exclude_unchanged = false

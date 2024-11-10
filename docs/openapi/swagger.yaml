@@ -1,5 +1,39 @@
 basePath: /api/v1
 definitions:
+  dto.PlanResponse:
+    description: プラン情報の詳細
+    properties:
+      description:
+        description: |-
+          プランの説明
+          @Example "基本的なサービスが含まれるプランです"
+        example: 基本的なサービスが含まれるプランです
+        type: string
+      duration:
+        description: |-
+          プランの期間（日数）
+          @Example 30
+        example: 30
+        type: integer
+      id:
+        description: |-
+          プランID
+          @Example "plan123"
+        example: plan123
+        type: string
+      name:
+        description: |-
+          プラン名
+          @Example "スタンダードプラン"
+        example: スタンダードプラン
+        type: string
+      price:
+        description: |-
+          プランの価格
+          @Example 1000
+        example: 1000
+        type: integer
+    type: object
   dto.ReservationResponse:
     description: 予約情報の詳細
     properties:
@@ -15,6 +49,12 @@ definitions:
           @Example "rsv_123456"
         example: rsv_123456
         type: string
+      plan:
+        allOf:
+        - $ref: '#/definitions/dto.PlanResponse'
+        description: |-
+          プラン情報
+          @Example {"id": "plan123", "name": "スタンダードプラン"}
       start_time:
         description: |-
           予約開始時間
@@ -27,11 +67,45 @@ definitions:
           @Example "confirmed"
         example: confirmed
         type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/dto.UserResponse'
+        description: |-
+          ユーザー情報
+          @Example {"id": "user123", "name": "山田太郎"}
       user_id:
         description: |-
           ユーザーID
           @Example "user123"
         example: user123
+        type: string
+    type: object
+  dto.UserResponse:
+    description: ユーザー情報の詳細
+    properties:
+      email:
+        description: |-
+          メールアドレス
+          @Example "taro.yamada@example.com"
+        example: taro.yamada@example.com
+        type: string
+      id:
+        description: |-
+          ユーザーID
+          @Example "user123"
+        example: user123
+        type: string
+      name:
+        description: |-
+          ユーザー名
+          @Example "山田太郎"
+        example: 山田太郎
+        type: string
+      phone:
+        description: |-
+          電話番号
+          @Example "090-1234-5678"
+        example: 090-1234-5678
         type: string
     type: object
   presenters.ErrorResponse:

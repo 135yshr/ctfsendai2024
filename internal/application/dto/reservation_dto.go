@@ -28,6 +28,14 @@ type ReservationResponse struct {
 	// 予約ステータス
 	// @Example "confirmed"
 	Status string `json:"status" example:"confirmed"`
+
+	// ユーザー情報
+	// @Example {"id": "user123", "name": "山田太郎"}
+	User UserResponse `json:"user"`
+
+	// プラン情報
+	// @Example {"id": "plan123", "name": "スタンダードプラン"}
+	Plan PlanResponse `json:"plan"`
 }
 
 func ToReservationResponse(reservation *models.Reservation) *ReservationResponse {
@@ -37,5 +45,7 @@ func ToReservationResponse(reservation *models.Reservation) *ReservationResponse
 		StartTime: reservation.StartTime,
 		EndTime:   reservation.EndTime,
 		Status:    reservation.Status,
+		User:      ToUserResponse(&reservation.User),
+		Plan:      ToPlanResponse(&reservation.Plan),
 	}
 }

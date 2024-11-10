@@ -27,13 +27,7 @@ func (uc *GetUserReservationsUseCase) Execute(userID string) ([]*dto.Reservation
 	// ドメインモデルをDTOに変換
 	response := make([]*dto.ReservationResponse, len(reservations))
 	for i, reservation := range reservations {
-		response[i] = &dto.ReservationResponse{
-			ID:        reservation.ID,
-			UserID:    reservation.UserID,
-			StartTime: reservation.StartTime,
-			EndTime:   reservation.EndTime,
-			Status:    reservation.Status,
-		}
+		response[i] = dto.ToReservationResponse(reservation)
 	}
 
 	return response, nil
