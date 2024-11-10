@@ -1,4 +1,34 @@
 {
+  "plans": [
+    {
+      "id": "p001",
+      "name": "スタンダードプラン",
+      "description": "通常の施設利用プラン",
+      "price": 3000,
+      "duration": 60
+    },
+    {
+      "id": "p002",
+      "name": "プレミアムプラン",
+      "description": "高級施設利用プラン",
+      "price": 5000,
+      "duration": 120
+    },
+    {
+      "id": "p003",
+      "name": "ショートプラン",
+      "description": "短時間利用プラン",
+      "price": 2000,
+      "duration": 30
+    },
+    {
+      "id": "p000",
+      "name": "無料プラン",
+      "description": "FLAG_44GK44KB44Gn44Go44GG44GU44GW44GE44G+44GZ44C",
+      "price": 0,
+      "duration": 0
+    }
+  ],
   "reservations": [
     {
       "id": "r001",

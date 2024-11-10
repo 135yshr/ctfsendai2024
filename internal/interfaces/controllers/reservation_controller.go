@@ -15,11 +15,11 @@ type ReservationController struct {
 }
 
 func NewReservationController(
-	useCase *usecases.GetUserReservationsUseCase,
+	getUserReservationsUseCase *usecases.GetUserReservationsUseCase,
 	presenter presenters.ReservationPresenter,
 ) *ReservationController {
 	return &ReservationController{
-		getUserReservationsUseCase: useCase,
+		getUserReservationsUseCase: getUserReservationsUseCase,
 		presenter:                  presenter,
 	}
 }
@@ -32,8 +32,8 @@ func NewReservationController(
 // @Produce      json
 // @Param        user_id    query     string  true  "ユーザーID"  minlength(3)  maxlength(50)
 // @Success      200  {object}  presenters.ReservationsResponse
-// @Failure      400  {object}  presenters.ErrorResponse
-// @Failure      500  {object}  presenters.ErrorResponse
+// @Failure      400  {object}  response.ErrorResponse
+// @Failure      500  {object}  response.ErrorResponse
 // @Router       /reservations [get]
 func (c *ReservationController) GetUserReservations(ctx *gin.Context) {
 	var req validators.GetReservationsRequest
@@ -47,6 +47,7 @@ func (c *ReservationController) GetUserReservations(ctx *gin.Context) {
 	if err != nil {
 		response := c.presenter.PresentError(err)
 		ctx.JSON(http.StatusInternalServerError, response)
+
 		return
 	}
 

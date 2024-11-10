@@ -2,6 +2,7 @@ package presenters
 
 import (
 	"github.com/135yshr/ctfsendai2024/internal/application/dto"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters/response"
 )
 
 type ReservationPresenter interface {
@@ -26,18 +27,6 @@ type ReservationsResponse struct {
 	Data []*dto.ReservationResponse `json:"data"`
 }
 
-// ErrorResponse エラーレスポンス
-// @Description エラー情報のレスポンス
-type ErrorResponse struct {
-	// ステータス
-	// @Example "error"
-	Status string `json:"status" example:"error"`
-
-	// エラーメッセージ
-	// @Example "ユーザーIDは必須項目です"
-	Error string `json:"error" example:"ユーザーIDは必須項目です"`
-}
-
 func (p *JSONReservationPresenter) PresentReservations(reservations []*dto.ReservationResponse) interface{} {
 	return ReservationsResponse{
 		Status: "success",
@@ -46,8 +35,5 @@ func (p *JSONReservationPresenter) PresentReservations(reservations []*dto.Reser
 }
 
 func (p *JSONReservationPresenter) PresentError(err error) interface{} {
-	return ErrorResponse{
-		Status: "error",
-		Error:  err.Error(),
-	}
+	return response.NewErrorResponse(err)
 }

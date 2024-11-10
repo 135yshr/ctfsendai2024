@@ -31,11 +31,11 @@ type ReservationResponse struct {
 
 	// ユーザー情報
 	// @Example {"id": "user123", "name": "山田太郎"}
-	User UserResponse `json:"user"`
+	User *UserResponse `json:"user"`
 
 	// プラン情報
 	// @Example {"id": "plan123", "name": "スタンダードプラン"}
-	Plan PlanResponse `json:"plan"`
+	Plan *PlanResponse `json:"plan"`
 }
 
 func ToReservationResponse(reservation *models.Reservation) *ReservationResponse {

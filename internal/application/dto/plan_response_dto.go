@@ -26,8 +26,8 @@ type PlanResponse struct {
 	Duration int `json:"duration" example:"30"`
 }
 
-func ToPlanResponse(plan *models.Plan) PlanResponse {
-	return PlanResponse{
+func ToPlanResponse(plan *models.Plan) *PlanResponse {
+	return &PlanResponse{
 		ID:          plan.ID,
 		Name:        plan.Name,
 		Description: plan.Description,

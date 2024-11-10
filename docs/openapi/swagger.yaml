@@ -108,20 +108,19 @@ definitions:
         example: 090-1234-5678
         type: string
     type: object
-  presenters.ErrorResponse:
-    description: エラー情報のレスポンス
+  presenters.PlansResponse:
+    description: プラン一覧のレスポンス
     properties:
-      error:
-        description: |-
-          エラーメッセージ
-          @Example "ユーザーIDは必須項目です"
-        example: ユーザーIDは必須項目です
-        type: string
+      data:
+        description: プランデータ
+        items:
+          $ref: '#/definitions/dto.PlanResponse'
+        type: array
       status:
         description: |-
           ステータス
-          @Example "error"
-        example: error
+          @Example "success"
+        example: success
         type: string
     type: object
   presenters.ReservationsResponse:
@@ -139,6 +138,22 @@ definitions:
         example: success
         type: string
     type: object
+  response.ErrorResponse:
+    description: エラー情報のレスポンス
+    properties:
+      error:
+        description: |-
+          エラーメッセージ
+          @Example "プランが見つかりません"
+        example: プランが見つかりません
+        type: string
+      status:
+        description: |-
+          ステータス
+          @Example "error"
+        example: error
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -146,6 +161,31 @@ info:
   title: 予約管理システム API
   version: "1.0"
 paths:
+  /plans:
+    get:
+      consumes:
+      - application/json
+      description: 指定されたユーザーIDに関連するプラン一覧を取得します
+      parameters:
+      - description: ユーザーID
+        in: header
+        name: X-User-ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/presenters.PlansResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: プラン一覧取得
+      tags:
+      - plans
   /reservations:
     get:
       consumes:
@@ -169,11 +209,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/presenters.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/presenters.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
       summary: ユーザーの予約一覧を取得
       tags:
       - reservations

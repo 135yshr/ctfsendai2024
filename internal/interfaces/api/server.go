@@ -11,15 +11,18 @@ import (
 type Server struct {
 	engine                *gin.Engine
 	reservationController *controllers.ReservationController
+	planController        *controllers.PlanController
 }
 
 func NewServer(
 	engine *gin.Engine,
 	reservationController *controllers.ReservationController,
+	planController *controllers.PlanController,
 ) *Server {
 	server := &Server{
 		engine:                engine,
 		reservationController: reservationController,
+		planController:        planController,
 	}
 
 	server.setupRoutes()
@@ -33,6 +36,7 @@ func (s *Server) setupRoutes() {
 	// API routes
 	apiV1 := s.engine.Group("/api/v1")
 	v1.SetupReservationRoutes(apiV1, s.reservationController)
+	v1.SetupPlanRoutes(apiV1, s.planController)
 }
 
 func (s *Server) Run(addr string) error {

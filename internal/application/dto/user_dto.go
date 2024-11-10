@@ -22,8 +22,8 @@ type UserResponse struct {
 	Phone string `json:"phone" example:"090-1234-5678"`
 }
 
-func ToUserResponse(user *models.User) UserResponse {
-	return UserResponse{
+func ToUserResponse(user *models.User) *UserResponse {
+	return &UserResponse{
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,

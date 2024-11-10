@@ -15,6 +15,44 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/plans": {
+            "get": {
+                "description": "指定されたユーザーIDに関連するプラン一覧を取得します",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plans"
+                ],
+                "summary": "プラン一覧取得",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ユーザーID",
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PlansResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/reservations": {
             "get": {
                 "description": "指定されたユーザーIDに紐づく予約の一覧を取得します",
@@ -49,13 +87,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/presenters.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/presenters.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -167,19 +205,21 @@ const docTemplate = `{
                 }
             }
         },
-        "presenters.ErrorResponse": {
-            "description": "エラー情報のレスポンス",
+        "presenters.PlansResponse": {
+            "description": "プラン一覧のレスポンス",
             "type": "object",
             "properties": {
-                "error": {
-                    "description": "エラーメッセージ\n@Example \"ユーザーIDは必須項目です\"",
-                    "type": "string",
-                    "example": "ユーザーIDは必須項目です"
+                "data": {
+                    "description": "プランデータ",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.PlanResponse"
+                    }
                 },
                 "status": {
-                    "description": "ステータス\n@Example \"error\"",
+                    "description": "ステータス\n@Example \"success\"",
                     "type": "string",
-                    "example": "error"
+                    "example": "success"
                 }
             }
         },
@@ -198,6 +238,22 @@ const docTemplate = `{
                     "description": "ステータス\n@Example \"success\"",
                     "type": "string",
                     "example": "success"
+                }
+            }
+        },
+        "response.ErrorResponse": {
+            "description": "エラー情報のレスポンス",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "description": "エラーメッセージ\n@Example \"プランが見つかりません\"",
+                    "type": "string",
+                    "example": "プランが見つかりません"
+                },
+                "status": {
+                    "description": "ステータス\n@Example \"error\"",
+                    "type": "string",
+                    "example": "error"
                 }
             }
         }
