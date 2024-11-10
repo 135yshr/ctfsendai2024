@@ -1,3 +1,4 @@
+//nolint:errcheck // エラーは無視する
 package middleware
 
 import (
@@ -41,6 +42,7 @@ func registerCustomTranslation(validate *validator.Validate, trans ut.Translator
 		return ut.Add(tag, message, true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
 		t, _ := ut.T(tag, fe.Field())
+
 		return t
 	})
 }

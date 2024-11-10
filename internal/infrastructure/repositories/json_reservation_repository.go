@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -17,16 +18,11 @@ type reservationsJSON struct {
 	Reservations []*models.Reservation `json:"reservations"`
 }
 
-// 具象型のコンストラクタ
-func NewJSONReservationRepositoryImpl(filePath string) *jsonReservationRepository {
+// 具象型のコンストラクタ.
+func NewJSONReservationRepository(filePath string) repositories.ReservationRepository {
 	return &jsonReservationRepository{
 		filePath: filePath,
 	}
-}
-
-// インターフェースを返すコンストラクタ
-func NewJSONReservationRepository(impl *jsonReservationRepository) repositories.ReservationRepository {
-	return impl
 }
 
 func (r *jsonReservationRepository) FindByUserID(userID string) ([]*models.Reservation, error) {
@@ -45,21 +41,21 @@ func (r *jsonReservationRepository) FindByUserID(userID string) ([]*models.Reser
 	return result, nil
 }
 
-// private メソッドとして findAll を移動
+// private メソッドとして findAll を移動.
 func (r *jsonReservationRepository) findAll() ([]*models.Reservation, error) {
 	absPath, err := filepath.Abs(r.filePath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("ファイルパスの取得に失敗: %w", err)
 	}
 
 	file, err := os.ReadFile(absPath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("ファイルの読み込みに失敗: %w", err)
 	}
 
 	var data reservationsJSON
-	if err := json.Unmarshal(file, &data); err != nil {
-		return nil, err
+	if err = json.Unmarshal(file, &data); err != nil {
+		return nil, fmt.Errorf("予約の取得に失敗: %w", err)
 	}
 
 	return data.Reservations, nil

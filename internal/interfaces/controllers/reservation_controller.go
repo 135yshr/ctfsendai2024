@@ -34,12 +34,13 @@ func NewReservationController(
 // @Success      200  {object}  presenters.ReservationsResponse
 // @Failure      400  {object}  response.ErrorResponse
 // @Failure      500  {object}  response.ErrorResponse
-// @Router       /reservations [get]
+// @Router       /reservations [get].
 func (c *ReservationController) GetUserReservations(ctx *gin.Context) {
 	var req validators.GetReservationsRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
 		response := c.presenter.PresentError(err)
 		ctx.JSON(http.StatusBadRequest, response)
+
 		return
 	}
 

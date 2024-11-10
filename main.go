@@ -1,9 +1,8 @@
+//nolint:errcheck // エラーは無視する
 package main
 
 import (
 	"log"
-
-	_ "github.com/135yshr/ctfsendai2024/docs/openapi"
 
 	"github.com/135yshr/ctfsendai2024/internal/application/usecases"
 	domainRepositories "github.com/135yshr/ctfsendai2024/internal/domain/repositories"
@@ -11,21 +10,24 @@ import (
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/controllers"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters"
-
 	"github.com/gin-gonic/gin"
 	"go.uber.org/dig"
+
+	_ "github.com/135yshr/ctfsendai2024/docs/openapi"
 )
 
 // @title        予約管理システム API
 // @version      1.0
 // @description  予約管理システムのRESTful API
 // @host         localhost:8080
-// @BasePath     /api/v1
+// @BasePath     /api/v1.
 func main() {
 	container := buildContainer()
 
 	if err := container.Invoke(func(server *api.Server) {
-		server.Run(":8080")
+		if err := server.Run(":8080"); err != nil {
+			log.Fatal("サーバーの起動に失敗しました:", err)
+		}
 	}); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
@@ -35,16 +37,16 @@ func buildContainer() *dig.Container {
 	container := dig.New()
 
 	// インフラストラクチャー層
-	container.Provide(func() *gin.Engine {
+	if err := container.Provide(func() *gin.Engine {
 		return gin.Default()
-	})
+	}); err != nil {
+		log.Fatal("DIの設定に失敗しました:", err)
+	}
 	container.Provide(func() domainRepositories.ReservationRepository {
-		impl := repositories.NewJSONReservationRepositoryImpl("./configs/json/database.json")
-		return repositories.NewJSONReservationRepository(impl)
+		return repositories.NewJSONReservationRepository("./configs/json/database.json")
 	})
 	container.Provide(func() domainRepositories.PlanRepository {
-		impl := repositories.NewJSONPlanRepositoryImpl("./configs/json/database.json")
-		return repositories.NewJSONPlanRepository(impl)
+		return repositories.NewJSONPlanRepository("./configs/json/database.json")
 	})
 
 	// アプリケーション層

@@ -1,6 +1,8 @@
 package usecases
 
 import (
+	"fmt"
+
 	"github.com/135yshr/ctfsendai2024/internal/application/dto"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 )
@@ -20,7 +22,7 @@ func NewGetPlansUseCase(
 func (uc *GetPlansUseCase) Execute(userID string) ([]*dto.PlanResponse, error) {
 	plans, err := uc.planRepo.FindAll(userID)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("プランの取得に失敗: %w", err)
 	}
 
 	response := make([]*dto.PlanResponse, len(plans))

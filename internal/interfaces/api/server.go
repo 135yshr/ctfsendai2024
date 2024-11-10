@@ -26,6 +26,7 @@ func NewServer(
 	}
 
 	server.setupRoutes()
+
 	return server
 }
 
@@ -40,5 +41,5 @@ func (s *Server) setupRoutes() {
 }
 
 func (s *Server) Run(addr string) error {
-	return s.engine.Run(addr)
+	return s.engine.Run(addr) //nolint:wrapcheck // エラーをそのまま返す
 }

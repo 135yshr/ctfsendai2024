@@ -1,6 +1,8 @@
 package usecases
 
 import (
+	"fmt"
+
 	"github.com/135yshr/ctfsendai2024/internal/application/dto"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 )
@@ -21,7 +23,7 @@ func (uc *GetUserReservationsUseCase) Execute(userID string) ([]*dto.Reservation
 	// リポジトリから予約一覧を取得
 	reservations, err := uc.reservationRepo.FindByUserID(userID)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("予約の取得に失敗: %w", err)
 	}
 
 	// ドメインモデルをDTOに変換

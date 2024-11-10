@@ -1,20 +1,20 @@
 package validators
 
 // GetReservationsRequest 予約一覧取得リクエスト
-// @Description 予約一覧を取得するためのリクエストパラメータ
+// @Description 予約一覧を取得するためのリクエストパラメータ.
 type GetReservationsRequest struct {
 	// ユーザーID
 	// @Example "user123"
-	UserID string `form:"user_id" binding:"required,min=3,max=50"`
+	UserID string `binding:"required,min=3,max=50" form:"user_id"`
 }
 
 type CreateReservationRequest struct {
-	UserID    string `json:"user_id" binding:"required,min=3,max=50"`
-	StartTime string `json:"start_time" binding:"required,datetime"`
-	EndTime   string `json:"end_time" binding:"required,datetime,gtfield=StartTime"`
+	UserID    string `binding:"required,min=3,max=50"               json:"user_id"`
+	StartTime string `binding:"required,datetime"                   json:"start_time"`
+	EndTime   string `binding:"required,datetime,gtfield=StartTime" json:"end_time"`
 }
 
-// カスタムバリデーションメッセージ
+// カスタムバリデーションメッセージ.
 func GetValidationMessages() map[string]string {
 	return map[string]string{
 		"required": "{0}は必須項目です",
