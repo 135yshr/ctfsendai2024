@@ -4,8 +4,11 @@ import (
 	"net/http"
 
 	"github.com/135yshr/ctfsendai2024/internal/application/usecases"
+	domainError "github.com/135yshr/ctfsendai2024/internal/domain/errors"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/validators"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,23 +40,32 @@ func NewReservationController(
 // @Failure      500  {object}  response.ErrorResponse
 // @Router       /reservations [get]
 // .
-func (c *ReservationController) GetUserReservations(ctx *gin.Context) {
+func (rc *ReservationController) GetUserReservations(c *gin.Context) {
+	auth, ok := utils.GetUserFromContext(c)
+	if !ok {
+		response := rc.presenter.PresentError(domainError.ErrInvalidUser)
+		c.JSON(http.StatusUnauthorized, response)
+
+		return
+	}
+
 	var req validators.GetReservationsRequest
-	if err := ctx.ShouldBindQuery(&req); err != nil {
-		response := c.presenter.PresentError(err)
-		ctx.JSON(http.StatusBadRequest, response)
+	if err := c.ShouldBindQuery(&req); err != nil {
+		response := rc.presenter.PresentError(err)
+		c.JSON(http.StatusBadRequest, response)
 
 		return
 	}
 
-	reservations, err := c.getUserReservationsUseCase.Execute(req.UserID)
+	ctx := middleware.SetUserToContext(c, auth)
+	reservations, err := rc.getUserReservationsUseCase.Execute(ctx, req.UserID)
 	if err != nil {
-		response := c.presenter.PresentError(err)
-		ctx.JSON(http.StatusInternalServerError, response)
+		response := rc.presenter.PresentError(err)
+		c.JSON(http.StatusInternalServerError, response)
 
 		return
 	}
 
-	response := c.presenter.PresentReservations(reservations)
-	ctx.JSON(http.StatusOK, response)
+	response := rc.presenter.PresentReservations(reservations)
+	c.JSON(http.StatusOK, response)
 }

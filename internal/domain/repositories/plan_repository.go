@@ -1,7 +1,11 @@
 package repositories
 
-import "github.com/135yshr/ctfsendai2024/internal/domain/models"
+import (
+	"context"
+
+	"github.com/135yshr/ctfsendai2024/internal/domain/models"
+)
 
 type PlanRepository interface {
-	FindAll(userID string) ([]*models.Plan, error)
+	FindAll(ctx context.Context, params *models.PlanSearchParams) ([]*models.Plan, error)
 }

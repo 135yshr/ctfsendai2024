@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"context"
+
 	"github.com/135yshr/ctfsendai2024/internal/domain/models"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 )
@@ -15,7 +17,7 @@ func NewMemoryReservationRepository() repositories.ReservationRepository {
 	}
 }
 
-func (r *memoryReservationRepository) FindByUserID(userID string) ([]*models.Reservation, error) {
+func (r *memoryReservationRepository) FindByUserID(_ context.Context, userID string) ([]*models.Reservation, error) {
 	var result []*models.Reservation
 	for _, reservation := range r.reservations {
 		if reservation.UserID == userID {

@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -11,7 +12,8 @@ import (
 )
 
 type jsonReservationRepository struct {
-	filePath string
+	filePath     string
+	reservations []*models.Reservation
 }
 
 type reservationsJSON struct {
@@ -19,20 +21,25 @@ type reservationsJSON struct {
 }
 
 // 具象型のコンストラクタ.
-func NewJSONReservationRepository(filePath string) repositories.ReservationRepository {
-	return &jsonReservationRepository{
+func NewJSONReservationRepository(filePath string) (repositories.ReservationRepository, error) {
+	repo := &jsonReservationRepository{
 		filePath: filePath,
 	}
-}
 
-func (r *jsonReservationRepository) FindByUserID(userID string) ([]*models.Reservation, error) {
-	reservations, err := r.findAll()
+	// 初期化時にファイルを読み込む
+	reservations, err := repo.loadReservations()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("予約データの初期化に失敗: %w", err)
 	}
 
+	repo.reservations = reservations
+
+	return repo, nil
+}
+
+func (r *jsonReservationRepository) FindByUserID(_ context.Context, userID string) ([]*models.Reservation, error) {
 	var result []*models.Reservation
-	for _, reservation := range reservations {
+	for _, reservation := range r.reservations {
 		if reservation.UserID == userID {
 			result = append(result, reservation)
 		}
@@ -41,8 +48,8 @@ func (r *jsonReservationRepository) FindByUserID(userID string) ([]*models.Reser
 	return result, nil
 }
 
-// private メソッドとして findAll を移動.
-func (r *jsonReservationRepository) findAll() ([]*models.Reservation, error) {
+// private メソッドとして loadReservations を移動.
+func (r *jsonReservationRepository) loadReservations() ([]*models.Reservation, error) {
 	absPath, err := filepath.Abs(r.filePath)
 	if err != nil {
 		return nil, fmt.Errorf("ファイルパスの取得に失敗: %w", err)

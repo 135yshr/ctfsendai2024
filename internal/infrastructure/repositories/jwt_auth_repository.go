@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -59,7 +60,7 @@ func (r *JWTAuthRepository) loadUsers(configPath string) error {
 			UserID:   user.ID,
 			Name:     user.Name,
 			Password: user.Password,
-			Role:     user.Role,
+			Role:     models.Role(user.Role),
 		}
 	}
 
@@ -67,10 +68,11 @@ func (r *JWTAuthRepository) loadUsers(configPath string) error {
 }
 
 // GenerateToken はJWTトークンを生成します.
-func (r *JWTAuthRepository) GenerateToken(auth *models.Auth) (*models.Token, error) {
+func (r *JWTAuthRepository) GenerateToken(_ context.Context, auth *models.Auth) (*models.Token, error) {
 	expiresAt := time.Now().Add(tokenExpirationTime)
 	claims := jwt.MapClaims{
 		"user_id": auth.UserID,
+		"name":    auth.Name,
 		"role":    auth.Role,
 		"exp":     expiresAt.Unix(),
 	}
@@ -88,7 +90,7 @@ func (r *JWTAuthRepository) GenerateToken(auth *models.Auth) (*models.Token, err
 }
 
 // ValidateToken はJWTトークンを検証します.
-func (r *JWTAuthRepository) ValidateToken(tokenString string) (*models.Auth, error) {
+func (r *JWTAuthRepository) ValidateToken(_ context.Context, tokenString string) (*models.Auth, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.ErrInvalidSignMethod
@@ -114,12 +116,20 @@ func (r *JWTAuthRepository) ValidateToken(tokenString string) (*models.Auth, err
 	if !ok {
 		return nil, errors.ErrInvalidUserID
 	}
+	name, ok := claims["name"].(string)
+	if !ok {
+		return nil, errors.ErrInvalidName
+	}
+	role, ok := claims["role"].(string)
+	if !ok {
+		return nil, errors.ErrInvalidRole
+	}
 
-	return &models.Auth{UserID: userID}, nil
+	return &models.Auth{UserID: userID, Name: name, Role: models.Role(role)}, nil
 }
 
 // FindByUsername はユーザー名からユーザーを検索します.
-func (r *JWTAuthRepository) FindByUserID(userID string) (*models.Auth, error) {
+func (r *JWTAuthRepository) FindByUserID(_ context.Context, userID string) (*models.Auth, error) {
 	if auth, exists := r.users[userID]; exists {
 		return auth, nil
 	}
@@ -128,7 +138,7 @@ func (r *JWTAuthRepository) FindByUserID(userID string) (*models.Auth, error) {
 }
 
 // Store は認証情報を保存します.
-func (r *JWTAuthRepository) Store(auth *models.Auth) error {
+func (r *JWTAuthRepository) Store(_ context.Context, auth *models.Auth) error {
 	if auth == nil {
 		return errors.ErrNilAuth
 	}

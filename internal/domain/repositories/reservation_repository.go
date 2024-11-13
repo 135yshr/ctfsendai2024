@@ -1,7 +1,11 @@
 package repositories
 
-import "github.com/135yshr/ctfsendai2024/internal/domain/models"
+import (
+	"context"
+
+	"github.com/135yshr/ctfsendai2024/internal/domain/models"
+)
 
 type ReservationRepository interface {
-	FindByUserID(userID string) ([]*models.Reservation, error)
+	FindByUserID(ctx context.Context, userID string) ([]*models.Reservation, error)
 }
