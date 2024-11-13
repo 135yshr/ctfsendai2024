@@ -30,11 +30,13 @@ func NewReservationController(
 // @Tags         reservations
 // @Accept       json
 // @Produce      json
+// @Security Bearer
 // @Param        user_id    query     string  true  "ユーザーID"  minlength(3)  maxlength(50)
 // @Success      200  {object}  presenters.ReservationsResponse
 // @Failure      400  {object}  response.ErrorResponse
 // @Failure      500  {object}  response.ErrorResponse
-// @Router       /reservations [get].
+// @Router       /reservations [get]
+// .
 func (c *ReservationController) GetUserReservations(ctx *gin.Context) {
 	var req validators.GetReservationsRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {

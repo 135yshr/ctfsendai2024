@@ -4,8 +4,8 @@ import "time"
 
 type Auth struct {
 	UserID   string
-	Username string
 	Password string
+	Name     string
 	Role     string
 }
 

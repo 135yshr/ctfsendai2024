@@ -1,14 +1,14 @@
-basePath: /api/v1.
+basePath: /api/v1
 definitions:
   dto.LoginRequest:
     properties:
       password:
         type: string
-      username:
+      user_id:
         type: string
     required:
     - password
-    - username
+    - user_id
     type: object
   dto.LoginResponse:
     properties:
@@ -253,6 +253,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - Bearer: []
       summary: プラン一覧取得
       tags:
       - plans
@@ -284,7 +286,15 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - Bearer: []
       summary: ユーザーの予約一覧を取得
       tags:
       - reservations
+securityDefinitions:
+  Bearer:
+    description: Bearer Tokenによる認証
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

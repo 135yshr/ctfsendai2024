@@ -6,8 +6,5 @@ import (
 )
 
 func SetupAuthRoutes(router *gin.RouterGroup, controller *controllers.AuthController) {
-	auth := router.Group("/auth")
-	{
-		auth.POST("/login", controller.Login)
-	}
+	router.POST("/login", controller.Login)
 }

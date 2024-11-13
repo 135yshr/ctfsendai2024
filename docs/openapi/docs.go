@@ -69,6 +69,11 @@ const docTemplate = `{
         },
         "/plans": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "指定されたユーザーIDに関連するプラン一覧を取得します",
                 "consumes": [
                     "application/json"
@@ -107,6 +112,11 @@ const docTemplate = `{
         },
         "/reservations": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "指定されたユーザーIDに紐づく予約の一覧を取得します",
                 "consumes": [
                     "application/json"
@@ -157,13 +167,13 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "password",
-                "username"
+                "user_id"
             ],
             "properties": {
                 "password": {
                     "type": "string"
                 },
-                "username": {
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -362,6 +372,14 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Bearer Tokenによる認証",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
@@ -369,7 +387,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api/v1.",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "予約管理システム API",
 	Description:      "予約管理システムのRESTful API",

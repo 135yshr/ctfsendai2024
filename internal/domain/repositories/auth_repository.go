@@ -5,7 +5,7 @@ import (
 )
 
 type AuthRepository interface {
-	FindByUsername(username string) (*models.Auth, error)
+	FindByUserID(userID string) (*models.Auth, error)
 	Store(auth *models.Auth) error
 	ValidateToken(token string) (*models.Auth, error)
 	GenerateToken(auth *models.Auth) (*models.Token, error)

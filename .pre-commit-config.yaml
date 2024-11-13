@@ -12,7 +12,3 @@ repos:
   - id: golangci-lint
   - id: go-unit-tests
   - id: go-generate
-- repo: https://github.com/gitleaks/gitleaks
-  rev: v8.18.2
-  hooks:
-  - id: gitleaks

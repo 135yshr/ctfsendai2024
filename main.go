@@ -16,11 +16,20 @@ import (
 	_ "github.com/135yshr/ctfsendai2024/docs/openapi"
 )
 
+const databasePath = "./configs/json/database.json"
+
+// main は予約管理システムのサーバーを起動します
 // @title        予約管理システム API
 // @version      1.0
 // @description  予約管理システムのRESTful API
 // @host         localhost:8080
-// @BasePath     /api/v1.
+// @BasePath     /api/v1
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @description Bearer Tokenによる認証
+// @license.name  MIT
+// @license.url   https://opensource.org/licenses/MIT
 func main() {
 	container := buildContainer()
 
@@ -29,7 +38,7 @@ func main() {
 			log.Fatal("サーバーの起動に失敗しました:", err)
 		}
 	}); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
+		log.Fatal("サーバーの起動に失敗しました:", err)
 	}
 }
 
@@ -40,16 +49,21 @@ func buildContainer() *dig.Container {
 	if err := container.Provide(func() *gin.Engine {
 		return gin.Default()
 	}); err != nil {
-		log.Fatal("DIの設定に失敗しました:", err)
+		log.Fatal("DIコンテナの設定に失敗しました:", err)
 	}
 	container.Provide(func() domainRepositories.ReservationRepository {
-		return repositories.NewJSONReservationRepository("./configs/json/database.json")
+		return repositories.NewJSONReservationRepository(databasePath)
 	})
 	container.Provide(func() domainRepositories.PlanRepository {
-		return repositories.NewJSONPlanRepository("./configs/json/database.json")
+		return repositories.NewJSONPlanRepository(databasePath)
 	})
 	container.Provide(func() domainRepositories.AuthRepository {
-		return repositories.NewJWTAuthRepository("secret")
+		repo, err := repositories.NewJWTAuthRepository("secret", databasePath)
+		if err != nil {
+			panic("認証リポジトリの作成に失敗しました: " + err.Error())
+		}
+
+		return repo
 	})
 
 	// アプリケーション層

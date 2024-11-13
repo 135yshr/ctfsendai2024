@@ -29,10 +29,12 @@ func NewPlanController(
 // @Tags plans
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param X-User-ID header string true "ユーザーID"
 // @Success 200 {object} presenters.PlansResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /plans [get].
+// @Router /plans [get]
+// .
 func (c *PlanController) GetPlans(ctx *gin.Context) {
 	userID := ctx.GetHeader("X-User-ID")
 

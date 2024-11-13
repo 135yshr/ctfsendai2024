@@ -7,7 +7,7 @@
         "version": "1.0"
     },
     "host": "localhost:8080",
-    "basePath": "/api/v1.",
+    "basePath": "/api/v1",
     "paths": {
         "/login": {
             "post": {
@@ -63,6 +63,11 @@
         },
         "/plans": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "指定されたユーザーIDに関連するプラン一覧を取得します",
                 "consumes": [
                     "application/json"
@@ -101,6 +106,11 @@
         },
         "/reservations": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "指定されたユーザーIDに紐づく予約の一覧を取得します",
                 "consumes": [
                     "application/json"
@@ -151,13 +161,13 @@
             "type": "object",
             "required": [
                 "password",
-                "username"
+                "user_id"
             ],
             "properties": {
                 "password": {
                     "type": "string"
                 },
-                "username": {
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -355,6 +365,14 @@
                     "example": "error"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Bearer Tokenによる認証",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }
