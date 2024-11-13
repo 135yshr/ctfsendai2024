@@ -1,7 +1,24 @@
 basePath: /api/v1
 definitions:
+  dto.LoginRequest:
+    properties:
+      password:
+        type: string
+      user_id:
+        type: string
+    required:
+    - password
+    - user_id
+    type: object
+  dto.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      expires_at:
+        type: integer
+    type: object
   dto.PlanResponse:
-    description: プラン情報の詳細
+    description: プラン情報の詳細.
     properties:
       description:
         description: |-
@@ -35,7 +52,7 @@ definitions:
         type: integer
     type: object
   dto.ReservationResponse:
-    description: 予約情報の詳細
+    description: 予約情報の詳細.
     properties:
       end_time:
         description: |-
@@ -81,7 +98,7 @@ definitions:
         type: string
     type: object
   dto.UserResponse:
-    description: ユーザー情報の詳細
+    description: ユーザー情報の詳細.
     properties:
       email:
         description: |-
@@ -108,24 +125,42 @@ definitions:
         example: 090-1234-5678
         type: string
     type: object
-  presenters.ErrorResponse:
-    description: エラー情報のレスポンス
+  presenters.LoginResponse:
+    description: ログイン処理のレスポンス.
     properties:
-      error:
-        description: |-
-          エラーメッセージ
-          @Example "ユーザーIDは必須項目です"
-        example: ユーザーIDは必須項目です
-        type: string
+      data:
+        allOf:
+        - $ref: '#/definitions/dto.LoginResponse'
+        description: ログインデータ
       status:
         description: |-
           ステータス
-          @Example "error"
-        example: error
+          @Example "success"
+        example: success
+        type: string
+    type: object
+  presenters.PlansResponse:
+    description: プラン一覧のレスポンス.
+    properties:
+      data:
+        description: プランデータ
+        items:
+          $ref: '#/definitions/dto.PlanResponse'
+        type: array
+      status:
+        description: |-
+          ステータス
+          @Example "success"
+        example: success
+        type: string
+    type: object
+  presenters.PresentError:
+    properties:
+      message:
         type: string
     type: object
   presenters.ReservationsResponse:
-    description: 予約一覧のレスポンス
+    description: 予約一覧のレスポンス.
     properties:
       data:
         description: 予約データ
@@ -139,6 +174,22 @@ definitions:
         example: success
         type: string
     type: object
+  response.ErrorResponse:
+    description: エラー情報のレスポンス.
+    properties:
+      error:
+        description: |-
+          エラーメッセージ
+          @Example "プランが見つかりません"
+        example: プランが見つかりません
+        type: string
+      status:
+        description: |-
+          ステータス
+          @Example "error"
+        example: error
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -146,6 +197,67 @@ info:
   title: 予約管理システム API
   version: "1.0"
 paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: ユーザー名とパスワードを使用してログイン認証を行います
+      parameters:
+      - description: ログイン情報
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ログイン成功時のレスポンス
+          schema:
+            $ref: '#/definitions/presenters.LoginResponse'
+        "400":
+          description: リクエストの形式が不正
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+        "401":
+          description: パスワードが一致しない
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+        "500":
+          description: サーバー内部エラー
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+      summary: ユーザーログイン
+      tags:
+      - auth
+  /plans:
+    get:
+      consumes:
+      - application/json
+      description: 指定されたユーザーIDに関連するプラン一覧を取得します
+      parameters:
+      - description: ユーザーID
+        in: header
+        name: X-User-ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/presenters.PlansResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: プラン一覧取得
+      tags:
+      - plans
   /reservations:
     get:
       consumes:
@@ -169,12 +281,20 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/presenters.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/presenters.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - Bearer: []
       summary: ユーザーの予約一覧を取得
       tags:
       - reservations
+securityDefinitions:
+  Bearer:
+    description: Bearer Tokenによる認証
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

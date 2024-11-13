@@ -1,4 +1,34 @@
 {
+  "plans": [
+    {
+      "id": "p001",
+      "name": "スタンダードプラン",
+      "description": "通常の施設利用プラン",
+      "price": 3000,
+      "duration": 60
+    },
+    {
+      "id": "p002",
+      "name": "プレミアムプラン",
+      "description": "高級施設利用プラン",
+      "price": 5000,
+      "duration": 120
+    },
+    {
+      "id": "p003",
+      "name": "ショートプラン",
+      "description": "短時間利用プラン",
+      "price": 2000,
+      "duration": 30
+    },
+    {
+      "id": "p000",
+      "name": "無料プラン",
+      "description": "FLAG_44GK44KB44Gn44Go44GG44GU44GW44GE44G+44GZ44C",
+      "price": 0,
+      "duration": 0
+    }
+  ],
   "reservations": [
     {
       "id": "r001",
@@ -235,7 +265,7 @@
       "plan": {
         "id": "p003",
         "name": "ショートプラン",
-        "description": "短時間利用プラン",
+        "description": "短時間利用プラ",
         "price": 2000,
         "duration": 30
       }
@@ -600,5 +630,135 @@
         "duration": 0
       }
     }
+  ],
+  "users": [
+    {
+      "id": "u00100",
+      "password": "1a28c23a378c8d07521e8b7901701c01",
+      "name": "田中太郎",
+      "email": "tanaka@example.com",
+      "phone": "090-1111-2222",
+      "role": "user"
+    },
+    {
+      "id": "u00200",
+      "password": "bd2c4fc9d3de89067b975605b4656812",
+      "name": "鈴木花子",
+      "email": "suzuki@example.com",
+      "phone": "090-2222-3333",
+      "role": "user"
+    },
+    {
+      "id": "u00300",
+      "password": "6e9cd72a6688c6dff06dc441f7bda0b9",
+      "name": "佐藤一郎",
+      "email": "sato@example.com",
+      "phone": "090-3333-4444",
+      "role": "user"
+    },
+    {
+      "id": "u00400",
+      "password": "7c67e713a4b4139702de1a4fac672344",
+      "name": "山田優子",
+      "email": "yamada@example.com",
+      "phone": "090-4444-5555",
+      "role": "user"
+    },
+    {
+      "id": "u00500",
+      "password": "e3a53a914c506f302b88d3de7d6fa0d9",
+      "name": "伊藤健一",
+      "email": "ito@example.com",
+      "phone": "090-5555-6666",
+      "role": "user"
+    },
+    {
+      "id": "u00600",
+      "password": "da0299dd50c5d95f8e7c5de27d083ebb",
+      "name": "渡辺美咲",
+      "email": "watanabe@example.com",
+      "phone": "090-6666-7777",
+      "role": "user"
+    },
+    {
+      "id": "u00700",
+      "password": "c72c74756d3dd6d945c9b1be791e0f67",
+      "name": "小林正人",
+      "email": "kobayashi@example.com",
+      "phone": "090-7777-8888",
+      "role": "user"
+    },
+    {
+      "id": "u00800",
+      "password": "0a382e9254a94603fdfb57dc50c2c75e",
+      "name": "加藤裕子",
+      "email": "kato@example.com",
+      "phone": "090-8888-9999",
+      "role": "user"
+    },
+    {
+      "id": "u00900",
+      "password": "0f6432e5282f0ac0766a90d9e6c85c84",
+      "name": "松本さくら",
+      "email": "matsumoto@example.com",
+      "phone": "090-9999-0000",
+      "role": "user"
+    },
+    {
+      "id": "u01000",
+      "password": "a9eb812238f753132652ae09963a05e9",
+      "name": "井上大輔",
+      "email": "inoue@example.com",
+      "phone": "090-0000-1111",
+      "role": "user"
+    },
+    {
+      "id": "u01100",
+      "password": "8d3b6c2c81f8bb52b37728cf2a7bc36b",
+      "name": "木村真理",
+      "email": "kimura@example.com",
+      "phone": "090-1234-5678",
+      "role": "user"
+    },
+    {
+      "id": "u01200",
+      "password": "2d95666e2649fcfc6e3af75e09f5adb9",
+      "name": "斎藤健二",
+      "email": "saito@example.com",
+      "phone": "090-2345-6789",
+      "role": "user"
+    },
+    {
+      "id": "u01300",
+      "password": "b7bc2a2f5bb6d521e64c8974c143e9a0",
+      "name": "高橋美香",
+      "email": "takahashi@example.com",
+      "phone": "090-3456-7890",
+      "role": "user"
+    },
+    {
+      "id": "u01400",
+      "password": "6a965b72c2ffb062f2e5ef2bd5bfaa4a",
+      "name": "中村洋介",
+      "email": "nakamura@example.com",
+      "phone": "090-4567-8901",
+      "role": "user"
+    },
+    {
+      "id": "u01500",
+      "password": "e360a0a4514471fb7750df56ae4dd1bb",
+      "name": "吉田明子",
+      "email": "yoshida@example.com",
+      "phone": "090-5678-9012",
+      "role": "user"
+    },
+    {
+      "id": "u00000",
+      "password": "eaef26e74f4f5e1986e40e0458e6e128",
+      "name": "管理者",
+      "email": "admin@example.com",
+      "phone": "090-5678-9012",
+      "role": "admin"
+    }
   ]
-} 
+}

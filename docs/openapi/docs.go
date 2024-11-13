@@ -15,8 +15,108 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/login": {
+            "post": {
+                "description": "ユーザー名とパスワードを使用してログイン認証を行います",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "ユーザーログイン",
+                "parameters": [
+                    {
+                        "description": "ログイン情報",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ログイン成功時のレスポンス",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエストの形式が不正",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    },
+                    "401": {
+                        "description": "パスワードが一致しない",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    },
+                    "500": {
+                        "description": "サーバー内部エラー",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    }
+                }
+            }
+        },
+        "/plans": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "指定されたユーザーIDに関連するプラン一覧を取得します",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plans"
+                ],
+                "summary": "プラン一覧取得",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ユーザーID",
+                        "name": "X-User-ID",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PlansResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/reservations": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "指定されたユーザーIDに紐づく予約の一覧を取得します",
                 "consumes": [
                     "application/json"
@@ -49,13 +149,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/presenters.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/presenters.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -63,8 +163,34 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.LoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "user_id"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "expires_at": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.PlanResponse": {
-            "description": "プラン情報の詳細",
+            "description": "プラン情報の詳細.",
             "type": "object",
             "properties": {
                 "description": {
@@ -95,7 +221,7 @@ const docTemplate = `{
             }
         },
         "dto.ReservationResponse": {
-            "description": "予約情報の詳細",
+            "description": "予約情報の詳細.",
             "type": "object",
             "properties": {
                 "end_time": {
@@ -142,7 +268,7 @@ const docTemplate = `{
             }
         },
         "dto.UserResponse": {
-            "description": "ユーザー情報の詳細",
+            "description": "ユーザー情報の詳細.",
             "type": "object",
             "properties": {
                 "email": {
@@ -167,24 +293,53 @@ const docTemplate = `{
                 }
             }
         },
-        "presenters.ErrorResponse": {
-            "description": "エラー情報のレスポンス",
+        "presenters.LoginResponse": {
+            "description": "ログイン処理のレスポンス.",
             "type": "object",
             "properties": {
-                "error": {
-                    "description": "エラーメッセージ\n@Example \"ユーザーIDは必須項目です\"",
-                    "type": "string",
-                    "example": "ユーザーIDは必須項目です"
+                "data": {
+                    "description": "ログインデータ",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.LoginResponse"
+                        }
+                    ]
                 },
                 "status": {
-                    "description": "ステータス\n@Example \"error\"",
+                    "description": "ステータス\n@Example \"success\"",
                     "type": "string",
-                    "example": "error"
+                    "example": "success"
+                }
+            }
+        },
+        "presenters.PlansResponse": {
+            "description": "プラン一覧のレスポンス.",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "プランデータ",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.PlanResponse"
+                    }
+                },
+                "status": {
+                    "description": "ステータス\n@Example \"success\"",
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "presenters.PresentError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
                 }
             }
         },
         "presenters.ReservationsResponse": {
-            "description": "予約一覧のレスポンス",
+            "description": "予約一覧のレスポンス.",
             "type": "object",
             "properties": {
                 "data": {
@@ -200,6 +355,30 @@ const docTemplate = `{
                     "example": "success"
                 }
             }
+        },
+        "response.ErrorResponse": {
+            "description": "エラー情報のレスポンス.",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "description": "エラーメッセージ\n@Example \"プランが見つかりません\"",
+                    "type": "string",
+                    "example": "プランが見つかりません"
+                },
+                "status": {
+                    "description": "ステータス\n@Example \"error\"",
+                    "type": "string",
+                    "example": "error"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Bearer Tokenによる認証",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

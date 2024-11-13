@@ -2,11 +2,12 @@ package presenters
 
 import (
 	"github.com/135yshr/ctfsendai2024/internal/application/dto"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters/response"
 )
 
 type ReservationPresenter interface {
-	PresentReservations([]*dto.ReservationResponse) interface{}
-	PresentError(error) interface{}
+	PresentReservations(reservations []*dto.ReservationResponse) ReservationsResponse
+	PresentError(err error) response.ErrorResponse
 }
 
 type JSONReservationPresenter struct{}
@@ -16,38 +17,23 @@ func NewJSONReservationPresenter() ReservationPresenter {
 }
 
 // ReservationsResponse 予約一覧レスポンス
-// @Description 予約一覧のレスポンス
+// @Description 予約一覧のレスポンス.
 type ReservationsResponse struct {
 	// ステータス
 	// @Example "success"
-	Status string `json:"status" example:"success"`
+	Status string `example:"success" json:"status"`
 
 	// 予約データ
 	Data []*dto.ReservationResponse `json:"data"`
 }
 
-// ErrorResponse エラーレスポンス
-// @Description エラー情報のレスポンス
-type ErrorResponse struct {
-	// ステータス
-	// @Example "error"
-	Status string `json:"status" example:"error"`
-
-	// エラーメッセージ
-	// @Example "ユーザーIDは必須項目です"
-	Error string `json:"error" example:"ユーザーIDは必須項目です"`
-}
-
-func (p *JSONReservationPresenter) PresentReservations(reservations []*dto.ReservationResponse) interface{} {
+func (p *JSONReservationPresenter) PresentReservations(reservations []*dto.ReservationResponse) ReservationsResponse {
 	return ReservationsResponse{
 		Status: "success",
 		Data:   reservations,
 	}
 }
 
-func (p *JSONReservationPresenter) PresentError(err error) interface{} {
-	return ErrorResponse{
-		Status: "error",
-		Error:  err.Error(),
-	}
+func (p *JSONReservationPresenter) PresentError(err error) response.ErrorResponse {
+	return response.NewErrorResponse(err)
 }
