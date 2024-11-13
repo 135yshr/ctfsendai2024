@@ -48,16 +48,22 @@ func buildContainer() *dig.Container {
 	container.Provide(func() domainRepositories.PlanRepository {
 		return repositories.NewJSONPlanRepository("./configs/json/database.json")
 	})
+	container.Provide(func() domainRepositories.AuthRepository {
+		return repositories.NewJWTAuthRepository("secret")
+	})
 
 	// アプリケーション層
+	container.Provide(usecases.NewLoginUseCase)
 	container.Provide(usecases.NewGetUserReservationsUseCase)
 	container.Provide(usecases.NewGetPlansUseCase)
 
 	// インターフェース層
 	container.Provide(presenters.NewJSONReservationPresenter)
 	container.Provide(presenters.NewJSONPlanPresenter)
+	container.Provide(presenters.NewJSONAuthPresenter)
 	container.Provide(controllers.NewReservationController)
 	container.Provide(controllers.NewPlanController)
+	container.Provide(controllers.NewAuthController)
 	container.Provide(api.NewServer)
 
 	return container

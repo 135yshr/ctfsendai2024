@@ -1,7 +1,24 @@
-basePath: /api/v1
+basePath: /api/v1.
 definitions:
+  dto.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  dto.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      expires_at:
+        type: integer
+    type: object
   dto.PlanResponse:
-    description: プラン情報の詳細
+    description: プラン情報の詳細.
     properties:
       description:
         description: |-
@@ -35,7 +52,7 @@ definitions:
         type: integer
     type: object
   dto.ReservationResponse:
-    description: 予約情報の詳細
+    description: 予約情報の詳細.
     properties:
       end_time:
         description: |-
@@ -81,7 +98,7 @@ definitions:
         type: string
     type: object
   dto.UserResponse:
-    description: ユーザー情報の詳細
+    description: ユーザー情報の詳細.
     properties:
       email:
         description: |-
@@ -108,8 +125,22 @@ definitions:
         example: 090-1234-5678
         type: string
     type: object
+  presenters.LoginResponse:
+    description: ログイン処理のレスポンス.
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/dto.LoginResponse'
+        description: ログインデータ
+      status:
+        description: |-
+          ステータス
+          @Example "success"
+        example: success
+        type: string
+    type: object
   presenters.PlansResponse:
-    description: プラン一覧のレスポンス
+    description: プラン一覧のレスポンス.
     properties:
       data:
         description: プランデータ
@@ -123,8 +154,13 @@ definitions:
         example: success
         type: string
     type: object
+  presenters.PresentError:
+    properties:
+      message:
+        type: string
+    type: object
   presenters.ReservationsResponse:
-    description: 予約一覧のレスポンス
+    description: 予約一覧のレスポンス.
     properties:
       data:
         description: 予約データ
@@ -139,7 +175,7 @@ definitions:
         type: string
     type: object
   response.ErrorResponse:
-    description: エラー情報のレスポンス
+    description: エラー情報のレスポンス.
     properties:
       error:
         description: |-
@@ -161,6 +197,40 @@ info:
   title: 予約管理システム API
   version: "1.0"
 paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: ユーザー名とパスワードを使用してログイン認証を行います
+      parameters:
+      - description: ログイン情報
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ログイン成功時のレスポンス
+          schema:
+            $ref: '#/definitions/presenters.LoginResponse'
+        "400":
+          description: リクエストの形式が不正
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+        "401":
+          description: パスワードが一致しない
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+        "500":
+          description: サーバー内部エラー
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+      summary: ユーザーログイン
+      tags:
+      - auth
   /plans:
     get:
       consumes:

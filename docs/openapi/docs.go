@@ -15,6 +15,58 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/login": {
+            "post": {
+                "description": "ユーザー名とパスワードを使用してログイン認証を行います",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "ユーザーログイン",
+                "parameters": [
+                    {
+                        "description": "ログイン情報",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ログイン成功時のレスポンス",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエストの形式が不正",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    },
+                    "401": {
+                        "description": "パスワードが一致しない",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    },
+                    "500": {
+                        "description": "サーバー内部エラー",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    }
+                }
+            }
+        },
         "/plans": {
             "get": {
                 "description": "指定されたユーザーIDに関連するプラン一覧を取得します",
@@ -101,8 +153,34 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.LoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "expires_at": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.PlanResponse": {
-            "description": "プラン情報の詳細",
+            "description": "プラン情報の詳細.",
             "type": "object",
             "properties": {
                 "description": {
@@ -133,7 +211,7 @@ const docTemplate = `{
             }
         },
         "dto.ReservationResponse": {
-            "description": "予約情報の詳細",
+            "description": "予約情報の詳細.",
             "type": "object",
             "properties": {
                 "end_time": {
@@ -180,7 +258,7 @@ const docTemplate = `{
             }
         },
         "dto.UserResponse": {
-            "description": "ユーザー情報の詳細",
+            "description": "ユーザー情報の詳細.",
             "type": "object",
             "properties": {
                 "email": {
@@ -205,8 +283,27 @@ const docTemplate = `{
                 }
             }
         },
+        "presenters.LoginResponse": {
+            "description": "ログイン処理のレスポンス.",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "ログインデータ",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.LoginResponse"
+                        }
+                    ]
+                },
+                "status": {
+                    "description": "ステータス\n@Example \"success\"",
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
         "presenters.PlansResponse": {
-            "description": "プラン一覧のレスポンス",
+            "description": "プラン一覧のレスポンス.",
             "type": "object",
             "properties": {
                 "data": {
@@ -223,8 +320,16 @@ const docTemplate = `{
                 }
             }
         },
+        "presenters.PresentError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "presenters.ReservationsResponse": {
-            "description": "予約一覧のレスポンス",
+            "description": "予約一覧のレスポンス.",
             "type": "object",
             "properties": {
                 "data": {
@@ -242,7 +347,7 @@ const docTemplate = `{
             }
         },
         "response.ErrorResponse": {
-            "description": "エラー情報のレスポンス",
+            "description": "エラー情報のレスポンス.",
             "type": "object",
             "properties": {
                 "error": {
@@ -264,7 +369,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api/v1",
+	BasePath:         "/api/v1.",
 	Schemes:          []string{},
 	Title:            "予約管理システム API",
 	Description:      "予約管理システムのRESTful API",
