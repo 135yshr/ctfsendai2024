@@ -1,9 +1,11 @@
 package usecases
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/135yshr/ctfsendai2024/internal/application/dto"
+	"github.com/135yshr/ctfsendai2024/internal/domain/models"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 )
 
@@ -19,8 +21,8 @@ func NewGetPlansUseCase(
 	}
 }
 
-func (uc *GetPlansUseCase) Execute(userID string) ([]*dto.PlanResponse, error) {
-	plans, err := uc.planRepo.FindAll(userID)
+func (uc *GetPlansUseCase) Execute(ctx context.Context, params *models.PlanSearchParams) ([]*dto.PlanResponse, error) {
+	plans, err := uc.planRepo.FindAll(ctx, params)
 	if err != nil {
 		return nil, fmt.Errorf("プランの取得に失敗: %w", err)
 	}

@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	"crypto/md5" //nolint:gosec // あえて脆弱なハッシュ関数を使用
 	"encoding/hex"
 	"fmt"
@@ -20,9 +21,9 @@ func NewLoginUseCase(authRepo repositories.AuthRepository) *LoginUseCase {
 	}
 }
 
-func (uc *LoginUseCase) Execute(userID, password string) (*dto.LoginResponse, error) {
+func (uc *LoginUseCase) Execute(ctx context.Context, userID, password string) (*dto.LoginResponse, error) {
 	// ユーザー認証
-	auth, err := uc.authRepository.FindByUserID(userID)
+	auth, err := uc.authRepository.FindByUserID(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("ユーザーが見つかりません: %w", err)
 	}
@@ -33,7 +34,7 @@ func (uc *LoginUseCase) Execute(userID, password string) (*dto.LoginResponse, er
 	}
 
 	// トークンの生成
-	token, err := uc.authRepository.GenerateToken(auth)
+	token, err := uc.authRepository.GenerateToken(ctx, auth)
 	if err != nil {
 		return nil, fmt.Errorf("トークン生成エラー: %w", err)
 	}

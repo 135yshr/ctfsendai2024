@@ -46,7 +46,7 @@ func (c *ReservationController) GetUserReservations(ctx *gin.Context) {
 		return
 	}
 
-	reservations, err := c.getUserReservationsUseCase.Execute(req.UserID)
+	reservations, err := c.getUserReservationsUseCase.Execute(ctx, req.UserID)
 	if err != nil {
 		response := c.presenter.PresentError(err)
 		ctx.JSON(http.StatusInternalServerError, response)

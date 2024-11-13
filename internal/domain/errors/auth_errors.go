@@ -11,4 +11,7 @@ var (
 	ErrTokenExpired      = errors.New("トークンの有効期限が切れています")
 	ErrInvalidSignMethod = errors.New("無効な署名方式です")
 	ErrInvalidUserID     = errors.New("無効なユーザーIDです")
+	ErrInvalidRole       = errors.New("無効なロールです")
+	ErrInvalidName       = errors.New("無効な名前です")
+	ErrInvalidUser       = errors.New("無効なユーザーです")
 )

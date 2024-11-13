@@ -74,7 +74,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "指定されたユーザーIDに関連するプラン一覧を取得します",
+                "description": "検索条件に基づいてプラン一覧を取得します",
                 "consumes": [
                     "application/json"
                 ],
@@ -88,10 +88,21 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "ユーザーID",
-                        "name": "X-User-ID",
-                        "in": "header",
-                        "required": true
+                        "description": "開始日 (YYYY-MM-DD)",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "終了日 (YYYY-MM-DD)",
+                        "name": "endDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ステータス",
+                        "name": "status",
+                        "in": "query"
                     }
                 ],
                 "responses": {

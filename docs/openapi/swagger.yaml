@@ -235,12 +235,19 @@ paths:
     get:
       consumes:
       - application/json
-      description: 指定されたユーザーIDに関連するプラン一覧を取得します
+      description: 検索条件に基づいてプラン一覧を取得します
       parameters:
-      - description: ユーザーID
-        in: header
-        name: X-User-ID
-        required: true
+      - description: 開始日 (YYYY-MM-DD)
+        in: query
+        name: startDate
+        type: string
+      - description: 終了日 (YYYY-MM-DD)
+        in: query
+        name: endDate
+        type: string
+      - description: ステータス
+        in: query
+        name: status
         type: string
       produces:
       - application/json

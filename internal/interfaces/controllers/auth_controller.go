@@ -47,6 +47,7 @@ func (c *AuthController) Login(ctx *gin.Context) {
 	}
 
 	result, err := c.loginUseCase.Execute(
+		ctx,
 		loginRequest.UserID,
 		loginRequest.Password,
 	)

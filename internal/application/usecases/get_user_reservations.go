@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/135yshr/ctfsendai2024/internal/application/dto"
@@ -19,9 +20,9 @@ func NewGetUserReservationsUseCase(
 	}
 }
 
-func (uc *GetUserReservationsUseCase) Execute(userID string) ([]*dto.ReservationResponse, error) {
+func (uc *GetUserReservationsUseCase) Execute(ctx context.Context, userID string) ([]*dto.ReservationResponse, error) {
 	// リポジトリから予約一覧を取得
-	reservations, err := uc.reservationRepo.FindByUserID(userID)
+	reservations, err := uc.reservationRepo.FindByUserID(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("予約の取得に失敗: %w", err)
 	}

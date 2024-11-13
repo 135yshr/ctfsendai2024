@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -25,7 +26,7 @@ func NewJSONReservationRepository(filePath string) repositories.ReservationRepos
 	}
 }
 
-func (r *jsonReservationRepository) FindByUserID(userID string) ([]*models.Reservation, error) {
+func (r *jsonReservationRepository) FindByUserID(_ context.Context, userID string) ([]*models.Reservation, error) {
 	reservations, err := r.findAll()
 	if err != nil {
 		return nil, err

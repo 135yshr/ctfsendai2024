@@ -47,7 +47,10 @@ func buildContainer() *dig.Container {
 
 	// インフラストラクチャー層
 	if err := container.Provide(func() *gin.Engine {
-		return gin.Default()
+		r := gin.Default()
+		r.ContextWithFallback = true
+
+		return r
 	}); err != nil {
 		log.Fatal("DIコンテナの設定に失敗しました:", err)
 	}
@@ -55,7 +58,12 @@ func buildContainer() *dig.Container {
 		return repositories.NewJSONReservationRepository(databasePath)
 	})
 	container.Provide(func() domainRepositories.PlanRepository {
-		return repositories.NewJSONPlanRepository(databasePath)
+		repo, err := repositories.NewJSONPlanRepository(databasePath)
+		if err != nil {
+			panic("プランリポジトリの作成に失敗しました: " + err.Error())
+		}
+
+		return repo
 	})
 	container.Provide(func() domainRepositories.AuthRepository {
 		repo, err := repositories.NewJWTAuthRepository("secret", databasePath)
