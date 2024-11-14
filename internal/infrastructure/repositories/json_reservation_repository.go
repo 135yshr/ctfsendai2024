@@ -13,7 +13,7 @@ import (
 
 type jsonReservationRepository struct {
 	filePath     string
-	reservations []*models.Reservation
+	reservations map[string]*models.Reservation
 }
 
 type reservationsJSON struct {
@@ -23,7 +23,8 @@ type reservationsJSON struct {
 // 具象型のコンストラクタ.
 func NewJSONReservationRepository(filePath string) (repositories.ReservationRepository, error) {
 	repo := &jsonReservationRepository{
-		filePath: filePath,
+		filePath:     filePath,
+		reservations: make(map[string]*models.Reservation),
 	}
 
 	// 初期化時にファイルを読み込む
@@ -32,20 +33,20 @@ func NewJSONReservationRepository(filePath string) (repositories.ReservationRepo
 		return nil, fmt.Errorf("予約データの初期化に失敗: %w", err)
 	}
 
-	repo.reservations = reservations
+	for _, reservation := range reservations {
+		repo.reservations[reservation.UserID] = reservation
+	}
 
 	return repo, nil
 }
 
 func (r *jsonReservationRepository) FindByUserID(_ context.Context, userID string) ([]*models.Reservation, error) {
-	var result []*models.Reservation
-	for _, reservation := range r.reservations {
-		if reservation.UserID == userID {
-			result = append(result, reservation)
-		}
+	reservation, exists := r.reservations[userID]
+	if !exists {
+		return nil, nil
 	}
 
-	return result, nil
+	return []*models.Reservation{reservation}, nil
 }
 
 // private メソッドとして loadReservations を移動.
@@ -66,4 +67,13 @@ func (r *jsonReservationRepository) loadReservations() ([]*models.Reservation, e
 	}
 
 	return data.Reservations, nil
+}
+
+func (r *jsonReservationRepository) Create(
+	_ context.Context,
+	reservation *models.Reservation,
+) (*models.Reservation, error) {
+	r.reservations[reservation.UserID] = reservation
+
+	return reservation, nil
 }

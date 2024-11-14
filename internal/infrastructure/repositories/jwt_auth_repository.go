@@ -2,9 +2,7 @@ package repositories
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/135yshr/ctfsendai2024/internal/domain/errors"
@@ -19,52 +17,10 @@ const (
 
 type JWTAuthRepository struct {
 	secretKey string
-	users     map[string]*models.Auth
 }
 
-type userConfig struct {
-	Users []struct {
-		ID       string `json:"id"`
-		Password string `json:"password"`
-		Name     string `json:"name"`
-		Role     string `json:"role"`
-	} `json:"users"`
-}
-
-func NewJWTAuthRepository(secretKey string, configPath string) (repositories.AuthRepository, error) {
-	repo := &JWTAuthRepository{
-		secretKey: secretKey,
-		users:     make(map[string]*models.Auth),
-	}
-
-	if err := repo.loadUsers(configPath); err != nil {
-		return nil, fmt.Errorf("ユーザー情報の読み込みに失敗しました: %w", err)
-	}
-
-	return repo, nil
-}
-
-func (r *JWTAuthRepository) loadUsers(configPath string) error {
-	data, err := os.ReadFile(configPath)
-	if err != nil {
-		return fmt.Errorf("設定ファイルの読み込みに失敗しました: %w", err)
-	}
-
-	var config userConfig
-	if err = json.Unmarshal(data, &config); err != nil {
-		return fmt.Errorf("設定ファイルのパースに失敗しました: %w", err)
-	}
-
-	for _, user := range config.Users {
-		r.users[user.ID] = &models.Auth{
-			UserID:   user.ID,
-			Name:     user.Name,
-			Password: user.Password,
-			Role:     models.Role(user.Role),
-		}
-	}
-
-	return nil
+func NewJWTAuthRepository(secretKey string) repositories.AuthRepository {
+	return &JWTAuthRepository{secretKey}
 }
 
 // GenerateToken はJWTトークンを生成します.
@@ -126,23 +82,4 @@ func (r *JWTAuthRepository) ValidateToken(_ context.Context, tokenString string)
 	}
 
 	return &models.Auth{UserID: userID, Name: name, Role: models.Role(role)}, nil
-}
-
-// FindByUsername はユーザー名からユーザーを検索します.
-func (r *JWTAuthRepository) FindByUserID(_ context.Context, userID string) (*models.Auth, error) {
-	if auth, exists := r.users[userID]; exists {
-		return auth, nil
-	}
-
-	return nil, errors.ErrUserNotFound
-}
-
-// Store は認証情報を保存します.
-func (r *JWTAuthRepository) Store(_ context.Context, auth *models.Auth) error {
-	if auth == nil {
-		return errors.ErrNilAuth
-	}
-	r.users[auth.UserID] = auth
-
-	return nil
 }

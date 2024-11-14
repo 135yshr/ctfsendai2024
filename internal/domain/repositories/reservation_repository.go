@@ -8,4 +8,5 @@ import (
 
 type ReservationRepository interface {
 	FindByUserID(ctx context.Context, userID string) ([]*models.Reservation, error)
+	Create(ctx context.Context, reservation *models.Reservation) (*models.Reservation, error)
 }

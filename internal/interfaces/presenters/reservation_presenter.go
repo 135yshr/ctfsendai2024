@@ -8,6 +8,7 @@ import (
 type ReservationPresenter interface {
 	PresentReservations(reservations []*dto.ReservationResponse) ReservationsResponse
 	PresentError(err error) response.ErrorResponse
+	PresentReservation(reservation *dto.ReservationResponse) ReservationResponse
 }
 
 type JSONReservationPresenter struct{}
@@ -25,6 +26,24 @@ type ReservationsResponse struct {
 
 	// 予約データ
 	Data []*dto.ReservationResponse `json:"data"`
+}
+
+// ReservationResponse 予約レスポンス
+// @Description 予約のレスポンス.
+type ReservationResponse struct {
+	// ステータス
+	// @Example "success"
+	Status string `example:"success" json:"status"`
+
+	// 予約データ
+	Data *dto.ReservationResponse `json:"data"`
+}
+
+func (p *JSONReservationPresenter) PresentReservation(reservation *dto.ReservationResponse) ReservationResponse {
+	return ReservationResponse{
+		Status: "success",
+		Data:   reservation,
+	}
 }
 
 func (p *JSONReservationPresenter) PresentReservations(reservations []*dto.ReservationResponse) ReservationsResponse {

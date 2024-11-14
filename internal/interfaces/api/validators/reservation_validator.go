@@ -1,5 +1,9 @@
 package validators
 
+import (
+	"time"
+)
+
 // GetReservationsRequest 予約一覧取得リクエスト
 // @Description 予約一覧を取得するためのリクエストパラメータ.
 type GetReservationsRequest struct {
@@ -9,9 +13,9 @@ type GetReservationsRequest struct {
 }
 
 type CreateReservationRequest struct {
-	UserID    string `binding:"required,min=3,max=50"               json:"user_id"`
-	StartTime string `binding:"required,datetime"                   json:"start_time"`
-	EndTime   string `binding:"required,datetime,gtfield=StartTime" json:"end_time"`
+	UserID    string    `binding:"required" json:"user_id"`
+	PlanID    string    `binding:"required" json:"plan_id"`
+	StartDate time.Time `binding:"required" json:"start_date"`
 }
 
 // カスタムバリデーションメッセージ.

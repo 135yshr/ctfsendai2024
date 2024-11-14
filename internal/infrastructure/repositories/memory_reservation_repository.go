@@ -27,3 +27,12 @@ func (r *memoryReservationRepository) FindByUserID(_ context.Context, userID str
 
 	return result, nil
 }
+
+func (r *memoryReservationRepository) Create(
+	_ context.Context,
+	reservation *models.Reservation,
+) (*models.Reservation, error) {
+	r.reservations = append(r.reservations, reservation)
+
+	return reservation, nil
+}

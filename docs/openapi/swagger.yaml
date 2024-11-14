@@ -159,6 +159,20 @@ definitions:
       message:
         type: string
     type: object
+  presenters.ReservationResponse:
+    description: 予約のレスポンス.
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/dto.ReservationResponse'
+        description: 予約データ
+      status:
+        description: |-
+          ステータス
+          @Example "success"
+        example: success
+        type: string
+    type: object
   presenters.ReservationsResponse:
     description: 予約一覧のレスポンス.
     properties:
@@ -189,6 +203,22 @@ definitions:
           @Example "error"
         example: error
         type: string
+    type: object
+  validators.CreateReservationRequest:
+    properties:
+      end_date:
+        type: string
+      plan_id:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    required:
+    - end_date
+    - plan_id
+    - start_date
+    - user_id
     type: object
 host: localhost:8080
 info:
@@ -296,6 +326,41 @@ paths:
       security:
       - Bearer: []
       summary: ユーザーの予約一覧を取得
+      tags:
+      - reservations
+    post:
+      consumes:
+      - application/json
+      description: ユーザーの新しい予約を作成します
+      parameters:
+      - description: 予約情報
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/validators.CreateReservationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/presenters.ReservationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 新しい予約を作成
       tags:
       - reservations
 securityDefinitions:

@@ -8,32 +8,40 @@ import (
 
 	"github.com/135yshr/ctfsendai2024/internal/application/dto"
 	"github.com/135yshr/ctfsendai2024/internal/domain/errors"
+	"github.com/135yshr/ctfsendai2024/internal/domain/models"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 )
 
 type LoginUseCase struct {
 	authRepository repositories.AuthRepository
+	userRepository repositories.UserRepository
 }
 
-func NewLoginUseCase(authRepo repositories.AuthRepository) *LoginUseCase {
+func NewLoginUseCase(authRepo repositories.AuthRepository, userRepo repositories.UserRepository) *LoginUseCase {
 	return &LoginUseCase{
 		authRepository: authRepo,
+		userRepository: userRepo,
 	}
 }
 
 func (uc *LoginUseCase) Execute(ctx context.Context, userID, password string) (*dto.LoginResponse, error) {
 	// ユーザー認証
-	auth, err := uc.authRepository.FindByUserID(ctx, userID)
+	user, err := uc.userRepository.FindByUserID(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("ユーザーが見つかりません: %w", err)
 	}
 
 	// パスワードの検証
-	if !comparePasswords(auth.Password, password) {
+	if !comparePasswords(user.Password, password) {
 		return nil, errors.ErrInvalidPassword
 	}
 
 	// トークンの生成
+	auth := &models.Auth{
+		UserID: user.ID,
+		Name:   user.Name,
+		Role:   user.Role,
+	}
 	token, err := uc.authRepository.GenerateToken(ctx, auth)
 	if err != nil {
 		return nil, fmt.Errorf("トークン生成エラー: %w", err)
