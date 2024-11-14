@@ -97,6 +97,21 @@ definitions:
         example: user123
         type: string
     type: object
+  dto.SecretLoginRequest:
+    properties:
+      secret_answer:
+        type: string
+      user_id:
+        type: string
+    required:
+    - secret_answer
+    - user_id
+    type: object
+  dto.SecretQuestionResponse:
+    properties:
+      secret_question:
+        type: string
+    type: object
   dto.UserResponse:
     description: ユーザー情報の詳細.
     properties:
@@ -360,6 +375,73 @@ paths:
       summary: 新しい予約を作成
       tags:
       - reservations
+  /secret-login:
+    post:
+      consumes:
+      - application/json
+      description: 秘密の質問の回答を使用してログイン認証を行います
+      parameters:
+      - description: 秘密の質問の回答情報
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SecretLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ログイン成功時のレスポンス
+          schema:
+            $ref: '#/definitions/presenters.LoginResponse'
+        "400":
+          description: リクエストの形式が不正
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+        "401":
+          description: 秘密の質問の回答が一致しない
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+        "500":
+          description: サーバー内部エラー
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+      summary: 秘密の質問によるログイン
+      tags:
+      - auth
+  /secret-question:
+    get:
+      consumes:
+      - application/json
+      description: ユーザーIDに対応する秘密の質問を取得します
+      parameters:
+      - description: ユーザーID
+        in: query
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 秘密の質問
+          schema:
+            $ref: '#/definitions/dto.SecretQuestionResponse'
+        "400":
+          description: リクエストの形式が不正
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+        "404":
+          description: ユーザーが見つからない
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+        "500":
+          description: サーバー内部エラー
+          schema:
+            $ref: '#/definitions/presenters.PresentError'
+      summary: 秘密の質問の取得
+      tags:
+      - auth
 securityDefinitions:
   Bearer:
     description: Bearer Tokenによる認証

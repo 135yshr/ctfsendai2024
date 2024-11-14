@@ -823,11 +823,21 @@
       "secret_answer": "管理者用の秘密の回答"
     },
     {
+      "id": "morikawa",
+      "password": "e7c3d5b3a8f4c2d1e9b8a7c6d5b4a3c2",
+      "name": "森川千春",
+      "email": "morikawa.c@example.com",
+      "phone": "FLAG_ruODleODqeOCsOOBr+OAgSBGTEFHX0NPTk",
+      "role": "user",
+      "secret_question": "あなたのペットの名前は？",
+      "secret_answer": "ちょむすけ"
+    },
+    {
       "id": "weak_password",
       "password": "9dbb300e28bc21c8dab41b01883918eb",
       "name": "脆弱なパスワード",
       "email": "weak_password@example.com",
-      "phone": "",
+      "phone": "FLAG_X1dFQl9QUk9CTEVNUyDjgafjgZnjgIIK==​",
       "role": "user",
       "secret_question": "いつものパスワード",
       "secret_answer": "passwordpassword"

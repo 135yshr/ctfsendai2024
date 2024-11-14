@@ -7,4 +7,6 @@ import (
 
 func SetupAuthRoutes(router *gin.RouterGroup, controller *controllers.AuthController) {
 	router.POST("/login", controller.Login)
+	router.POST("/secret-login", controller.SecretLogin)
+	router.GET("/secret-question", controller.GetSecretQuestion)
 }

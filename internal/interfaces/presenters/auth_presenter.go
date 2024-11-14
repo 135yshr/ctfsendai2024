@@ -12,6 +12,7 @@ type PresentError struct {
 type AuthPresenter interface {
 	PresentError(err error) PresentError
 	PresentLogin(data *dto.LoginResponse) LoginResponse
+	PresentSecretQuestion(question *dto.SecretQuestionResponse) SecretQuestionResponse
 }
 
 type JSONAuthPresenter struct{}
@@ -35,6 +36,16 @@ func (p *JSONAuthPresenter) PresentLogin(data *dto.LoginResponse) LoginResponse 
 	return LoginResponse{
 		Status: "success",
 		Data:   data,
+	}
+}
+
+type SecretQuestionResponse struct {
+	SecretQuestion string `json:"secret_question"`
+}
+
+func (p *JSONAuthPresenter) PresentSecretQuestion(question *dto.SecretQuestionResponse) SecretQuestionResponse {
+	return SecretQuestionResponse{
+		SecretQuestion: question.SecretQuestion,
 	}
 }
 
