@@ -16,9 +16,15 @@ type CreateReservationUseCase struct {
 	planRepo        repositories.PlanRepository
 }
 
-func NewCreateReservationUseCase(repo repositories.ReservationRepository) *CreateReservationUseCase {
+func NewCreateReservationUseCase(
+	reservationRepo repositories.ReservationRepository,
+	userRepo repositories.UserRepository,
+	planRepo repositories.PlanRepository,
+) *CreateReservationUseCase {
 	return &CreateReservationUseCase{
-		reservationRepo: repo,
+		reservationRepo: reservationRepo,
+		userRepo:        userRepo,
+		planRepo:        planRepo,
 	}
 }
 

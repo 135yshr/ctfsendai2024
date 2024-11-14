@@ -206,8 +206,6 @@ definitions:
     type: object
   validators.CreateReservationRequest:
     properties:
-      end_date:
-        type: string
       plan_id:
         type: string
       start_date:
@@ -215,7 +213,6 @@ definitions:
       user_id:
         type: string
     required:
-    - end_date
     - plan_id
     - start_date
     - user_id

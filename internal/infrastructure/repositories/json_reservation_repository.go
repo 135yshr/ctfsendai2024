@@ -9,6 +9,7 @@ import (
 
 	"github.com/135yshr/ctfsendai2024/internal/domain/models"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
+	"github.com/google/uuid"
 )
 
 type jsonReservationRepository struct {
@@ -34,19 +35,21 @@ func NewJSONReservationRepository(filePath string) (repositories.ReservationRepo
 	}
 
 	for _, reservation := range reservations {
-		repo.reservations[reservation.UserID] = reservation
+		repo.reservations[reservation.ID] = reservation
 	}
 
 	return repo, nil
 }
 
 func (r *jsonReservationRepository) FindByUserID(_ context.Context, userID string) ([]*models.Reservation, error) {
-	reservation, exists := r.reservations[userID]
-	if !exists {
-		return nil, nil
+	var reservations []*models.Reservation
+	for _, v := range r.reservations {
+		if v.UserID == userID {
+			reservations = append(reservations, v)
+		}
 	}
 
-	return []*models.Reservation{reservation}, nil
+	return reservations, nil
 }
 
 // private メソッドとして loadReservations を移動.
@@ -69,11 +72,13 @@ func (r *jsonReservationRepository) loadReservations() ([]*models.Reservation, e
 	return data.Reservations, nil
 }
 
+// Create は予約を作成します.
 func (r *jsonReservationRepository) Create(
 	_ context.Context,
 	reservation *models.Reservation,
 ) (*models.Reservation, error) {
-	r.reservations[reservation.UserID] = reservation
+	reservation.ID = uuid.New().String()
+	r.reservations[reservation.ID] = reservation
 
 	return reservation, nil
 }

@@ -460,15 +460,11 @@ const docTemplate = `{
         "validators.CreateReservationRequest": {
             "type": "object",
             "required": [
-                "end_date",
                 "plan_id",
                 "start_date",
                 "user_id"
             ],
             "properties": {
-                "end_date": {
-                    "type": "string"
-                },
                 "plan_id": {
                     "type": "string"
                 },
