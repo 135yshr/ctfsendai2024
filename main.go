@@ -63,7 +63,7 @@ func buildContainer() *dig.Container {
 		return repo
 	})
 	container.Provide(func() domainRepositories.PlanRepository {
-		repo, err := repositories.NewJSONPlanRepository(databasePath)
+		repo, err := repositories.NewPlanRepository(databasePath)
 		if err != nil {
 			panic("プランリポジトリの作成に失敗しました: " + err.Error())
 		}
