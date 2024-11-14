@@ -53,6 +53,7 @@ func buildContainer() *dig.Container {
 	if err := container.Provide(func(logger *logger.Logger) *gin.Engine {
 		r := gin.New()
 		r.Use(gin.Recovery())
+		r.Use(middleware.RequestLogger(logger))
 		r.Use(middleware.LoggerMiddleware(logger))
 		r.ContextWithFallback = true
 
