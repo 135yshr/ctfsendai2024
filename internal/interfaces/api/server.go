@@ -1,7 +1,10 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
+	"github.com/135yshr/ctfsendai2024/internal/foundation/logger"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
 	v1 "github.com/135yshr/ctfsendai2024/internal/interfaces/api/routes/v1"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/controllers"
@@ -16,6 +19,7 @@ type Server struct {
 	planController        *controllers.PlanController
 	authController        *controllers.AuthController
 	authRepository        repositories.AuthRepository
+	logger                *logger.Logger
 }
 
 func NewServer(
@@ -24,6 +28,7 @@ func NewServer(
 	planController *controllers.PlanController,
 	authController *controllers.AuthController,
 	authRepository repositories.AuthRepository,
+	logger *logger.Logger,
 ) *Server {
 	server := &Server{
 		engine:                engine,
@@ -31,6 +36,7 @@ func NewServer(
 		planController:        planController,
 		authController:        authController,
 		authRepository:        authRepository,
+		logger:                logger,
 	}
 
 	server.setupRoutes()
@@ -58,5 +64,10 @@ func (s *Server) setupRoutes() {
 }
 
 func (s *Server) Run(addr string) error {
-	return s.engine.Run(addr) //nolint:wrapcheck // エラーをそのまま返す
+	s.logger.Info("サーバーを起動します", "address", addr)
+	if err := s.engine.Run(addr); err != nil {
+		return fmt.Errorf("サーバーの起動に失敗しました: %w", err)
+	}
+
+	return nil
 }

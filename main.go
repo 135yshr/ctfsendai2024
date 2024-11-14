@@ -6,8 +6,10 @@ import (
 
 	"github.com/135yshr/ctfsendai2024/internal/application/usecases"
 	domainRepositories "github.com/135yshr/ctfsendai2024/internal/domain/repositories"
+	"github.com/135yshr/ctfsendai2024/internal/foundation/logger"
 	"github.com/135yshr/ctfsendai2024/internal/infrastructure/repositories"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/controllers"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters"
 	"github.com/gin-gonic/gin"
@@ -45,9 +47,14 @@ func main() {
 func buildContainer() *dig.Container {
 	container := dig.New()
 
+	container.Provide(logger.NewLogger)
+
 	// インフラストラクチャー層
-	if err := container.Provide(func() *gin.Engine {
-		r := gin.Default()
+	if err := container.Provide(func(logger *logger.Logger) *gin.Engine {
+		r := gin.New()
+		r.Use(gin.Recovery())
+		r.Use(middleware.RequestLogger(logger))
+		r.Use(middleware.LoggerMiddleware(logger))
 		r.ContextWithFallback = true
 
 		return r
@@ -57,7 +64,7 @@ func buildContainer() *dig.Container {
 	container.Provide(func() domainRepositories.ReservationRepository {
 		repo, err := repositories.NewReservationRepository(databasePath)
 		if err != nil {
-			panic("予約リポジトリの作成に失敗しました: " + err.Error())
+			log.Fatalf("予約リポジトリの作成に失敗しました: %s", err.Error())
 		}
 
 		return repo
@@ -65,7 +72,7 @@ func buildContainer() *dig.Container {
 	container.Provide(func() domainRepositories.PlanRepository {
 		repo, err := repositories.NewPlanRepository(databasePath)
 		if err != nil {
-			panic("プランリポジトリの作成に失敗しました: " + err.Error())
+			log.Fatalf("プランリポジトリの作成に失敗しました: %s", err.Error())
 		}
 
 		return repo
@@ -73,7 +80,7 @@ func buildContainer() *dig.Container {
 	container.Provide(func() domainRepositories.UserRepository {
 		repo, err := repositories.NewUserRepository(databasePath)
 		if err != nil {
-			panic("認証リポジトリの作成に失敗しました: " + err.Error())
+			log.Fatalf("認証リポジトリの作成に失敗しました: %s", err.Error())
 		}
 
 		return repo

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sync"
 
 	"github.com/135yshr/ctfsendai2024/internal/domain/models"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
@@ -15,6 +16,7 @@ import (
 type reservationRepository struct {
 	filePath     string
 	reservations map[string]*models.Reservation
+	mu           sync.RWMutex
 }
 
 type reservationsDatabase struct {
@@ -26,6 +28,7 @@ func NewReservationRepository(filePath string) (repositories.ReservationReposito
 	repo := &reservationRepository{
 		filePath:     filePath,
 		reservations: make(map[string]*models.Reservation),
+		mu:           sync.RWMutex{},
 	}
 
 	// 初期化時にファイルを読み込む
@@ -78,7 +81,10 @@ func (r *reservationRepository) Create(
 	reservation *models.Reservation,
 ) (*models.Reservation, error) {
 	reservation.ID = uuid.New().String()
+
+	r.mu.Lock()
 	r.reservations[reservation.ID] = reservation
+	r.mu.Unlock()
 
 	return reservation, nil
 }
