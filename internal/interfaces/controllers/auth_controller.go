@@ -126,7 +126,15 @@ func (c *AuthController) SecretLogin(ctx *gin.Context) {
 // @Router /secret-question [get]
 // .
 func (c *AuthController) GetSecretQuestion(ctx *gin.Context) {
-	userID := ctx.Query("user_id")
+	var request dto.SecretQuestionRequest
+	if err := ctx.ShouldBindQuery(&request); err != nil {
+		response := c.presenter.PresentError(err)
+		ctx.JSON(http.StatusBadRequest, response)
+
+		return
+	}
+
+	userID := request.UserID
 	if userID == "" {
 		response := c.presenter.PresentError(domainError.ErrInvalidUserID)
 		ctx.JSON(http.StatusBadRequest, response)

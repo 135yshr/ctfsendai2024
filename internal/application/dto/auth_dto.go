@@ -16,7 +16,7 @@ type SecretLoginRequest struct {
 }
 
 type SecretQuestionRequest struct {
-	UserID string `binding:"required" query:"user_id"`
+	UserID string `binding:"required" form:"user_id"`
 }
 
 type SecretQuestionResponse struct {
