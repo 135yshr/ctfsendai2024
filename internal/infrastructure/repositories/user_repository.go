@@ -13,12 +13,14 @@ import (
 
 type userDatabase struct {
 	Users []struct {
-		ID       string `json:"id"`
-		Password string `json:"password"`
-		Name     string `json:"name"`
-		Email    string `json:"email"`
-		Phone    string `json:"phone"`
-		Role     string `json:"role"`
+		ID             string `json:"id"`
+		Password       string `json:"password"`
+		Name           string `json:"name"`
+		Email          string `json:"email"`
+		Phone          string `json:"phone"`
+		Role           string `json:"role"`
+		SecretQuestion string `json:"secret_question"`
+		SecretAnswer   string `json:"secret_answer"`
 	} `json:"users"`
 }
 
@@ -48,12 +50,14 @@ func (r *UserRepository) loadUsers(dbPath string) error {
 
 	for _, user := range database.Users {
 		r.users[user.ID] = &models.User{
-			ID:       user.ID,
-			Password: user.Password,
-			Name:     user.Name,
-			Email:    user.Email,
-			Phone:    user.Phone,
-			Role:     models.Role(user.Role),
+			ID:             user.ID,
+			Password:       user.Password,
+			Name:           user.Name,
+			Email:          user.Email,
+			Phone:          user.Phone,
+			Role:           models.Role(user.Role),
+			SecretQuestion: user.SecretQuestion,
+			SecretAnswer:   user.SecretAnswer,
 		}
 	}
 

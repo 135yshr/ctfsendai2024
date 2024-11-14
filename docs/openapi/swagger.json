@@ -220,6 +220,108 @@
                     }
                 }
             }
+        },
+        "/secret-login": {
+            "post": {
+                "description": "秘密の質問の回答を使用してログイン認証を行います",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "秘密の質問によるログイン",
+                "parameters": [
+                    {
+                        "description": "秘密の質問の回答情報",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SecretLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ログイン成功時のレスポンス",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエストの形式が不正",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    },
+                    "401": {
+                        "description": "秘密の質問の回答が一致しない",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    },
+                    "500": {
+                        "description": "サーバー内部エラー",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    }
+                }
+            }
+        },
+        "/secret-question": {
+            "get": {
+                "description": "ユーザーIDに対応する秘密の質問を取得します",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "秘密の質問の取得",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ユーザーID",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "秘密の質問",
+                        "schema": {
+                            "$ref": "#/definitions/dto.SecretQuestionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "リクエストの形式が不正",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    },
+                    "404": {
+                        "description": "ユーザーが見つからない",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    },
+                    "500": {
+                        "description": "サーバー内部エラー",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.PresentError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -324,6 +426,29 @@
                     "description": "ユーザーID\n@Example \"user123\"",
                     "type": "string",
                     "example": "user123"
+                }
+            }
+        },
+        "dto.SecretLoginRequest": {
+            "type": "object",
+            "required": [
+                "secret_answer",
+                "user_id"
+            ],
+            "properties": {
+                "secret_answer": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SecretQuestionResponse": {
+            "type": "object",
+            "properties": {
+                "secret_question": {
+                    "type": "string"
                 }
             }
         },
