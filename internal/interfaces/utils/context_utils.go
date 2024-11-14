@@ -5,9 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const adminUserKey = "user"
+
 // GetUserFromContext はコンテキストからユーザー情報を取得します.
 func GetUserFromContext(c *gin.Context) (*models.Auth, bool) {
-	user, exists := c.Get("user")
+	user, exists := c.Get(adminUserKey)
 	if !exists {
 		return nil, false
 	}
@@ -17,4 +19,8 @@ func GetUserFromContext(c *gin.Context) (*models.Auth, bool) {
 	}
 
 	return auth, true
+}
+
+func SetAdminUserToContext(c *gin.Context, auth *models.Auth) {
+	c.Set(adminUserKey, auth)
 }

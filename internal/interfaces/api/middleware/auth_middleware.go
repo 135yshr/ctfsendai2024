@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,7 +28,7 @@ func AuthMiddleware(authRepo repositories.AuthRepository) gin.HandlerFunc {
 			return
 		}
 
-		c.Set("user", auth)
+		utils.SetAdminUserToContext(c, auth)
 		c.Next()
 	}
 }
