@@ -13,9 +13,10 @@ type GetReservationsRequest struct {
 }
 
 type CreateReservationRequest struct {
-	UserID    string    `binding:"required" json:"user_id"`
-	PlanID    string    `binding:"required" json:"plan_id"`
-	StartDate time.Time `binding:"required" json:"start_date"`
+	UserID    string    `binding:"required"                   json:"user_id"`
+	PlanID    string    `binding:"required"                   json:"plan_id"`
+	StartDate time.Time `binding:"required,future"            json:"start_date"`
+	EndDate   time.Time `binding:"required,gtfield=StartDate" json:"end_date"`
 }
 
 // カスタムバリデーションメッセージ.
@@ -26,5 +27,6 @@ func GetValidationMessages() map[string]string {
 		"max":      "{0}は最大{1}文字までです",
 		"datetime": "{0}は正しい日時形式で入力してください",
 		"gtfield":  "終了時刻は開始時刻より後である必要があります",
+		"future":   "{0}は現在時刻より後の時間を指定してください",
 	}
 }

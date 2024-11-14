@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginRequest"
+                            "$ref": "#/definitions/validators.LoginRequest"
                         }
                     }
                 ],
@@ -247,7 +247,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.SecretLoginRequest"
+                            "$ref": "#/definitions/validators.SecretLoginRequest"
                         }
                     }
                 ],
@@ -331,21 +331,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.LoginRequest": {
-            "type": "object",
-            "required": [
-                "password",
-                "user_id"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.LoginResponse": {
             "type": "object",
             "properties": {
@@ -435,21 +420,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.SecretLoginRequest": {
-            "type": "object",
-            "required": [
-                "secret_answer",
-                "user_id"
-            ],
-            "properties": {
-                "secret_answer": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.SecretQuestionResponse": {
             "type": "object",
             "properties": {
@@ -478,9 +448,9 @@ const docTemplate = `{
                     "example": "山田太郎"
                 },
                 "phone": {
-                    "description": "電話番号\n@Example \"090-1234-5678\"",
+                    "description": "電話番号\n@Example \"FLAG_dSQVRVTEFUSU9OU19GT1JfRklOSVNISU5H\"",
                     "type": "string",
-                    "example": "090-1234-5678"
+                    "example": "FLAG_dSQVRVTEFUSU9OU19GT1JfRklOSVNISU5H"
                 }
             }
         },
@@ -585,11 +555,15 @@ const docTemplate = `{
         "validators.CreateReservationRequest": {
             "type": "object",
             "required": [
+                "end_date",
                 "plan_id",
                 "start_date",
                 "user_id"
             ],
             "properties": {
+                "end_date": {
+                    "type": "string"
+                },
                 "plan_id": {
                     "type": "string"
                 },
@@ -598,6 +572,43 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "string"
+                }
+            }
+        },
+        "validators.LoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "user_id"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3
+                },
+                "user_id": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 3
+                }
+            }
+        },
+        "validators.SecretLoginRequest": {
+            "type": "object",
+            "required": [
+                "secret_answer",
+                "user_id"
+            ],
+            "properties": {
+                "secret_answer": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "user_id": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 3
                 }
             }
         }

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/135yshr/ctfsendai2024/internal/application/dto"
 	"github.com/135yshr/ctfsendai2024/internal/application/usecases"
 	domainError "github.com/135yshr/ctfsendai2024/internal/domain/errors"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/validators"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters"
 	"github.com/gin-gonic/gin"
 )
@@ -37,15 +37,15 @@ func NewAuthController(
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Param request body dto.LoginRequest true "ログイン情報"
+// @Param request body validators.LoginRequest true "ログイン情報"
 // @Success 200 {object} presenters.LoginResponse "ログイン成功時のレスポンス"
 // @Failure 400 {object} presenters.PresentError "リクエストの形式が不正"
 // @Failure 401 {object} presenters.PresentError "パスワードが一致しない"
 // @Failure 500 {object} presenters.PresentError "サーバー内部エラー"
 // @Router /login [post].
 func (c *AuthController) Login(ctx *gin.Context) {
-	var loginRequest dto.LoginRequest
-	if err := ctx.ShouldBindJSON(&loginRequest); err != nil {
+	var req validators.LoginRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
 		response := c.presenter.PresentError(err)
 		ctx.JSON(http.StatusBadRequest, response)
 
@@ -54,8 +54,8 @@ func (c *AuthController) Login(ctx *gin.Context) {
 
 	result, err := c.loginUseCase.Execute(
 		ctx,
-		loginRequest.UserID,
-		loginRequest.Password,
+		req.UserID,
+		req.Password,
 	)
 	if err != nil {
 		statusCode := http.StatusInternalServerError
@@ -77,7 +77,7 @@ func (c *AuthController) Login(ctx *gin.Context) {
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Param request body dto.SecretLoginRequest true "秘密の質問の回答情報"
+// @Param request body validators.SecretLoginRequest true "秘密の質問の回答情報"
 // @Success 200 {object} presenters.LoginResponse "ログイン成功時のレスポンス"
 // @Failure 400 {object} presenters.PresentError "リクエストの形式が不正"
 // @Failure 401 {object} presenters.PresentError "秘密の質問の回答が一致しない"
@@ -85,8 +85,8 @@ func (c *AuthController) Login(ctx *gin.Context) {
 // @Router /secret-login [post]
 // .
 func (c *AuthController) SecretLogin(ctx *gin.Context) {
-	var secretLoginRequest dto.SecretLoginRequest
-	if err := ctx.ShouldBindJSON(&secretLoginRequest); err != nil {
+	var req validators.SecretLoginRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
 		response := c.presenter.PresentError(err)
 		ctx.JSON(http.StatusBadRequest, response)
 
@@ -95,8 +95,8 @@ func (c *AuthController) SecretLogin(ctx *gin.Context) {
 
 	result, err := c.secretLoginUseCase.Execute(
 		ctx,
-		secretLoginRequest.UserID,
-		secretLoginRequest.SecretAnswer,
+		req.UserID,
+		req.SecretAnswer,
 	)
 	if err != nil {
 		statusCode := http.StatusInternalServerError
@@ -126,23 +126,15 @@ func (c *AuthController) SecretLogin(ctx *gin.Context) {
 // @Router /secret-question [get]
 // .
 func (c *AuthController) GetSecretQuestion(ctx *gin.Context) {
-	var request dto.SecretQuestionRequest
-	if err := ctx.ShouldBindQuery(&request); err != nil {
+	var req validators.SecretQuestionRequest
+	if err := ctx.ShouldBindQuery(&req); err != nil {
 		response := c.presenter.PresentError(err)
 		ctx.JSON(http.StatusBadRequest, response)
 
 		return
 	}
 
-	userID := request.UserID
-	if userID == "" {
-		response := c.presenter.PresentError(domainError.ErrInvalidUserID)
-		ctx.JSON(http.StatusBadRequest, response)
-
-		return
-	}
-
-	result, err := c.getSecretQuestionUseCase.Execute(ctx, userID)
+	result, err := c.getSecretQuestionUseCase.Execute(ctx, req.UserID)
 	if err != nil {
 		statusCode := http.StatusInternalServerError
 		if errors.Is(err, domainError.ErrUserNotFound) {

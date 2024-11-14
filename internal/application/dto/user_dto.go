@@ -18,8 +18,8 @@ type UserResponse struct {
 	Email string `example:"taro.yamada@example.com" json:"email"`
 
 	// 電話番号
-	// @Example "090-1234-5678"
-	Phone string `example:"090-1234-5678" json:"phone"`
+	// @Example "FLAG_dSQVRVTEFUSU9OU19GT1JfRklOSVNISU5H"
+	Phone string `example:"FLAG_dSQVRVTEFUSU9OU19GT1JfRklOSVNISU5H" json:"phone"`
 }
 
 func ToUserResponse(user *models.User) *UserResponse {

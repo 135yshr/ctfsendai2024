@@ -7,6 +7,7 @@ import (
 	domainError "github.com/135yshr/ctfsendai2024/internal/domain/errors"
 	"github.com/135yshr/ctfsendai2024/internal/domain/models"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/validators"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/utils"
 	"github.com/gin-gonic/gin"
@@ -50,12 +51,18 @@ func (pc *PlanController) GetPlans(c *gin.Context) {
 		return
 	}
 
-	params := &models.PlanSearchParams{}
-	if err := c.ShouldBind(params); err != nil {
+	var req validators.GetPlansRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
 		response := pc.presenter.PresentError(err)
 		c.JSON(http.StatusBadRequest, response)
 
 		return
+	}
+
+	params := &models.PlanSearchParams{
+		StartDate: req.StartDate,
+		EndDate:   req.EndDate,
+		Status:    &req.Status,
 	}
 
 	ctx := middleware.SetUserToContext(c, auth)
