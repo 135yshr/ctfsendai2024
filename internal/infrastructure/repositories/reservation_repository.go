@@ -12,18 +12,18 @@ import (
 	"github.com/google/uuid"
 )
 
-type jsonReservationRepository struct {
+type reservationRepository struct {
 	filePath     string
 	reservations map[string]*models.Reservation
 }
 
-type reservationsJSON struct {
+type reservationsDatabase struct {
 	Reservations []*models.Reservation `json:"reservations"`
 }
 
 // 具象型のコンストラクタ.
-func NewJSONReservationRepository(filePath string) (repositories.ReservationRepository, error) {
-	repo := &jsonReservationRepository{
+func NewReservationRepository(filePath string) (repositories.ReservationRepository, error) {
+	repo := &reservationRepository{
 		filePath:     filePath,
 		reservations: make(map[string]*models.Reservation),
 	}
@@ -41,7 +41,7 @@ func NewJSONReservationRepository(filePath string) (repositories.ReservationRepo
 	return repo, nil
 }
 
-func (r *jsonReservationRepository) FindByUserID(_ context.Context, userID string) ([]*models.Reservation, error) {
+func (r *reservationRepository) FindByUserID(_ context.Context, userID string) ([]*models.Reservation, error) {
 	var reservations []*models.Reservation
 	for _, v := range r.reservations {
 		if v.UserID == userID {
@@ -53,7 +53,7 @@ func (r *jsonReservationRepository) FindByUserID(_ context.Context, userID strin
 }
 
 // private メソッドとして loadReservations を移動.
-func (r *jsonReservationRepository) loadReservations() ([]*models.Reservation, error) {
+func (r *reservationRepository) loadReservations() ([]*models.Reservation, error) {
 	absPath, err := filepath.Abs(r.filePath)
 	if err != nil {
 		return nil, fmt.Errorf("ファイルパスの取得に失敗: %w", err)
@@ -64,7 +64,7 @@ func (r *jsonReservationRepository) loadReservations() ([]*models.Reservation, e
 		return nil, fmt.Errorf("ファイルの読み込みに失敗: %w", err)
 	}
 
-	var data reservationsJSON
+	var data reservationsDatabase
 	if err = json.Unmarshal(file, &data); err != nil {
 		return nil, fmt.Errorf("予約の取得に失敗: %w", err)
 	}
@@ -73,7 +73,7 @@ func (r *jsonReservationRepository) loadReservations() ([]*models.Reservation, e
 }
 
 // Create は予約を作成します.
-func (r *jsonReservationRepository) Create(
+func (r *reservationRepository) Create(
 	_ context.Context,
 	reservation *models.Reservation,
 ) (*models.Reservation, error) {

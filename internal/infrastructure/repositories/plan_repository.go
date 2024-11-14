@@ -12,13 +12,13 @@ import (
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
 )
 
-type jsonPlanRepository struct {
+type planRepository struct {
 	dbPath string
 	plans  []*models.Plan
 }
 
-func NewJSONPlanRepository(dbPath string) (repositories.PlanRepository, error) {
-	repo := &jsonPlanRepository{
+func NewPlanRepository(dbPath string) (repositories.PlanRepository, error) {
+	repo := &planRepository{
 		dbPath: dbPath,
 	}
 
@@ -30,7 +30,7 @@ func NewJSONPlanRepository(dbPath string) (repositories.PlanRepository, error) {
 	return repo, nil
 }
 
-func (r *jsonPlanRepository) loadPlans() error {
+func (r *planRepository) loadPlans() error {
 	file, err := os.ReadFile(r.dbPath)
 	if err != nil {
 		return fmt.Errorf("ファイルの読み込みに失敗: %w", err)
@@ -48,7 +48,7 @@ func (r *jsonPlanRepository) loadPlans() error {
 	return nil
 }
 
-func (r *jsonPlanRepository) FindAll(ctx context.Context, _ *models.PlanSearchParams) ([]*models.Plan, error) {
+func (r *planRepository) FindAll(ctx context.Context, _ *models.PlanSearchParams) ([]*models.Plan, error) {
 	user, err := middleware.GetUserFromContext(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("ユーザーの取得に失敗: %w", err)
@@ -69,7 +69,7 @@ func (r *jsonPlanRepository) FindAll(ctx context.Context, _ *models.PlanSearchPa
 	return plans, nil
 }
 
-func (r *jsonPlanRepository) FindByID(_ context.Context, id string) (*models.Plan, error) {
+func (r *planRepository) FindByID(_ context.Context, id string) (*models.Plan, error) {
 	for _, plan := range r.plans {
 		if plan.ID == id {
 			return plan, nil

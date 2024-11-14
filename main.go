@@ -55,7 +55,7 @@ func buildContainer() *dig.Container {
 		log.Fatal("DIコンテナの設定に失敗しました:", err)
 	}
 	container.Provide(func() domainRepositories.ReservationRepository {
-		repo, err := repositories.NewJSONReservationRepository(databasePath)
+		repo, err := repositories.NewReservationRepository(databasePath)
 		if err != nil {
 			panic("予約リポジトリの作成に失敗しました: " + err.Error())
 		}
@@ -63,7 +63,7 @@ func buildContainer() *dig.Container {
 		return repo
 	})
 	container.Provide(func() domainRepositories.PlanRepository {
-		repo, err := repositories.NewJSONPlanRepository(databasePath)
+		repo, err := repositories.NewPlanRepository(databasePath)
 		if err != nil {
 			panic("プランリポジトリの作成に失敗しました: " + err.Error())
 		}
