@@ -164,6 +164,61 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "ユーザーの新しい予約を作成します",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservations"
+                ],
+                "summary": "新しい予約を作成",
+                "parameters": [
+                    {
+                        "description": "予約情報",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/validators.CreateReservationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.ReservationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
             }
         }
     },
@@ -343,6 +398,25 @@
                 }
             }
         },
+        "presenters.ReservationResponse": {
+            "description": "予約のレスポンス.",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "予約データ",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.ReservationResponse"
+                        }
+                    ]
+                },
+                "status": {
+                    "description": "ステータス\n@Example \"success\"",
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
         "presenters.ReservationsResponse": {
             "description": "予約一覧のレスポンス.",
             "type": "object",
@@ -374,6 +448,25 @@
                     "description": "ステータス\n@Example \"error\"",
                     "type": "string",
                     "example": "error"
+                }
+            }
+        },
+        "validators.CreateReservationRequest": {
+            "type": "object",
+            "required": [
+                "plan_id",
+                "start_date",
+                "user_id"
+            ],
+            "properties": {
+                "plan_id": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             }
         }

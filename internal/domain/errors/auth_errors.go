@@ -14,4 +14,5 @@ var (
 	ErrInvalidRole       = errors.New("無効なロールです")
 	ErrInvalidName       = errors.New("無効な名前です")
 	ErrInvalidUser       = errors.New("無効なユーザーです")
+	ErrPlanNotFound      = errors.New("プランが見つかりません")
 )

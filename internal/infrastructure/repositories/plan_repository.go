@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/135yshr/ctfsendai2024/internal/domain/errors"
 	"github.com/135yshr/ctfsendai2024/internal/domain/models"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
@@ -66,4 +67,14 @@ func (r *jsonPlanRepository) FindAll(ctx context.Context, _ *models.PlanSearchPa
 	}
 
 	return plans, nil
+}
+
+func (r *jsonPlanRepository) FindByID(_ context.Context, id string) (*models.Plan, error) {
+	for _, plan := range r.plans {
+		if plan.ID == id {
+			return plan, nil
+		}
+	}
+
+	return nil, errors.ErrPlanNotFound
 }

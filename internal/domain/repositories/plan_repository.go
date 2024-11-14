@@ -8,4 +8,5 @@ import (
 
 type PlanRepository interface {
 	FindAll(ctx context.Context, params *models.PlanSearchParams) ([]*models.Plan, error)
+	FindByID(ctx context.Context, id string) (*models.Plan, error)
 }

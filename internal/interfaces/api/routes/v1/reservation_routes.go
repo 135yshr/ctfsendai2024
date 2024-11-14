@@ -9,5 +9,6 @@ func SetupReservationRoutes(router *gin.RouterGroup, controller *controllers.Res
 	reservations := router.Group("/reservations")
 	{
 		reservations.GET("", controller.GetUserReservations)
+		reservations.POST("", controller.CreateReservation)
 	}
 }

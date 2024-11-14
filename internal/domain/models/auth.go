@@ -10,10 +10,9 @@ const (
 )
 
 type Auth struct {
-	UserID   string
-	Password string
-	Name     string
-	Role     Role
+	UserID string
+	Name   string
+	Role   Role
 }
 
 type Token struct {

@@ -44,8 +44,14 @@ func ToReservationResponse(reservation *models.Reservation) *ReservationResponse
 		UserID:    reservation.UserID,
 		StartTime: reservation.StartTime,
 		EndTime:   reservation.EndTime,
-		Status:    reservation.Status,
-		User:      ToUserResponse(&reservation.User),
-		Plan:      ToPlanResponse(&reservation.Plan),
+		Status:    string(reservation.Status),
+		User:      ToUserResponse(reservation.User),
+		Plan:      ToPlanResponse(reservation.Plan),
 	}
+}
+
+type CreateReservationRequest struct {
+	UserID    string    `json:"user_id"`
+	PlanID    string    `json:"plan_id"`
+	StartDate time.Time `json:"start_date"`
 }

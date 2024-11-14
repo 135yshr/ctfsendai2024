@@ -70,18 +70,22 @@ func buildContainer() *dig.Container {
 
 		return repo
 	})
-	container.Provide(func() domainRepositories.AuthRepository {
-		repo, err := repositories.NewJWTAuthRepository("secret", databasePath)
+	container.Provide(func() domainRepositories.UserRepository {
+		repo, err := repositories.NewUserRepository(databasePath)
 		if err != nil {
 			panic("認証リポジトリの作成に失敗しました: " + err.Error())
 		}
 
 		return repo
 	})
+	container.Provide(func() domainRepositories.AuthRepository {
+		return repositories.NewJWTAuthRepository("secret")
+	})
 
 	// アプリケーション層
 	container.Provide(usecases.NewLoginUseCase)
 	container.Provide(usecases.NewGetUserReservationsUseCase)
+	container.Provide(usecases.NewCreateReservationUseCase)
 	container.Provide(usecases.NewGetPlansUseCase)
 
 	// インターフェース層
