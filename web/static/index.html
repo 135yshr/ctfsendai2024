@@ -6,6 +6,56 @@
     <title>ラグジュアリーなエステ</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ログイン状態チェック
+            checkLoginStatus();
+
+            // 新規予約ボタンのクリックイベント
+            const reservationBtn = document.querySelector('[data-bs-toggle="modal"]');
+            const modal = document.getElementById('reservationModal');
+            const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
+
+            reservationBtn.addEventListener('click', () => {
+                modal.style.display = 'block';
+            });
+
+            // モーダルを閉じる処理
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+            });
+
+            // モーダルの外側をクリックしたときも閉じる
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        // ログイン状態をチェックする関数
+        function checkLoginStatus() {
+            // ここでサーバーからログイン状態を取得する想定
+            // 仮実装としてログインしていない状態を想定
+            showLoginDialog();
+        }
+
+        function showLoginDialog() {
+            const loginModal = document.getElementById('loginModal');
+            loginModal.style.display = 'block';
+
+            // ログインフォームの送信処理
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // ここにログイン処理を実装
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                // ログインAPIを呼び出す処理を実装
+            });
+        }
+    </script>
 </head>
 <body>
     <!-- ナビゲーションバー -->
@@ -48,7 +98,7 @@
     </div>
 
     <!-- 予約追加モーダル -->
-    <div class="modal fade" id="reservationModal" tabindex="-1">
+    <div class="modal fade hidden" id="reservationModal" tabindex="-1">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
             <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                 <div class="flex justify-between items-center p-4 border-b">
@@ -80,6 +130,39 @@
                 <div class="flex justify-end p-4 border-t">
                     <button type="button" class="mr-2 px-4 py-2 text-gray-500 hover:text-gray-700" data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">予約する</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ログインモーダル -->
+    <div class="modal fade hidden" id="loginModal" tabindex="-1">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6">
+                    <h3 class="text-xl font-medium text-gray-900 mb-4">ログイン</h3>
+                    <form id="loginForm">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                                ユーザーID
+                            </label>
+                            <input type="email" id="email" required
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                                パスワード
+                            </label>
+                            <input type="password" id="password" required
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <button type="submit"
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                ログイン
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

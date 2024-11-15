@@ -55,6 +55,7 @@ func buildContainer() *dig.Container {
 		r.Use(gin.Recovery())
 		r.Use(middleware.RequestLogger(logger))
 		r.Use(middleware.LoggerMiddleware(logger))
+		r.Static("/static", "./web/static")
 		r.ContextWithFallback = true
 
 		return r
