@@ -101,9 +101,9 @@ func buildContainer() *dig.Container {
 	container.Provide(usecases.NewGetUsersUseCase)
 
 	// インターフェース層
-	container.Provide(presenters.NewJSONReservationPresenter)
-	container.Provide(presenters.NewJSONPlanPresenter)
-	container.Provide(presenters.NewJSONAuthPresenter)
+	container.Provide(presenters.NewReservationPresenter)
+	container.Provide(presenters.NewPlanPresenter)
+	container.Provide(presenters.NewAuthPresenter)
 	container.Provide(presenters.NewUserPresenter)
 	container.Provide(controllers.NewReservationController)
 	container.Provide(controllers.NewPlanController)

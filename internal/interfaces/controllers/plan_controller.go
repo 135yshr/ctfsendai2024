@@ -29,17 +29,19 @@ func NewPlanController(
 }
 
 // GetPlans プラン一覧を取得します
-// @Summary プラン一覧取得
-// @Description 検索条件に基づいてプラン一覧を取得します
+// @Summary プラン一覧取得API
+// @Description ユーザーの権限に基づいて、指定された検索条件に一致するプラン一覧を取得します
 // @Tags plans
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Param startDate query string false "開始日 (YYYY-MM-DD)"
-// @Param endDate query string false "終了日 (YYYY-MM-DD)"
-// @Param status query string false "ステータス"
-// @Success 200 {object} presenters.PlansResponse
-// @Failure 500 {object} response.ErrorResponse
+// @Param startDate query string false "開始日 (YYYY-MM-DD形式)"
+// @Param endDate query string false "終了日 (YYYY-MM-DD形式)"
+// @Param status query string false "プランのステータス (active/inactive/pending)"
+// @Success 200 {object} presenters.PlansResponse "プラン一覧の取得に成功"
+// @Failure 400 {object} response.ErrorResponse "不正なリクエストパラメータ"
+// @Failure 401 {object} response.ErrorResponse "認証エラー"
+// @Failure 500 {object} response.ErrorResponse "サーバー内部エラー"
 // @Router /plans [get]
 // .
 func (pc *PlanController) GetPlans(c *gin.Context) {

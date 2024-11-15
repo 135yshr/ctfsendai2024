@@ -42,10 +42,11 @@ func NewAuthController(
 // @Produce json
 // @Param request body validators.LoginRequest true "ログイン情報"
 // @Success 200 {object} presenters.LoginResponse "ログイン成功時のレスポンス"
-// @Failure 400 {object} presenters.PresentError "リクエストの形式が不正"
-// @Failure 401 {object} presenters.PresentError "パスワードが一致しない"
-// @Failure 500 {object} presenters.PresentError "サーバー内部エラー"
-// @Router /login [post].
+// @Failure 400 {object} response.ErrorResponse "リクエストの形式が不正"
+// @Failure 401 {object} response.ErrorResponse "パスワードが一致しない"
+// @Failure 500 {object} response.ErrorResponse "サーバー内部エラー"
+// @Router /login [post]
+// .
 func (c *AuthController) Login(ctx *gin.Context) {
 	var req validators.LoginRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -82,9 +83,9 @@ func (c *AuthController) Login(ctx *gin.Context) {
 // @Produce json
 // @Param request body validators.SecretLoginRequest true "秘密の質問の回答情報"
 // @Success 200 {object} presenters.LoginResponse "ログイン成功時のレスポンス"
-// @Failure 400 {object} presenters.PresentError "リクエストの形式が不正"
-// @Failure 401 {object} presenters.PresentError "秘密の質問の回答が一致しない"
-// @Failure 500 {object} presenters.PresentError "サーバー内部エラー"
+// @Failure 400 {object} response.ErrorResponse "リクエストの形式が不正"
+// @Failure 401 {object} response.ErrorResponse "秘密の質問の回答が一致しない"
+// @Failure 500 {object} response.ErrorResponse "サーバー内部エラー"
 // @Router /secret-login [post]
 // .
 func (c *AuthController) SecretLogin(ctx *gin.Context) {
@@ -122,10 +123,10 @@ func (c *AuthController) SecretLogin(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param user_id query string true "ユーザーID"
-// @Success 200 {object} dto.SecretQuestionResponse "秘密の質問"
-// @Failure 400 {object} presenters.PresentError "リクエストの形式が不正"
-// @Failure 404 {object} presenters.PresentError "ユーザーが見つからない"
-// @Failure 500 {object} presenters.PresentError "サーバー内部エラー"
+// @Success 200 {object} presenters.SecretQuestionResponse "秘密の質問"
+// @Failure 400 {object} response.ErrorResponse "リクエストの形式が不正"
+// @Failure 404 {object} response.ErrorResponse "ユーザーが見つからない"
+// @Failure 500 {object} response.ErrorResponse "サーバー内部エラー"
 // @Router /secret-question [get]
 // .
 func (c *AuthController) GetSecretQuestion(ctx *gin.Context) {

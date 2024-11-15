@@ -5,54 +5,77 @@ import (
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters/response"
 )
 
+// ReservationPresenter インターフェース
+// @Description 予約情報のプレゼンター
+// @interface.
 type ReservationPresenter interface {
+	// PresentReservations 予約情報一覧をレスポンス形式に変換する
+	// @Summary 予約情報一覧を変換
+	// @Description 予約情報一覧を成功レスポンスの形式に変換する
+	// @Return ReservationsResponse 変換された予約一覧レスポンス
 	PresentReservations(reservations []*dto.ReservationResponse) ReservationsResponse
-	PresentError(err error) response.ErrorResponse
+
+	// PresentReservation 単一の予約情報を変換
+	// @Summary 予約情報を変換
+	// @Description 単一の予約情報をレスポンス形式に変換する
+	// @Return ReservationResponse 変換された予約レスポンス
 	PresentReservation(reservation *dto.ReservationResponse) ReservationResponse
+
+	// PresentError エラー情報を変換
+	// @Summary エラー情報を変換
+	// @Description エラー情報をエラーレスポンスの形式に変換する
+	// @Return response.ErrorResponse エラーレスポンス
+	PresentError(err error) response.ErrorResponse
 }
 
-type JSONReservationPresenter struct{}
+type reservationPresenter struct{}
 
-func NewJSONReservationPresenter() ReservationPresenter {
-	return &JSONReservationPresenter{}
-}
-
-// ReservationsResponse 予約一覧レスポンス
-// @Description 予約一覧のレスポンス.
-type ReservationsResponse struct {
-	// ステータス
-	// @Example "success"
-	Status string `example:"success" json:"status"`
-
-	// 予約データ
-	Data []*dto.ReservationResponse `json:"data"`
+func NewReservationPresenter() ReservationPresenter {
+	return &reservationPresenter{}
 }
 
 // ReservationResponse 予約レスポンス
-// @Description 予約のレスポンス.
+// @Description 予約のレスポンス
+// @Object ReservationResponse.
 type ReservationResponse struct {
-	// ステータス
+	// Status レスポンスのステータス
+	// @Description レスポンスの状態を示す文字列
 	// @Example "success"
 	Status string `example:"success" json:"status"`
 
-	// 予約データ
+	// Data 予約データ
+	// @Description 予約の詳細情報
 	Data *dto.ReservationResponse `json:"data"`
 }
 
-func (p *JSONReservationPresenter) PresentReservation(reservation *dto.ReservationResponse) ReservationResponse {
+func (p *reservationPresenter) PresentReservation(reservation *dto.ReservationResponse) ReservationResponse {
 	return ReservationResponse{
 		Status: "success",
 		Data:   reservation,
 	}
 }
 
-func (p *JSONReservationPresenter) PresentReservations(reservations []*dto.ReservationResponse) ReservationsResponse {
+// ReservationsResponse 予約一覧レスポンス
+// @Description 予約一覧のレスポンス
+// @Object ReservationsResponse.
+type ReservationsResponse struct {
+	// Status レスポンスのステータス
+	// @Description レスポンスの状態を示す文字列
+	// @Example "success"
+	Status string `example:"success" json:"status"`
+
+	// Data 予約データ一覧
+	// @Description 予約情報の配列
+	Data []*dto.ReservationResponse `json:"data"`
+}
+
+func (p *reservationPresenter) PresentReservations(reservations []*dto.ReservationResponse) ReservationsResponse {
 	return ReservationsResponse{
 		Status: "success",
 		Data:   reservations,
 	}
 }
 
-func (p *JSONReservationPresenter) PresentError(err error) response.ErrorResponse {
+func (p *reservationPresenter) PresentError(err error) response.ErrorResponse {
 	return response.NewErrorResponse(err)
 }

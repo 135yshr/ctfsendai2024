@@ -87,11 +87,6 @@ definitions:
         example: user123
         type: string
     type: object
-  dto.SecretQuestionResponse:
-    properties:
-      secret_question:
-        type: string
-    type: object
   dto.UserResponse:
     description: ユーザー情報の詳細.
     properties:
@@ -135,63 +130,75 @@ definitions:
         type: string
     type: object
   presenters.PlansResponse:
-    description: プラン一覧のレスポンス.
+    description: プラン一覧のレスポンス形式を定義する
     properties:
       data:
-        description: プランデータ
+        description: |-
+          Data プラン情報一覧
+          @Description プラン情報の配列
         items:
           $ref: '#/definitions/dto.PlanResponse'
         type: array
       status:
         description: |-
-          ステータス
+          Status レスポンスのステータス
           @Example "success"
         example: success
         type: string
     type: object
-  presenters.PresentError:
-    properties:
-      message:
-        type: string
-    type: object
   presenters.ReservationResponse:
-    description: 予約のレスポンス.
+    description: 予約のレスポンス
     properties:
       data:
         allOf:
         - $ref: '#/definitions/dto.ReservationResponse'
-        description: 予約データ
+        description: |-
+          Data 予約データ
+          @Description 予約の詳細情報
       status:
         description: |-
-          ステータス
+          Status レスポンスのステータス
+          @Description レスポンスの状態を示す文字列
           @Example "success"
         example: success
         type: string
     type: object
   presenters.ReservationsResponse:
-    description: 予約一覧のレスポンス.
+    description: 予約一覧のレスポンス
     properties:
       data:
-        description: 予約データ
+        description: |-
+          Data 予約データ一覧
+          @Description 予約情報の配列
         items:
           $ref: '#/definitions/dto.ReservationResponse'
         type: array
       status:
         description: |-
-          ステータス
+          Status レスポンスのステータス
+          @Description レスポンスの状態を示す文字列
           @Example "success"
         example: success
         type: string
     type: object
+  presenters.SecretQuestionResponse:
+    properties:
+      secret_question:
+        type: string
+    type: object
   presenters.UserResponse:
-    description: ユーザー情報のレスポンス形式を定義する
+    description: ユーザー情報の単一レスポンス形式を定義する
     properties:
       data:
         allOf:
         - $ref: '#/definitions/dto.UserResponse'
-        description: Data ユーザー情報
+        description: |-
+          Data ユーザー情報
+          @Description ユーザーの詳細情報
       status:
-        description: Status レスポンスのステータス
+        description: |-
+          Status レスポンスのステータス
+          @Example "success"
         example: success
         type: string
     type: object
@@ -235,6 +242,7 @@ definitions:
     - user_id
     type: object
   validators.LoginRequest:
+    description: ユーザーIDとパスワードによるログインリクエスト
     properties:
       password:
         maxLength: 100
@@ -249,6 +257,7 @@ definitions:
     - user_id
     type: object
   validators.SecretLoginRequest:
+    description: 秘密の質問の回答によるログインリクエスト
     properties:
       secret_answer:
         minLength: 1
@@ -290,15 +299,15 @@ paths:
         "400":
           description: リクエストの形式が不正
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
         "401":
           description: パスワードが一致しない
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: サーバー内部エラー
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
       summary: ユーザーログイン
       tags:
       - auth
@@ -306,17 +315,21 @@ paths:
     get:
       consumes:
       - application/json
-      description: 検索条件に基づいてプラン一覧を取得します
+      description: ユーザーの権限に基づいて、指定された検索条件に一致するプラン一覧を取得します
       parameters:
-      - description: 開始日 (YYYY-MM-DD)
+      - description: 開始日 (YYYY-MM-DD形式)
         in: query
         name: startDate
         type: string
-      - description: 終了日 (YYYY-MM-DD)
+      - description: 終了日 (YYYY-MM-DD形式)
         in: query
         name: endDate
         type: string
-      - description: ステータス
+      - description: プランのステータス (active/inactive/pending)
+        enum:
+        - active
+        - inactive
+        - pending
         in: query
         name: status
         type: string
@@ -324,16 +337,24 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: プラン一覧の取得に成功
           schema:
             $ref: '#/definitions/presenters.PlansResponse'
+        "400":
+          description: 不正なリクエストパラメータ
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "401":
+          description: 認証エラー
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: サーバー内部エラー
           schema:
             $ref: '#/definitions/response.ErrorResponse'
       security:
       - Bearer: []
-      summary: プラン一覧取得
+      summary: プラン一覧取得API
       tags:
       - plans
   /reservations:
@@ -426,15 +447,15 @@ paths:
         "400":
           description: リクエストの形式が不正
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
         "401":
           description: 秘密の質問の回答が一致しない
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: サーバー内部エラー
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
       summary: 秘密の質問によるログイン
       tags:
       - auth
@@ -455,19 +476,19 @@ paths:
         "200":
           description: 秘密の質問
           schema:
-            $ref: '#/definitions/dto.SecretQuestionResponse'
+            $ref: '#/definitions/presenters.SecretQuestionResponse'
         "400":
           description: リクエストの形式が不正
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
         "404":
           description: ユーザーが見つからない
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: サーバー内部エラー
           schema:
-            $ref: '#/definitions/presenters.PresentError'
+            $ref: '#/definitions/response.ErrorResponse'
       summary: 秘密の質問の取得
       tags:
       - auth
