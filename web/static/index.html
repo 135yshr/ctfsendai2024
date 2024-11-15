@@ -42,13 +42,17 @@
             });
         });
 
-        // ログイン状態をチェックする関数
+        // ログイン状態をチェックする関数を修正
         function checkLoginStatus() {
             const token = localStorage.getItem('access_token');
             const expiresAt = localStorage.getItem('token_expires_at');
+            const userId = localStorage.getItem('user_id');
 
             if (!token || !expiresAt || Date.now() >= expiresAt * 1000) {
                 showLoginDialog();
+            } else {
+                // ログイン済みの場合は予約一覧を取得
+                fetchReservations(userId);
             }
         }
 
@@ -117,14 +121,26 @@
             const tbody = document.getElementById('reservationList');
             tbody.innerHTML = '';
 
+            // ステータスの日本語変換マップを追加
+            const statusMap = {
+                'pending': '保留中',
+                'confirmed': '確定',
+                'cancelled': 'キャンセル済',
+                'completed': '完了'
+            };
+
             reservations.forEach(reservation => {
                 const startTime = new Date(reservation.start_time).toLocaleString('ja-JP');
+                const endTime = new Date(reservation.end_time).toLocaleString('ja-JP');
+                // ステータスを日本語に変換
+                const statusJP = statusMap[reservation.status] || reservation.status;
                 const row = `
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">${startTime}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${endTime}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${reservation.plan.name}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${reservation.user.name}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${reservation.status}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${statusJP}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <button class="text-blue-600 hover:text-blue-800" onclick="cancelReservation('${reservation.id}')">
                                 キャンセル
@@ -178,9 +194,10 @@
             <table class="min-w-full bg-white">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">日時</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">開始時間</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">終了時間</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">メニュー</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">担当者</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">お名前</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ステータス</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
                     </tr>
