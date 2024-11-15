@@ -45,6 +45,8 @@
 
             // ユーザー情報を更新する関数を追加
             updateUserInfo();
+
+            setupResetPasswordModal();
         });
 
         // ログイン状態をチェックする関数を修正
@@ -63,8 +65,23 @@
 
         async function showLoginDialog() {
             const loginModal = document.getElementById('loginModal');
+            const resetPasswordModal = document.getElementById('resetPasswordModal');
             loginModal.style.display = 'block';
 
+            // パスワードリセットリンクのイベントハンドラを設定
+            document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                loginModal.style.display = 'none';  // ログインモーダルを非表示
+                resetPasswordModal.style.display = 'block';  // パスワードリセットモーダルを表示
+            });
+
+            // パスワードリセットモーダルを閉じる処理
+            document.getElementById('closeResetModal').addEventListener('click', function() {
+                resetPasswordModal.style.display = 'none';
+                loginModal.style.display = 'block';  // ログインモーダルを再表示
+            });
+
+            // 既存のログインフォームの処理
             document.getElementById('loginForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const userId = document.getElementById('userId').value;
@@ -96,7 +113,7 @@
                     }
                 } catch (error) {
                     console.error('ログインエラー:', error);
-                    alert('ログイン処理中にエラーが発生しました。');
+                    alert('ログイン処理中にエラが発生しました。');
                 }
             });
         }
@@ -234,6 +251,100 @@
                 console.error('プラン一覧の取得に失敗:', error);
             }
         }
+
+        // パスワードリセットフォームの処理を更新
+        async function handleResetPassword(event) {
+            event.preventDefault();
+
+            const userId = document.getElementById('resetUserId').value;
+            const secretQuestionSection = document.getElementById('secretQuestionSection');
+            const resetSubmitBtn = document.getElementById('resetSubmitBtn');
+            const secretAnswerInput = document.getElementById('secretAnswer');
+
+            // 最初のステップ：秘密の質問を取得
+            if (secretQuestionSection.classList.contains('hidden')) {
+                try {
+                    const response = await fetch(`/api/v1/secret-question?user_id=${encodeURIComponent(userId)}`);
+                    const data = await response.json();
+
+                    if (data.secret_question) {
+                        document.getElementById('secretQuestionLabel').textContent = data.secret_question;
+                        secretQuestionSection.classList.remove('hidden');
+                        resetSubmitBtn.textContent = 'パスワードをリセット';
+                        secretAnswerInput.required = true;
+                    } else {
+                        alert('ユーザーIDが見つかりません。');
+                    }
+                } catch (error) {
+                    console.error('秘密の質問の取得に失敗:', error);
+                    alert('秘密の質問の取得に失敗しました。');
+                }
+                return;
+            }
+
+            // 2番目のステップ：パスワードリセットを実行
+            const secretAnswer = secretAnswerInput.value;
+            if (!secretAnswer) {
+                alert('秘密の質問の回答を入力してください。');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/v1/verify-secret-answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        secret_answer: secretAnswer
+                    })
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert('パスワードリセットの手順をメールで送信しました。');
+                    // モーダルをリセットして閉じる
+                    const resetPasswordModal = document.getElementById('resetPasswordModal');
+                    const loginModal = document.getElementById('loginModal');
+                    resetPasswordModal.style.display = 'none';
+                    loginModal.style.display = 'block';
+                    // フォームをリセット
+                    document.getElementById('resetPasswordForm').reset();
+                    secretQuestionSection.classList.add('hidden');
+                    resetSubmitBtn.textContent = '次へ';
+                    secretAnswerInput.required = false;
+                } else {
+                    alert('秘密の質問の回答が正しくありません。');
+                }
+            } catch (error) {
+                console.error('秘密の質問の検証エラー:', error);
+                alert('処理中にエラーが発生しました。');
+            }
+        }
+
+        // パスワードリセットモーダルの設定を更新
+        function setupResetPasswordModal() {
+            const resetPasswordForm = document.getElementById('resetPasswordForm');
+            const resetPasswordModal = document.getElementById('resetPasswordModal');
+            const loginModal = document.getElementById('loginModal');
+            const closeResetModal = document.getElementById('closeResetModal');
+            const secretAnswerInput = document.getElementById('secretAnswer');
+
+            // フォームの送信イベントを設定
+            resetPasswordForm.addEventListener('submit', handleResetPassword);
+
+            // モーダルを閉じる処理
+            closeResetModal.addEventListener('click', function() {
+                resetPasswordModal.style.display = 'none';
+                loginModal.style.display = 'block';
+                // フォームをリセット
+                resetPasswordForm.reset();
+                document.getElementById('secretQuestionSection').classList.add('hidden');
+                document.getElementById('resetSubmitBtn').textContent = '次へ';
+                secretAnswerInput.required = false;  // 非表示時にrequiredを削除
+            });
+        }
     </script>
 </head>
 <body>
@@ -354,6 +465,52 @@
                             <button type="submit"
                                 class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 ログイン
+                            </button>
+                            <a href="#" class="text-sm text-blue-500 hover:text-blue-700" id="forgotPasswordLink">
+                                パスワードを忘れてしまった場合
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- パスワードリセットモーダルを更新 -->
+    <div class="modal fade hidden" id="resetPasswordModal" tabindex="-1">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6">
+                    <h3 class="text-xl font-medium text-gray-900 mb-4">パスワードリセット</h3>
+                    <form id="resetPasswordForm">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="resetUserId">
+                                ユーザーID
+                            </label>
+                            <input type="text" id="resetUserId" required
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <!-- 秘密の質問セクション -->
+                        <div id="secretQuestionSection" class="hidden">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" id="secretQuestionLabel">
+                                    <!-- 秘密の質問がここに表示されます -->
+                                </label>
+                                <input type="text"
+                                       id="secretAnswer"
+                                       name="secretAnswer"
+                                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                       placeholder="回答を入力してください">
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-6">
+                            <button type="submit" id="resetSubmitBtn"
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                次へ
+                            </button>
+                            <button type="button" id="closeResetModal"
+                                class="text-gray-500 hover:text-gray-700">
+                                キャンセル
                             </button>
                         </div>
                     </form>
