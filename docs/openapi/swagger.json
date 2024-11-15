@@ -600,24 +600,24 @@
             }
         },
         "validators.CreateReservationRequest": {
+            "description": "新規予約を作成するためのリクエストパラメータ.",
             "type": "object",
             "required": [
-                "end_date",
                 "plan_id",
                 "start_date",
                 "user_id"
             ],
             "properties": {
-                "end_date": {
-                    "type": "string"
-                },
                 "plan_id": {
+                    "description": "プランID\n@Example \"plan456\"",
                     "type": "string"
                 },
                 "start_date": {
+                    "description": "予約開始日時\n@Example \"2024-04-01T10:00:00+09:00\"",
                     "type": "string"
                 },
                 "user_id": {
+                    "description": "ユーザーID\n@Example \"user123\"",
                     "type": "string"
                 }
             }
