@@ -270,7 +270,7 @@ definitions:
     - secret_answer
     - user_id
     type: object
-host: localhost:8080
+host: ctfweb2024.sectanlab.jp:8080
 info:
   contact: {}
   description: 予約管理システムのRESTful API

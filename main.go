@@ -25,7 +25,7 @@ const databasePath = "./configs/json/database.json"
 // @title        予約管理システム API
 // @version      1.0
 // @description  予約管理システムのRESTful API
-// @host         localhost:8080
+// @host         ctfweb2024.sectanlab.jp:8080
 // @BasePath     /api/v1
 // @securityDefinitions.apikey Bearer
 // @in header

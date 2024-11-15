@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "ctfweb2024.sectanlab.jp:8080",
     "basePath": "/api/v1",
     "paths": {
         "/login": {
