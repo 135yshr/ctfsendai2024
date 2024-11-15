@@ -43,19 +43,19 @@
                     "400": {
                         "description": "リクエストの形式が不正",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "パスワードが一致しない",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "サーバー内部エラー",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -68,7 +68,7 @@
                         "Bearer": []
                     }
                 ],
-                "description": "検索条件に基づいてプラン一覧を取得します",
+                "description": "ユーザーの権限に基づいて、指定された検索条件に一致するプラン一覧を取得します",
                 "consumes": [
                     "application/json"
                 ],
@@ -78,36 +78,53 @@
                 "tags": [
                     "plans"
                 ],
-                "summary": "プラン一覧取得",
+                "summary": "プラン一覧取得API",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "開始日 (YYYY-MM-DD)",
+                        "description": "開始日 (YYYY-MM-DD形式)",
                         "name": "startDate",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "終了日 (YYYY-MM-DD)",
+                        "description": "終了日 (YYYY-MM-DD形式)",
                         "name": "endDate",
                         "in": "query"
                     },
                     {
+                        "enum": [
+                            "active",
+                            "inactive",
+                            "pending"
+                        ],
                         "type": "string",
-                        "description": "ステータス",
+                        "description": "プランのステータス (active/inactive/pending)",
                         "name": "status",
                         "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "プラン一覧の取得に成功",
                         "schema": {
                             "$ref": "#/definitions/presenters.PlansResponse"
                         }
                     },
+                    "400": {
+                        "description": "不正なリクエストパラメータ",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "認証エラー",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "サーバー内部エラー",
                         "schema": {
                             "$ref": "#/definitions/response.ErrorResponse"
                         }
@@ -255,19 +272,19 @@
                     "400": {
                         "description": "リクエストの形式が不正",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "秘密の質問の回答が一致しない",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "サーバー内部エラー",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -299,25 +316,25 @@
                     "200": {
                         "description": "秘密の質問",
                         "schema": {
-                            "$ref": "#/definitions/dto.SecretQuestionResponse"
+                            "$ref": "#/definitions/presenters.SecretQuestionResponse"
                         }
                     },
                     "400": {
                         "description": "リクエストの形式が不正",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "ユーザーが見つからない",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "サーバー内部エラー",
                         "schema": {
-                            "$ref": "#/definitions/presenters.PresentError"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -491,14 +508,6 @@
                 }
             }
         },
-        "dto.SecretQuestionResponse": {
-            "type": "object",
-            "properties": {
-                "secret_question": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.UserResponse": {
             "description": "ユーザー情報の詳細.",
             "type": "object",
@@ -545,37 +554,29 @@
             }
         },
         "presenters.PlansResponse": {
-            "description": "プラン一覧のレスポンス.",
+            "description": "プラン一覧のレスポンス形式を定義する",
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "プランデータ",
+                    "description": "Data プラン情報一覧\n@Description プラン情報の配列",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.PlanResponse"
                     }
                 },
                 "status": {
-                    "description": "ステータス\n@Example \"success\"",
+                    "description": "Status レスポンスのステータス\n@Example \"success\"",
                     "type": "string",
                     "example": "success"
                 }
             }
         },
-        "presenters.PresentError": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
         "presenters.ReservationResponse": {
-            "description": "予約のレスポンス.",
+            "description": "予約のレスポンス",
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "予約データ",
+                    "description": "Data 予約データ\n@Description 予約の詳細情報",
                     "allOf": [
                         {
                             "$ref": "#/definitions/dto.ReservationResponse"
@@ -583,36 +584,44 @@
                     ]
                 },
                 "status": {
-                    "description": "ステータス\n@Example \"success\"",
+                    "description": "Status レスポンスのステータス\n@Description レスポンスの状態を示す文字列\n@Example \"success\"",
                     "type": "string",
                     "example": "success"
                 }
             }
         },
         "presenters.ReservationsResponse": {
-            "description": "予約一覧のレスポンス.",
+            "description": "予約一覧のレスポンス",
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "予約データ",
+                    "description": "Data 予約データ一覧\n@Description 予約情報の配列",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.ReservationResponse"
                     }
                 },
                 "status": {
-                    "description": "ステータス\n@Example \"success\"",
+                    "description": "Status レスポンスのステータス\n@Description レスポンスの状態を示す文字列\n@Example \"success\"",
                     "type": "string",
                     "example": "success"
                 }
             }
         },
+        "presenters.SecretQuestionResponse": {
+            "type": "object",
+            "properties": {
+                "secret_question": {
+                    "type": "string"
+                }
+            }
+        },
         "presenters.UserResponse": {
-            "description": "ユーザー情報のレスポンス形式を定義する",
+            "description": "ユーザー情報の単一レスポンス形式を定義する",
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "Data ユーザー情報",
+                    "description": "Data ユーザー情報\n@Description ユーザーの詳細情報",
                     "allOf": [
                         {
                             "$ref": "#/definitions/dto.UserResponse"
@@ -620,7 +629,7 @@
                     ]
                 },
                 "status": {
-                    "description": "Status レスポンスのステータス",
+                    "description": "Status レスポンスのステータス\n@Example \"success\"",
                     "type": "string",
                     "example": "success"
                 }
@@ -666,6 +675,7 @@
             }
         },
         "validators.LoginRequest": {
+            "description": "ユーザーIDとパスワードによるログインリクエスト",
             "type": "object",
             "required": [
                 "password",
@@ -685,6 +695,7 @@
             }
         },
         "validators.SecretLoginRequest": {
+            "description": "秘密の質問の回答によるログインリクエスト",
             "type": "object",
             "required": [
                 "secret_answer",

@@ -14,9 +14,9 @@ import (
 )
 
 type ReservationController struct {
+	presenter                  presenters.ReservationPresenter
 	getUserReservationsUseCase *usecases.GetUserReservationsUseCase
 	createReservationUseCase   *usecases.CreateReservationUseCase
-	presenter                  presenters.ReservationPresenter
 }
 
 func NewReservationController(
