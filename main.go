@@ -57,7 +57,11 @@ func buildContainer() *dig.Container {
 
 		// CORSミドルウェアを追加
 		config := cors.DefaultConfig()
-		config.AllowOrigins = []string{"*"}
+		config.AllowOrigins = []string{
+			"http://localhost:3000",
+			"http://localhost:8080",
+			"http://ctfweb2024.sectanlab.jp:8080",
+		}
 		config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
 		config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
 		r.Use(cors.New(config))
