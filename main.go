@@ -96,14 +96,17 @@ func buildContainer() *dig.Container {
 	container.Provide(usecases.NewGetPlansUseCase)
 	container.Provide(usecases.NewGetSecretQuestionUseCase)
 	container.Provide(usecases.NewSecretLoginUseCase)
+	container.Provide(usecases.NewGetUserInfoUseCase)
 
 	// インターフェース層
 	container.Provide(presenters.NewJSONReservationPresenter)
 	container.Provide(presenters.NewJSONPlanPresenter)
 	container.Provide(presenters.NewJSONAuthPresenter)
+	container.Provide(presenters.NewUserPresenter)
 	container.Provide(controllers.NewReservationController)
 	container.Provide(controllers.NewPlanController)
 	container.Provide(controllers.NewAuthController)
+	container.Provide(controllers.NewUserController)
 	container.Provide(api.NewServer)
 
 	return container
