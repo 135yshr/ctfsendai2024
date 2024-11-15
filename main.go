@@ -12,6 +12,7 @@ import (
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/controllers"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/presenters"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/dig"
 
@@ -53,6 +54,18 @@ func buildContainer() *dig.Container {
 	if err := container.Provide(func(logger *logger.Logger) *gin.Engine {
 		r := gin.New()
 		r.Use(gin.Recovery())
+
+		// CORSミドルウェアを追加
+		config := cors.DefaultConfig()
+		config.AllowOrigins = []string{
+			"http://localhost:3000",
+			"http://localhost:8080",
+			"http://ctfweb2024.sectanlab.jp:8080",
+		}
+		config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
+		config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
+		r.Use(cors.New(config))
+
 		r.Use(middleware.RequestLogger(logger))
 		r.Use(middleware.LoggerMiddleware(logger))
 		r.Static("/static", "./web/static")
