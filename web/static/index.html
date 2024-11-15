@@ -162,11 +162,6 @@
                         <td class="px-6 py-4 whitespace-nowrap">${reservation.plan.name}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${reservation.user.name}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${statusJP}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <button class="text-blue-600 hover:text-blue-800" onclick="cancelReservation('${reservation.id}')">
-                                キャンセル
-                            </button>
-                        </td>
                     </tr>
                 `;
                 tbody.insertAdjacentHTML('beforeend', row);
@@ -251,7 +246,6 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">メニュー</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">お名前</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ステータス</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
                     </tr>
                 </thead>
                 <tbody id="reservationList" class="divide-y divide-gray-200">
