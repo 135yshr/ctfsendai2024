@@ -14,6 +14,7 @@ var (
 	ErrInvalidRole         = errors.New("無効なロールです")
 	ErrInvalidName         = errors.New("無効な名前です")
 	ErrInvalidUser         = errors.New("無効なユーザーです")
+	ErrForbidden           = errors.New("アクセスが禁止されています")
 	ErrPlanNotFound        = errors.New("プランが見つかりません")
 	ErrInvalidSecretAnswer = errors.New("秘密の質問の回答が不正です")
 )
