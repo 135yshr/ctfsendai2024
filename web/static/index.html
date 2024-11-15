@@ -195,11 +195,17 @@
             const userName = localStorage.getItem('user_name');
             const userEmail = localStorage.getItem('user_email');
 
-            if (userName) {
-                document.getElementById('userName').textContent = userName;
-                document.getElementById('userEmail').textContent = userEmail;
-                // イニシャルを取得（名前の最初の文字）
-                document.getElementById('userInitial').textContent = userName.charAt(0);
+            const userNameElement = document.getElementById('userName');
+            const userEmailElement = document.getElementById('userEmail');
+            const userInitialElement = document.getElementById('userInitial');
+
+            if (userName && userNameElement && userEmailElement) {
+                userNameElement.textContent = userName;
+                userEmailElement.textContent = userEmail;
+                // イニシャルの更新は要素が存在する場合のみ行う
+                if (userInitialElement) {
+                    userInitialElement.textContent = userName.charAt(0);
+                }
             }
         }
 
