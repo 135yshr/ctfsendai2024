@@ -144,7 +144,6 @@
             const tbody = document.getElementById('reservationList');
             tbody.innerHTML = '';
 
-            // ステータスの日本語変換マップを追加
             const statusMap = {
                 'pending': '保留中',
                 'confirmed': '確定',
@@ -153,9 +152,15 @@
             };
 
             reservations.forEach(reservation => {
-                const startTime = new Date(reservation.start_time).toLocaleString('ja-JP');
-                const endTime = new Date(reservation.end_time).toLocaleString('ja-JP');
-                // ステータスを日本語に変換
+                // 日時のフォーマットを修正
+                const formatDate = (dateString) => {
+                    const date = new Date(dateString);
+                    return `${String(date.getMonth() + 1).padStart(2, '0')}月${String(date.getDate()).padStart(2, '0')}日 ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                };
+
+                const startTime = formatDate(reservation.start_time);
+                const endTime = formatDate(reservation.end_time);
+
                 const statusJP = statusMap[reservation.status] || reservation.status;
                 const row = `
                     <tr>
