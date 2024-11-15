@@ -23,8 +23,10 @@
             const modal = document.getElementById('reservationModal');
             const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
 
-            reservationBtn.addEventListener('click', () => {
+            reservationBtn.addEventListener('click', async () => {
                 modal.style.display = 'block';
+                // プラン一覧を取得して表示
+                await fetchAndDisplayPlans();
             });
 
             // モーダルを閉じる処理
@@ -195,6 +197,32 @@
                 document.getElementById('userInitial').textContent = userName.charAt(0);
             }
         }
+
+        // プラン一覧を取得する関数
+        async function fetchAndDisplayPlans() {
+            try {
+                const response = await fetch('/api/v1/plans', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    const planSelect = document.querySelector('#planSelect');
+                    planSelect.innerHTML = '<option value="">選択してください</option>';
+
+                    data.data.forEach(plan => {
+                        const option = document.createElement('option');
+                        option.value = plan.id;
+                        option.textContent = `${plan.name} (${plan.duration}分 - ${plan.price}円)`;
+                        planSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('プラン一覧の取得に失敗:', error);
+            }
+        }
     </script>
 </head>
 <body>
@@ -276,11 +304,8 @@
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">メニュー</label>
-                            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <select id="planSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                                 <option value="">選択してください</option>
-                                <option value="facial">フェイシャル</option>
-                                <option value="body">ボディトリートメント</option>
-                                <option value="massage">マッサージ</option>
                             </select>
                         </div>
                     </form>
