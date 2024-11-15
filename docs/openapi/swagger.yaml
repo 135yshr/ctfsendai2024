@@ -471,6 +471,33 @@ paths:
       summary: 秘密の質問の取得
       tags:
       - auth
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: 全ユーザーの情報を取得します（管理者のみ）
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/presenters.UserResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: ユーザー一覧取得
+      tags:
+      - users
   /users/me:
     get:
       consumes:

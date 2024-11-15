@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/135yshr/ctfsendai2024/internal/domain/errors"
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/utils"
 	"github.com/gin-gonic/gin"
@@ -29,6 +30,25 @@ func AuthMiddleware(authRepo repositories.AuthRepository) gin.HandlerFunc {
 		}
 
 		utils.SetAdminUserToContext(c, auth)
+		c.Next()
+	}
+}
+
+func RequireAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		auth, ok := utils.GetUserFromContext(c)
+		if !ok {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": errors.ErrInvalidUser.Error()})
+
+			return
+		}
+
+		if auth.Role != "admin" {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": errors.ErrForbidden.Error()})
+
+			return
+		}
+
 		c.Next()
 	}
 }

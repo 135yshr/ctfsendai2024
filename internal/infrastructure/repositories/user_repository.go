@@ -82,3 +82,13 @@ func (r *UserRepository) Store(_ context.Context, user *models.User) error {
 
 	return nil
 }
+
+// FindAll は全てのユーザーを取得します.
+func (r *UserRepository) FindAll(_ context.Context) ([]*models.User, error) {
+	users := make([]*models.User, 0, len(r.users))
+	for _, user := range r.users {
+		users = append(users, user)
+	}
+
+	return users, nil
+}
