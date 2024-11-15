@@ -37,9 +37,12 @@
 
         // ログイン状態をチェックする関数
         function checkLoginStatus() {
-            // ここでサーバーからログイン状態を取得する想定
-            // 仮実装としてログインしていない状態を想定
-            showLoginDialog();
+            const token = localStorage.getItem('access_token');
+            const expiresAt = localStorage.getItem('token_expires_at');
+
+            if (!token || !expiresAt || Date.now() >= expiresAt * 1000) {
+                showLoginDialog();
+            }
         }
 
         function showLoginDialog() {
@@ -47,12 +50,39 @@
             loginModal.style.display = 'block';
 
             // ログインフォームの送信処理
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
-                // ここにログイン処理を実装
-                const email = document.getElementById('email').value;
+                const userId = document.getElementById('userId').value;
                 const password = document.getElementById('password').value;
-                // ログインAPIを呼び出す処理を実装
+
+                try {
+                    const response = await fetch('/api/v1/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ user_id: userId, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        // アクセストークンをローカルストレージに保存
+                        localStorage.setItem('access_token', data.data.access_token);
+                        localStorage.setItem('token_expires_at', data.data.expires_at);
+
+                        // ログインモーダルを閉じる
+                        loginModal.style.display = 'none';
+
+                        // ページをリロード
+                        window.location.reload();
+                    } else {
+                        alert('ログインに失敗しました。');
+                    }
+                } catch (error) {
+                    console.error('ログインエラー:', error);
+                    alert('ログイン処理中にエラーが発生しました。');
+                }
             });
         }
     </script>
@@ -143,10 +173,10 @@
                     <h3 class="text-xl font-medium text-gray-900 mb-4">ログイン</h3>
                     <form id="loginForm">
                         <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="userId">
                                 ユーザーID
                             </label>
-                            <input type="email" id="email" required
+                            <input type="text" id="userId" required
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
                         <div class="mb-6">
