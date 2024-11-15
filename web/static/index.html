@@ -40,6 +40,9 @@
                     modal.style.display = 'none';
                 }
             });
+
+            // ユーザー情報を更新する関数を追加
+            updateUserInfo();
         });
 
         // ログイン状態をチェックする関数を修正
@@ -56,11 +59,10 @@
             }
         }
 
-        function showLoginDialog() {
+        async function showLoginDialog() {
             const loginModal = document.getElementById('loginModal');
             loginModal.style.display = 'block';
 
-            // ログインフォームの送信処理
             document.getElementById('loginForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const userId = document.getElementById('userId').value;
@@ -78,15 +80,14 @@
                     const data = await response.json();
 
                     if (data.status === 'success') {
-                        // アクセストークンとユーザーIDをローカルストレージに保存
                         localStorage.setItem('access_token', data.data.access_token);
                         localStorage.setItem('token_expires_at', data.data.expires_at);
-                        localStorage.setItem('user_id', userId);  // ユーザーIDも保存
+                        localStorage.setItem('user_id', userId);
 
-                        // ログインモーダルを閉じる
+                        // ユーザー情報を取得
+                        await fetchUserInfo();
+
                         loginModal.style.display = 'none';
-
-                        // 予約一覧を取得
                         fetchReservations(userId);
                     } else {
                         alert('ログインに失敗しました。');
@@ -96,6 +97,26 @@
                     alert('ログイン処理中にエラーが発生しました。');
                 }
             });
+        }
+
+        // ユーザー情報を取得する新しい関数
+        async function fetchUserInfo() {
+            try {
+                const response = await fetch('/api/v1/users/me', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    localStorage.setItem('user_name', data.data.name);
+                    localStorage.setItem('user_email', data.data.email);
+                    updateUserInfo();
+                }
+            } catch (error) {
+                console.error('ユーザー情報の取得に失敗:', error);
+            }
         }
 
         // 予約一覧を取得する関数を追加
@@ -166,6 +187,19 @@
             // ログインダイアログを表示
             showLoginDialog();
         }
+
+        // ユーザー情報を更新する関数を追加
+        function updateUserInfo() {
+            const userName = localStorage.getItem('user_name');
+            const userEmail = localStorage.getItem('user_email');
+
+            if (userName) {
+                document.getElementById('userName').textContent = userName;
+                document.getElementById('userEmail').textContent = userEmail;
+                // イニシャルを取得（名前の最初の文字）
+                document.getElementById('userInitial').textContent = userName.charAt(0);
+            }
+        }
     </script>
 </head>
 <body>
@@ -174,7 +208,25 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <a class="text-white text-xl font-bold" href="#">ラグジュアリーなエステ</a>
-                <div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative group">
+                        <div class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center text-pink-400 cursor-pointer hover:bg-pink-100">
+                            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 16C15.866 16 19 12.866 19 9C19 5.134 15.866 2 12 2C8.13401 2 5 5.134 5 9C5 12.866 8.13401 16 12 16Z" fill="currentColor" opacity="0.4"/>
+                                <path d="M12 16C8.13401 16 5 12.866 5 9H19C19 12.866 15.866 16 12 16Z" fill="currentColor"/>
+                                <path d="M20.5899 22C20.5899 18.13 16.7399 15 11.9999 15C7.25991 15 3.40991 18.13 3.40991 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M9 10C9.55228 10 10 9.32843 10 8.5C10 7.67157 9.55228 7 9 7C8.44772 7 8 7.67157 8 8.5C8 9.32843 8.44772 10 9 10Z" fill="white"/>
+                                <path d="M15 10C15.5523 10 16 9.32843 16 8.5C16 7.67157 15.5523 7 15 7C14.4477 7 14 7.67157 14 8.5C14 9.32843 14.4477 10 15 10Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <!-- ポップアップ -->
+                        <div class="absolute right-0 w-48 mt-2 py-2 bg-white rounded-lg shadow-xl hidden group-hover:block">
+                            <div class="px-4 py-2">
+                                <p class="text-sm font-medium text-gray-900" id="userName"></p>
+                                <p class="text-sm text-gray-500" id="userEmail"></p>
+                            </div>
+                        </div>
+                    </div>
                     <a class="text-gray-300 hover:text-white" href="/logout">ログアウト</a>
                 </div>
             </div>
