@@ -130,7 +130,7 @@ definitions:
         type: string
     type: object
   presenters.PlansResponse:
-    description: プラン一覧のレスポンス形式を定義する
+    description: プラン一覧のレスポンス形式を定義する.
     properties:
       data:
         description: |-
@@ -187,7 +187,7 @@ definitions:
         type: string
     type: object
   presenters.UserResponse:
-    description: ユーザー情報の単一レスポンス形式を定義する
+    description: ユーザー情報の単一レスポンス形式を定義する.
     properties:
       data:
         allOf:
@@ -242,7 +242,7 @@ definitions:
     - user_id
     type: object
   validators.LoginRequest:
-    description: ユーザーIDとパスワードによるログインリクエスト
+    description: ユーザーIDとパスワードによるログインリクエスト.
     properties:
       password:
         maxLength: 100
@@ -257,7 +257,7 @@ definitions:
     - user_id
     type: object
   validators.SecretLoginRequest:
-    description: 秘密の質問の回答によるログインリクエスト
+    description: 秘密の質問の回答によるログインリクエスト.
     properties:
       secret_answer:
         minLength: 1
@@ -325,11 +325,7 @@ paths:
         in: query
         name: endDate
         type: string
-      - description: プランのステータス (active/inactive/pending)
-        enum:
-        - active
-        - inactive
-        - pending
+      - description: プランのステータス (reserved/canceled/confirmed/pending)
         in: query
         name: status
         type: string

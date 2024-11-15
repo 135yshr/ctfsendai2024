@@ -99,13 +99,8 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "enum": [
-                            "active",
-                            "inactive",
-                            "pending"
-                        ],
                         "type": "string",
-                        "description": "プランのステータス (active/inactive/pending)",
+                        "description": "プランのステータス (reserved/canceled/confirmed/pending)",
                         "name": "status",
                         "in": "query"
                     }
@@ -560,7 +555,7 @@ const docTemplate = `{
             }
         },
         "presenters.PlansResponse": {
-            "description": "プラン一覧のレスポンス形式を定義する",
+            "description": "プラン一覧のレスポンス形式を定義する.",
             "type": "object",
             "properties": {
                 "data": {
@@ -623,7 +618,7 @@ const docTemplate = `{
             }
         },
         "presenters.UserResponse": {
-            "description": "ユーザー情報の単一レスポンス形式を定義する",
+            "description": "ユーザー情報の単一レスポンス形式を定義する.",
             "type": "object",
             "properties": {
                 "data": {
@@ -681,7 +676,7 @@ const docTemplate = `{
             }
         },
         "validators.LoginRequest": {
-            "description": "ユーザーIDとパスワードによるログインリクエスト",
+            "description": "ユーザーIDとパスワードによるログインリクエスト.",
             "type": "object",
             "required": [
                 "password",
@@ -701,7 +696,7 @@ const docTemplate = `{
             }
         },
         "validators.SecretLoginRequest": {
-            "description": "秘密の質問の回答によるログインリクエスト",
+            "description": "秘密の質問の回答によるログインリクエスト.",
             "type": "object",
             "required": [
                 "secret_answer",

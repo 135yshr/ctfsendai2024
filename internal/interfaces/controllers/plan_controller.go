@@ -37,7 +37,7 @@ func NewPlanController(
 // @Security Bearer
 // @Param startDate query string false "開始日 (YYYY-MM-DD形式)"
 // @Param endDate query string false "終了日 (YYYY-MM-DD形式)"
-// @Param status query string false "プランのステータス (active/inactive/pending)"
+// @Param status query string false "プランのステータス (reserved/canceled/confirmed/pending)"
 // @Success 200 {object} presenters.PlansResponse "プラン一覧の取得に成功"
 // @Failure 400 {object} response.ErrorResponse "不正なリクエストパラメータ"
 // @Failure 401 {object} response.ErrorResponse "認証エラー"
