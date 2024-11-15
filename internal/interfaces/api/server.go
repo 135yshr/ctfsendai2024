@@ -7,8 +7,11 @@ import (
 	"github.com/135yshr/ctfsendai2024/internal/foundation/logger"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
 	v1 "github.com/135yshr/ctfsendai2024/internal/interfaces/api/routes/v1"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/validators"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/controllers"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -32,6 +35,10 @@ func NewServer(
 	authRepository repositories.AuthRepository,
 	logger *logger.Logger,
 ) *Server {
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		validators.RegisterCustomValidations(v)
+	}
+
 	server := &Server{
 		engine:                engine,
 		reservationController: reservationController,

@@ -212,17 +212,24 @@ definitions:
         type: string
     type: object
   validators.CreateReservationRequest:
+    description: 新規予約を作成するためのリクエストパラメータ.
     properties:
-      end_date:
-        type: string
       plan_id:
+        description: |-
+          プランID
+          @Example "plan456"
         type: string
       start_date:
+        description: |-
+          予約開始日時
+          @Example "2024-04-01T10:00:00+09:00"
         type: string
       user_id:
+        description: |-
+          ユーザーID
+          @Example "user123"
         type: string
     required:
-    - end_date
     - plan_id
     - start_date
     - user_id

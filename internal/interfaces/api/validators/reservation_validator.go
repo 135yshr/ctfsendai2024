@@ -2,6 +2,8 @@ package validators
 
 import (
 	"time"
+
+	"github.com/go-playground/validator/v10"
 )
 
 // GetReservationsRequest 予約一覧取得リクエスト
@@ -12,11 +14,18 @@ type GetReservationsRequest struct {
 	UserID string `binding:"required,min=3,max=50" form:"user_id"`
 }
 
+// CreateReservationRequest 予約作成リクエスト
+// @Description 新規予約を作成するためのリクエストパラメータ.
 type CreateReservationRequest struct {
-	UserID    string    `binding:"required"                   json:"user_id"`
-	PlanID    string    `binding:"required"                   json:"plan_id"`
-	StartDate time.Time `binding:"required,future"            json:"start_date"`
-	EndDate   time.Time `binding:"required,gtfield=StartDate" json:"end_date"`
+	// ユーザーID
+	// @Example "user123"
+	UserID string `binding:"required" json:"user_id"`
+	// プランID
+	// @Example "plan456"
+	PlanID string `binding:"required" json:"plan_id"`
+	// 予約開始日時
+	// @Example "2024-04-01T10:00:00+09:00"
+	StartDate time.Time `binding:"required,future" json:"start_date"`
 }
 
 // カスタムバリデーションメッセージ.
@@ -29,4 +38,19 @@ func GetValidationMessages() map[string]string {
 		"gtfield":  "終了時刻は開始時刻より後である必要があります",
 		"future":   "{0}は現在時刻より後の時間を指定してください",
 	}
+}
+
+// カスタムバリデーションを登録する関数を追加.
+func RegisterCustomValidations(v *validator.Validate) {
+	_ = v.RegisterValidation("future", validateFutureDate)
+}
+
+// 未来の日付かどうかを検証するバリデーション関数.
+func validateFutureDate(fl validator.FieldLevel) bool {
+	date, ok := fl.Field().Interface().(time.Time)
+	if !ok {
+		return false
+	}
+
+	return date.After(time.Now())
 }

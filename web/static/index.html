@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ラグジュアリーなエステ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ログイン状態チェック
+            checkLoginStatus();
+
+            // ログアウトボタンのクリックイベント追加
+            const logoutButton = document.querySelector('a[href="/logout"]');
+            logoutButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleLogout();
+            });
+
+            // 新規予約ボタンのクリックイベント
+            const reservationBtn = document.querySelector('[data-bs-toggle="modal"]');
+            const modal = document.getElementById('reservationModal');
+            const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
+
+            reservationBtn.addEventListener('click', async () => {
+                modal.style.display = 'block';
+                // プラン一覧を取得して表示
+                await fetchAndDisplayPlans();
+            });
+
+            // モーダルを閉じる処理
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+            });
+
+            // モーダルの外側をクリックしたときも閉じる
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // ユーザー情報を更新する関数を追加
+            updateUserInfo();
+        });
+
+        // ログイン状態をチェックする関数を修正
+        function checkLoginStatus() {
+            const token = localStorage.getItem('access_token');
+            const expiresAt = localStorage.getItem('token_expires_at');
+            const userId = localStorage.getItem('user_id');
+
+            if (!token || !expiresAt || Date.now() >= expiresAt * 1000) {
+                showLoginDialog();
+            } else {
+                // ログイン済みの場合は予約一覧を取得
+                fetchReservations(userId);
+            }
+        }
+
+        async function showLoginDialog() {
+            const loginModal = document.getElementById('loginModal');
+            loginModal.style.display = 'block';
+
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const userId = document.getElementById('userId').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    const response = await fetch('/api/v1/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ user_id: userId, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        localStorage.setItem('access_token', data.data.access_token);
+                        localStorage.setItem('token_expires_at', data.data.expires_at);
+                        localStorage.setItem('user_id', userId);
+
+                        // ユーザー情報を取得
+                        await fetchUserInfo();
+
+                        loginModal.style.display = 'none';
+                        fetchReservations(userId);
+                    } else {
+                        alert('ログインに失敗しました。');
+                    }
+                } catch (error) {
+                    console.error('ログインエラー:', error);
+                    alert('ログイン処理中にエラーが発生しました。');
+                }
+            });
+        }
+
+        // ユーザー情報を取得する新しい関数
+        async function fetchUserInfo() {
+            try {
+                const response = await fetch('/api/v1/users/me', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    localStorage.setItem('user_name', data.data.name);
+                    localStorage.setItem('user_email', data.data.email);
+                    updateUserInfo();
+                }
+            } catch (error) {
+                console.error('ユーザー情報の取得に失敗:', error);
+            }
+        }
+
+        // 予約一覧を取得する関数を追加
+        async function fetchReservations(userId) {
+            try {
+                const response = await fetch(`/api/v1/reservations?user_id=${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    displayReservations(data.data);
+                }
+            } catch (error) {
+                console.error('予約一覧の取得に失敗:', error);
+            }
+        }
+
+        // 予約一覧を表示する関数
+        function displayReservations(reservations) {
+            const tbody = document.getElementById('reservationList');
+            tbody.innerHTML = '';
+
+            const statusMap = {
+                'pending': '保留中',
+                'confirmed': '確定',
+                'cancelled': 'キャンセル済',
+                'completed': '完了'
+            };
+
+            reservations.forEach(reservation => {
+                // 日時のフォーマットを修正
+                const formatDate = (dateString) => {
+                    const date = new Date(dateString);
+                    return `${String(date.getMonth() + 1).padStart(2, '0')}月${String(date.getDate()).padStart(2, '0')}日 ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                };
+
+                const startTime = formatDate(reservation.start_time);
+                const endTime = formatDate(reservation.end_time);
+
+                const statusJP = statusMap[reservation.status] || reservation.status;
+                const row = `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">${startTime}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${endTime}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${reservation.plan.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${reservation.user.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${statusJP}</td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        // ログアウト処理を行う関数
+        function handleLogout() {
+            // ローカルストレージからすべての認証情報を削除
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('token_expires_at');
+            localStorage.removeItem('user_id');
+
+            // 予約一覧をクリア
+            const tbody = document.getElementById('reservationList');
+            tbody.innerHTML = '';
+
+            // ログインダイアログを表示
+            showLoginDialog();
+        }
+
+        // ユーザー情報を更新する関数を追加
+        function updateUserInfo() {
+            const userName = localStorage.getItem('user_name');
+            const userEmail = localStorage.getItem('user_email');
+
+            const userNameElement = document.getElementById('userName');
+            const userEmailElement = document.getElementById('userEmail');
+            const userInitialElement = document.getElementById('userInitial');
+
+            if (userName && userNameElement && userEmailElement) {
+                userNameElement.textContent = userName;
+                userEmailElement.textContent = userEmail;
+                // イニシャルの更新は要素が存在する場合のみ行う
+                if (userInitialElement) {
+                    userInitialElement.textContent = userName.charAt(0);
+                }
+            }
+        }
+
+        // プラン一覧を取得する関数
+        async function fetchAndDisplayPlans() {
+            try {
+                const response = await fetch('/api/v1/plans', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    const planSelect = document.querySelector('#planSelect');
+                    planSelect.innerHTML = '<option value="">選択してください</option>';
+
+                    data.data.forEach(plan => {
+                        const option = document.createElement('option');
+                        option.value = plan.id;
+                        option.textContent = `${plan.name} (${plan.duration}分 - ${plan.price}円)`;
+                        planSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('プラン一覧の取得に失敗:', error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- ナビゲーションバー -->
+    <nav class="bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <a class="text-white text-xl font-bold" href="#">ラグジュアリーなエステ</a>
+                <div class="flex items-center space-x-4">
+                    <div class="relative group">
+                        <div class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center text-pink-400 cursor-pointer hover:bg-pink-100">
+                            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 16C15.866 16 19 12.866 19 9C19 5.134 15.866 2 12 2C8.13401 2 5 5.134 5 9C5 12.866 8.13401 16 12 16Z" fill="currentColor" opacity="0.4"/>
+                                <path d="M12 16C8.13401 16 5 12.866 5 9H19C19 12.866 15.866 16 12 16Z" fill="currentColor"/>
+                                <path d="M20.5899 22C20.5899 18.13 16.7399 15 11.9999 15C7.25991 15 3.40991 18.13 3.40991 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M9 10C9.55228 10 10 9.32843 10 8.5C10 7.67157 9.55228 7 9 7C8.44772 7 8 7.67157 8 8.5C8 9.32843 8.44772 10 9 10Z" fill="white"/>
+                                <path d="M15 10C15.5523 10 16 9.32843 16 8.5C16 7.67157 15.5523 7 15 7C14.4477 7 14 7.67157 14 8.5C14 9.32843 14.4477 10 15 10Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <!-- ポップアップ -->
+                        <div class="absolute right-0 w-48 mt-2 py-2 bg-white rounded-lg shadow-xl hidden group-hover:block">
+                            <div class="px-4 py-2">
+                                <p class="text-sm font-medium text-gray-900" id="userName"></p>
+                                <p class="text-sm text-gray-500" id="userEmail"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="text-gray-300 hover:text-white" href="/logout">ログアウト</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 mt-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">予約一覧</h2>
+            <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" data-bs-toggle="modal" data-bs-target="#reservationModal">
+                新規予約
+            </button>
+        </div>
+
+        <!-- 予約一覧テーブル -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">開始時間</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">終了時間</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">メニュー</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">お名前</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ステータス</th>
+                    </tr>
+                </thead>
+                <tbody id="reservationList" class="divide-y divide-gray-200">
+                    <!-- JavaScriptで動的に予約データを表示 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 予約追加モーダル -->
+    <div class="modal fade hidden" id="reservationModal" tabindex="-1">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h5 class="text-lg font-medium">新規予約</h5>
+                    <button type="button" class="text-gray-400 hover:text-gray-500" data-bs-dismiss="modal">
+                        <span class="sr-only">閉じる</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <form id="reservationForm">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">日時</label>
+                            <input type="datetime-local" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">メニュー</label>
+                            <select id="planSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                <option value="">選択してください</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end p-4 border-t">
+                    <button type="button" class="mr-2 px-4 py-2 text-gray-500 hover:text-gray-700" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">予約する</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ログインモーダル -->
+    <div class="modal fade hidden" id="loginModal" tabindex="-1">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6">
+                    <h3 class="text-xl font-medium text-gray-900 mb-4">ログイン</h3>
+                    <form id="loginForm">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="userId">
+                                ユーザーID
+                            </label>
+                            <input type="text" id="userId" required
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                                パスワード
+                            </label>
+                            <input type="password" id="password" required
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <button type="submit"
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                ログイン
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
