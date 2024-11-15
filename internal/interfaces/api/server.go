@@ -18,6 +18,7 @@ type Server struct {
 	reservationController *controllers.ReservationController
 	planController        *controllers.PlanController
 	authController        *controllers.AuthController
+	userController        *controllers.UserController
 	authRepository        repositories.AuthRepository
 	logger                *logger.Logger
 }
@@ -27,6 +28,7 @@ func NewServer(
 	reservationController *controllers.ReservationController,
 	planController *controllers.PlanController,
 	authController *controllers.AuthController,
+	userController *controllers.UserController,
 	authRepository repositories.AuthRepository,
 	logger *logger.Logger,
 ) *Server {
@@ -35,6 +37,7 @@ func NewServer(
 		reservationController: reservationController,
 		planController:        planController,
 		authController:        authController,
+		userController:        userController,
 		authRepository:        authRepository,
 		logger:                logger,
 	}
@@ -60,6 +63,7 @@ func (s *Server) setupRoutes() {
 	{
 		v1.SetupReservationRoutes(protected, s.reservationController)
 		v1.SetupPlanRoutes(protected, s.planController)
+		v1.SetupUserRoutes(protected, s.userController)
 	}
 }
 

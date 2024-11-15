@@ -328,6 +328,40 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/me": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "ログイン中のユーザー情報を取得します",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "ログインユーザー情報取得",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.UserResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -531,6 +565,25 @@ const docTemplate = `{
                 },
                 "status": {
                     "description": "ステータス\n@Example \"success\"",
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "presenters.UserResponse": {
+            "description": "ユーザー情報のレスポンス形式を定義する",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data ユーザー情報",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.UserResponse"
+                        }
+                    ]
+                },
+                "status": {
+                    "description": "Status レスポンスのステータス",
                     "type": "string",
                     "example": "success"
                 }

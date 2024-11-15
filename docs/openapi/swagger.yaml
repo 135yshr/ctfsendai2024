@@ -183,6 +183,18 @@ definitions:
         example: success
         type: string
     type: object
+  presenters.UserResponse:
+    description: ユーザー情報のレスポンス形式を定義する
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/dto.UserResponse'
+        description: Data ユーザー情報
+      status:
+        description: Status レスポンスのステータス
+        example: success
+        type: string
+    type: object
   response.ErrorResponse:
     description: エラー情報のレスポンス.
     properties:
@@ -452,6 +464,27 @@ paths:
       summary: 秘密の質問の取得
       tags:
       - auth
+  /users/me:
+    get:
+      consumes:
+      - application/json
+      description: ログイン中のユーザー情報を取得します
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/presenters.UserResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: ログインユーザー情報取得
+      tags:
+      - users
 securityDefinitions:
   Bearer:
     description: Bearer Tokenによる認証

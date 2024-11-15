@@ -16,6 +16,7 @@ type AuthController struct {
 	secretLoginUseCase       *usecases.SecretLoginUseCase
 	getSecretQuestionUseCase *usecases.GetSecretQuestionUseCase
 	presenter                presenters.AuthPresenter
+	getUserInfoUseCase       *usecases.GetUserInfoUseCase
 }
 
 func NewAuthController(
@@ -23,12 +24,14 @@ func NewAuthController(
 	secretLoginUseCase *usecases.SecretLoginUseCase,
 	getSecretQuestionUseCase *usecases.GetSecretQuestionUseCase,
 	presenter presenters.AuthPresenter,
+	getUserInfoUseCase *usecases.GetUserInfoUseCase,
 ) *AuthController {
 	return &AuthController{
 		loginUseCase:             loginUseCase,
 		secretLoginUseCase:       secretLoginUseCase,
 		getSecretQuestionUseCase: getSecretQuestionUseCase,
 		presenter:                presenter,
+		getUserInfoUseCase:       getUserInfoUseCase,
 	}
 }
 
