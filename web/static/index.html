@@ -207,7 +207,7 @@
             showLoginDialog();
         }
 
-        // ユーザー情報を更新する関数を追加
+        // ユーザー情報を新する関数を追加
         function updateUserInfo() {
             const userName = localStorage.getItem('user_name');
             const userEmail = localStorage.getItem('user_email');
@@ -270,7 +270,7 @@
                     if (data.secret_question) {
                         document.getElementById('secretQuestionLabel').textContent = data.secret_question;
                         secretQuestionSection.classList.remove('hidden');
-                        resetSubmitBtn.textContent = 'パスワードをリセット';
+                        resetSubmitBtn.textContent = 'ログイン';
                         secretAnswerInput.required = true;
                     } else {
                         alert('ユーザーIDが見つかりません。');
@@ -282,7 +282,7 @@
                 return;
             }
 
-            // 2番目のステップ：パスワードリセットを実行
+            // 2番目のステップ：秘密の質問でログイン
             const secretAnswer = secretAnswerInput.value;
             if (!secretAnswer) {
                 alert('秘密の質問の回答を入力してください。');
@@ -290,7 +290,7 @@
             }
 
             try {
-                const response = await fetch('/api/v1/verify-secret-answer', {
+                const response = await fetch('/api/v1/secret-login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -303,12 +303,19 @@
 
                 const data = await response.json();
                 if (data.status === 'success') {
-                    alert('パスワードリセットの手順をメールで送信しました。');
-                    // モーダルをリセットして閉じる
+                    // 通常のログインと同様の処理
+                    localStorage.setItem('access_token', data.data.access_token);
+                    localStorage.setItem('token_expires_at', data.data.expires_at);
+                    localStorage.setItem('user_id', userId);
+
+                    // ユーザー情報を取得
+                    await fetchUserInfo();
+
+                    // モーダルを閉じて予約一覧を表示
                     const resetPasswordModal = document.getElementById('resetPasswordModal');
-                    const loginModal = document.getElementById('loginModal');
                     resetPasswordModal.style.display = 'none';
-                    loginModal.style.display = 'block';
+                    fetchReservations(userId);
+
                     // フォームをリセット
                     document.getElementById('resetPasswordForm').reset();
                     secretQuestionSection.classList.add('hidden');
@@ -318,7 +325,7 @@
                     alert('秘密の質問の回答が正しくありません。');
                 }
             } catch (error) {
-                console.error('秘密の質問の検証エラー:', error);
+                console.error('ログインエラー:', error);
                 alert('処理中にエラーが発生しました。');
             }
         }
@@ -445,7 +452,7 @@
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
             <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                 <div class="p-6">
-                    <h3 class="text-xl font-medium text-gray-900 mb-4">ログイン</h3>
+                    <h3 class="text-xl font-medium text-gray-900 mb-4">秘密の質問でログイン</h3>
                     <form id="loginForm">
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="userId">
@@ -467,7 +474,7 @@
                                 ログイン
                             </button>
                             <a href="#" class="text-sm text-blue-500 hover:text-blue-700" id="forgotPasswordLink">
-                                パスワードを忘れてしまった場合
+                                秘密の質問でログイン
                             </a>
                         </div>
                     </form>
@@ -481,7 +488,7 @@
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
             <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                 <div class="p-6">
-                    <h3 class="text-xl font-medium text-gray-900 mb-4">パスワードリセット</h3>
+                    <h3 class="text-xl font-medium text-gray-900 mb-4">秘密の質問でログイン</h3>
                     <form id="resetPasswordForm">
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="resetUserId">
@@ -510,7 +517,7 @@
                             </button>
                             <button type="button" id="closeResetModal"
                                 class="text-gray-500 hover:text-gray-700">
-                                キャンセル
+                                戻る
                             </button>
                         </div>
                     </form>
