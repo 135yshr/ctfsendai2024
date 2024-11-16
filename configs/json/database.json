@@ -837,7 +837,7 @@
       "password": "9dbb300e28bc21c8dab41b01883918eb",
       "name": "脆弱なパスワード",
       "email": "weak_password@example.com",
-      "phone": "FLAG_X1dFQl9QUk9CTEVNUyDjgafjgZnjgIIK==​",
+      "phone": "FLAG_X1dFQl9QUk9CTEVNUyDjgafjgZnjgIIK==",
       "role": "user",
       "secret_question": "いつものパスワード",
       "secret_answer": "passwordpassword"
