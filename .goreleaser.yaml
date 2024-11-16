@@ -26,6 +26,9 @@ dockers:
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--label=org.opencontainers.image.version={{ .Version }}"
+    extra_files:
+      - ./configs
+      - ./web
 
 archives:
   - format: tar.gz
@@ -44,4 +47,4 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-      - '^ci:' 
+      - '^ci:'
