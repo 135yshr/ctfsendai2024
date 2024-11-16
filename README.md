@@ -10,8 +10,8 @@
 ### 手順
 
 ```bash-session
-$ docker pull ghcr.io/ctfsendai2024/ctfsendai2024:latest
-$ docker run -d -p 8080:8080 ghcr.io/ctfsendai2024/ctfsendai2024:latest
+$ docker pull ghcr.io/135yshr/ctfsendai2024:1.0.4
+$ docker run -d -p 8080:8080 ghcr.io/135yshr/ctfsendai2024:1.0.4
 ```
 
 ## 問題
