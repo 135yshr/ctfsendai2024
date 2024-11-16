@@ -21,7 +21,6 @@ func NewAuthPresenter() AuthPresenter {
 // @Description ログイン処理のレスポンス.
 type LoginResponse struct {
 	// ステータス
-	// @Example "success"
 	Status string `example:"success" json:"status"`
 
 	// ログインデータ
@@ -35,8 +34,11 @@ func (p *authPresenter) PresentLogin(data *dto.LoginResponse) LoginResponse {
 	}
 }
 
+// SecretQuestionResponse 秘密の質問レスポンス
+// @Description 秘密の質問のレスポンス.
 type SecretQuestionResponse struct {
-	SecretQuestion string `json:"secret_question"`
+	// 秘密の質問
+	SecretQuestion string `example:"あなたの誕生日はいつですか？" json:"secret_question"`
 }
 
 func (p *authPresenter) PresentSecretQuestion(question *dto.SecretQuestionResponse) SecretQuestionResponse {

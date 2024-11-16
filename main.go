@@ -22,17 +22,17 @@ import (
 const databasePath = "./configs/json/database.json"
 
 // main は予約管理システムのサーバーを起動します
-// @title        予約管理システム API
-// @version      1.0
-// @description  予約管理システムのRESTful API
-// @host         ctfweb2024.sectanlab.jp:8080
-// @BasePath     /api/v1
-// @securityDefinitions.apikey Bearer
-// @in header
-// @name Authorization
-// @description Bearer Tokenによる認証
-// @license.name  MIT
-// @license.url   https://opensource.org/licenses/MIT
+//
+//	@title						予約管理システム API
+//	@version					1.0
+//	@description				予約管理システムのRESTful API
+//	@BasePath					/api/v1
+//	@securityDefinitions.apikey	Bearer
+//	@in							header
+//	@name						Authorization
+//	@description				Bearer Tokenによる認証
+//	@license.name				MIT
+//	@license.url				https://opensource.org/licenses/MIT
 func main() {
 	container := buildContainer()
 

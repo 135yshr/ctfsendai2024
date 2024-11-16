@@ -1,43 +1,35 @@
 basePath: /api/v1
 definitions:
   dto.LoginResponse:
+    description: ログイン処理のレスポンス.
     properties:
       access_token:
+        description: アクセストークン
         type: string
       expires_at:
+        description: トークンの有効期限
         type: integer
     type: object
   dto.PlanResponse:
-    description: プラン情報の詳細.
     properties:
       description:
-        description: |-
-          プランの説明
-          @Example "基本的なサービスが含まれるプランです"
+        description: プランの説明
         example: 基本的なサービスが含まれるプランです
         type: string
       duration:
-        description: |-
-          プランの期間（日数）
-          @Example 30
+        description: プランの期間（日数）
         example: 30
         type: integer
       id:
-        description: |-
-          プランID
-          @Example "plan123"
+        description: プランID
         example: plan123
         type: string
       name:
-        description: |-
-          プラン名
-          @Example "スタンダードプラン"
+        description: プラン名
         example: スタンダードプラン
         type: string
       price:
-        description: |-
-          プランの価格
-          @Example 1000
+        description: プランの価格
         example: 1000
         type: integer
     type: object
@@ -45,45 +37,31 @@ definitions:
     description: 予約情報の詳細.
     properties:
       end_time:
-        description: |-
-          予約終了時間
-          @Example "2024-03-20T11:00:00Z"
+        description: 予約終了時間
         example: "2024-03-20T11:00:00Z"
         type: string
       id:
-        description: |-
-          予約ID
-          @Example "rsv_123456"
+        description: 予約ID
         example: rsv_123456
         type: string
       plan:
         allOf:
         - $ref: '#/definitions/dto.PlanResponse'
-        description: |-
-          プラン情報
-          @Example {"id": "plan123", "name": "スタンダードプラン"}
+        description: プラン情報
       start_time:
-        description: |-
-          予約開始時間
-          @Example "2024-03-20T10:00:00Z"
+        description: 予約開始時間
         example: "2024-03-20T10:00:00Z"
         type: string
       status:
-        description: |-
-          予約ステータス
-          @Example "confirmed"
+        description: 予約ステータス
         example: confirmed
         type: string
       user:
         allOf:
         - $ref: '#/definitions/dto.UserResponse'
-        description: |-
-          ユーザー情報
-          @Example {"id": "user123", "name": "山田太郎"}
+        description: ユーザー情報
       user_id:
-        description: |-
-          ユーザーID
-          @Example "user123"
+        description: ユーザーID
         example: user123
         type: string
     type: object
@@ -91,27 +69,19 @@ definitions:
     description: ユーザー情報の詳細.
     properties:
       email:
-        description: |-
-          メールアドレス
-          @Example "taro.yamada@example.com"
+        description: メールアドレス
         example: taro.yamada@example.com
         type: string
       id:
-        description: |-
-          ユーザーID
-          @Example "user123"
+        description: ユーザーID
         example: user123
         type: string
       name:
-        description: |-
-          ユーザー名
-          @Example "山田太郎"
+        description: ユーザー名
         example: 山田太郎
         type: string
       phone:
-        description: |-
-          電話番号
-          @Example "FLAG_dSQVRVTEFUSU9OU19GT1JfRklOSVNISU5H"
+        description: 電話番号
         example: FLAG_dSQVRVTEFUSU9OU19GT1JfRklOSVNISU5H
         type: string
     type: object
@@ -123,9 +93,7 @@ definitions:
         - $ref: '#/definitions/dto.LoginResponse'
         description: ログインデータ
       status:
-        description: |-
-          ステータス
-          @Example "success"
+        description: ステータス
         example: success
         type: string
     type: object
@@ -133,16 +101,12 @@ definitions:
     description: プラン一覧のレスポンス形式を定義する.
     properties:
       data:
-        description: |-
-          Data プラン情報一覧
-          @Description プラン情報の配列
+        description: Data プラン情報一覧
         items:
           $ref: '#/definitions/dto.PlanResponse'
         type: array
       status:
-        description: |-
-          Status レスポンスのステータス
-          @Example "success"
+        description: "Status レスポンスのステータス\n\t@Example\t\"success\""
         example: success
         type: string
     type: object
@@ -152,14 +116,9 @@ definitions:
       data:
         allOf:
         - $ref: '#/definitions/dto.ReservationResponse'
-        description: |-
-          Data 予約データ
-          @Description 予約の詳細情報
+        description: Data 予約データ
       status:
-        description: |-
-          Status レスポンスのステータス
-          @Description レスポンスの状態を示す文字列
-          @Example "success"
+        description: Status レスポンスのステータス
         example: success
         type: string
     type: object
@@ -167,23 +126,20 @@ definitions:
     description: 予約一覧のレスポンス
     properties:
       data:
-        description: |-
-          Data 予約データ一覧
-          @Description 予約情報の配列
+        description: Data 予約データ一覧
         items:
           $ref: '#/definitions/dto.ReservationResponse'
         type: array
       status:
-        description: |-
-          Status レスポンスのステータス
-          @Description レスポンスの状態を示す文字列
-          @Example "success"
+        description: Status レスポンスのステータス
         example: success
         type: string
     type: object
   presenters.SecretQuestionResponse:
+    description: 秘密の質問のレスポンス.
     properties:
       secret_question:
+        description: 秘密の質問
         type: string
     type: object
   presenters.UserResponse:
@@ -192,13 +148,9 @@ definitions:
       data:
         allOf:
         - $ref: '#/definitions/dto.UserResponse'
-        description: |-
-          Data ユーザー情報
-          @Description ユーザーの詳細情報
+        description: Data ユーザー情報
       status:
-        description: |-
-          Status レスポンスのステータス
-          @Example "success"
+        description: Status レスポンスのステータス
         example: success
         type: string
     type: object
@@ -206,15 +158,11 @@ definitions:
     description: エラー情報のレスポンス.
     properties:
       error:
-        description: |-
-          エラーメッセージ
-          @Example "プランが見つかりません"
+        description: エラーメッセージ
         example: プランが見つかりません
         type: string
       status:
-        description: |-
-          ステータス
-          @Example "error"
+        description: ステータス
         example: error
         type: string
     type: object
@@ -222,19 +170,13 @@ definitions:
     description: 新規予約を作成するためのリクエストパラメータ.
     properties:
       plan_id:
-        description: |-
-          プランID
-          @Example "plan456"
+        description: プランID
         type: string
       start_date:
-        description: |-
-          予約開始日時
-          @Example "2024-04-01T10:00:00+09:00"
+        description: 予約開始日時
         type: string
       user_id:
-        description: |-
-          ユーザーID
-          @Example "user123"
+        description: ユーザーID
         type: string
     required:
     - plan_id
@@ -245,10 +187,13 @@ definitions:
     description: ユーザーIDとパスワードによるログインリクエスト.
     properties:
       password:
+        description: パスワード
         maxLength: 100
         minLength: 3
         type: string
       user_id:
+        description: ユーザーID
+        example: u00100
         maxLength: 50
         minLength: 3
         type: string
@@ -260,9 +205,11 @@ definitions:
     description: 秘密の質問の回答によるログインリクエスト.
     properties:
       secret_answer:
+        description: 秘密の質問の回答
         minLength: 1
         type: string
       user_id:
+        description: ユーザーID
         maxLength: 50
         minLength: 3
         type: string
@@ -270,7 +217,6 @@ definitions:
     - secret_answer
     - user_id
     type: object
-host: ctfweb2024.sectanlab.jp:8080
 info:
   contact: {}
   description: 予約管理システムのRESTful API

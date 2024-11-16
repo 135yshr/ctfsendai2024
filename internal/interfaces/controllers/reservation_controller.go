@@ -32,17 +32,19 @@ func NewReservationController(
 }
 
 // GetUserReservations ユーザーの予約一覧を取得
-// @Summary      ユーザーの予約一覧を取得
-// @Description  指定されたユーザーIDに紐づく予約の一覧を取得します
-// @Tags         reservations
-// @Accept       json
-// @Produce      json
-// @Security Bearer
-// @Param        user_id    query     string  true  "ユーザーID"  minlength(3)  maxlength(50)
-// @Success      200  {object}  presenters.ReservationsResponse
-// @Failure      400  {object}  response.ErrorResponse
-// @Failure      500  {object}  response.ErrorResponse
-// @Router       /reservations [get]
+//
+//	@Summary		ユーザーの予約一覧を取得
+//	@Description	指定されたユーザーIDに紐づく予約の一覧を取得します
+//	@Tags			reservations
+//	@Accept			json
+//	@Produce		json
+//	@Security		Bearer
+//	@Param			user_id	query		string	true	"ユーザーID"	minlength(3)	maxlength(50)
+//	@Success		200		{object}	presenters.ReservationsResponse
+//	@Failure		400		{object}	response.ErrorResponse
+//	@Failure		500		{object}	response.ErrorResponse
+//	@Router			/reservations [get]
+//
 // .
 func (rc *ReservationController) GetUserReservations(c *gin.Context) {
 	auth, ok := utils.GetUserFromContext(c)
@@ -75,18 +77,20 @@ func (rc *ReservationController) GetUserReservations(c *gin.Context) {
 }
 
 // CreateReservation 新しい予約を作成
-// @Summary      新しい予約を作成
-// @Description  ユーザーの新しい予約を作成します
-// @Tags         reservations
-// @Accept       json
-// @Produce      json
-// @Security     Bearer
-// @Param        request body validators.CreateReservationRequest true "予約情報"
-// @Success      201  {object}  presenters.ReservationResponse
-// @Failure      400  {object}  response.ErrorResponse
-// @Failure      401  {object}  response.ErrorResponse
-// @Failure      500  {object}  response.ErrorResponse
-// @Router       /reservations [post]
+//
+//	@Summary		新しい予約を作成
+//	@Description	ユーザーの新しい予約を作成します
+//	@Tags			reservations
+//	@Accept			json
+//	@Produce		json
+//	@Security		Bearer
+//	@Param			request	body		validators.CreateReservationRequest	true	"予約情報"
+//	@Success		201		{object}	presenters.ReservationResponse
+//	@Failure		400		{object}	response.ErrorResponse
+//	@Failure		401		{object}	response.ErrorResponse
+//	@Failure		500		{object}	response.ErrorResponse
+//	@Router			/reservations [post]
+//
 // .
 func (rc *ReservationController) CreateReservation(c *gin.Context) {
 	auth, ok := utils.GetUserFromContext(c)

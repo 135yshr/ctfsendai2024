@@ -20,6 +20,7 @@ tasks:
 
   swag:
     cmds:
+      - swag fmt
       - swag init -g ./main.go -o ./docs/openapi/
 
   ci:

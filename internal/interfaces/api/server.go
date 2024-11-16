@@ -6,14 +6,13 @@ import (
 	"github.com/135yshr/ctfsendai2024/internal/domain/repositories"
 	"github.com/135yshr/ctfsendai2024/internal/foundation/logger"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/middleware"
+	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/routes/swag"
 	v1 "github.com/135yshr/ctfsendai2024/internal/interfaces/api/routes/v1"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/api/validators"
 	"github.com/135yshr/ctfsendai2024/internal/interfaces/controllers"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Server struct {
@@ -56,7 +55,7 @@ func NewServer(
 
 func (s *Server) setupRoutes() {
 	// Swagger
-	s.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	swag.SetupSwaggerRoutes(s.engine)
 
 	// API routes
 	apiV1 := s.engine.Group("/api/v1")

@@ -4,11 +4,9 @@ package response
 // @Description エラー情報のレスポンス.
 type ErrorResponse struct {
 	// ステータス
-	// @Example "error"
 	Status string `example:"error" json:"status"`
 
 	// エラーメッセージ
-	// @Example "プランが見つかりません"
 	Error string `example:"プランが見つかりません" json:"error"`
 }
 

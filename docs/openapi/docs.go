@@ -421,42 +421,44 @@ const docTemplate = `{
     },
     "definitions": {
         "dto.LoginResponse": {
+            "description": "ログイン処理のレスポンス.",
             "type": "object",
             "properties": {
                 "access_token": {
+                    "description": "アクセストークン",
                     "type": "string"
                 },
                 "expires_at": {
+                    "description": "トークンの有効期限",
                     "type": "integer"
                 }
             }
         },
         "dto.PlanResponse": {
-            "description": "プラン情報の詳細.",
             "type": "object",
             "properties": {
                 "description": {
-                    "description": "プランの説明\n@Example \"基本的なサービスが含まれるプランです\"",
+                    "description": "プランの説明",
                     "type": "string",
                     "example": "基本的なサービスが含まれるプランです"
                 },
                 "duration": {
-                    "description": "プランの期間（日数）\n@Example 30",
+                    "description": "プランの期間（日数）",
                     "type": "integer",
                     "example": 30
                 },
                 "id": {
-                    "description": "プランID\n@Example \"plan123\"",
+                    "description": "プランID",
                     "type": "string",
                     "example": "plan123"
                 },
                 "name": {
-                    "description": "プラン名\n@Example \"スタンダードプラン\"",
+                    "description": "プラン名",
                     "type": "string",
                     "example": "スタンダードプラン"
                 },
                 "price": {
-                    "description": "プランの価格\n@Example 1000",
+                    "description": "プランの価格",
                     "type": "integer",
                     "example": 1000
                 }
@@ -467,17 +469,17 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "end_time": {
-                    "description": "予約終了時間\n@Example \"2024-03-20T11:00:00Z\"",
+                    "description": "予約終了時間",
                     "type": "string",
                     "example": "2024-03-20T11:00:00Z"
                 },
                 "id": {
-                    "description": "予約ID\n@Example \"rsv_123456\"",
+                    "description": "予約ID",
                     "type": "string",
                     "example": "rsv_123456"
                 },
                 "plan": {
-                    "description": "プラン情報\n@Example {\"id\": \"plan123\", \"name\": \"スタンダードプラン\"}",
+                    "description": "プラン情報",
                     "allOf": [
                         {
                             "$ref": "#/definitions/dto.PlanResponse"
@@ -485,17 +487,17 @@ const docTemplate = `{
                     ]
                 },
                 "start_time": {
-                    "description": "予約開始時間\n@Example \"2024-03-20T10:00:00Z\"",
+                    "description": "予約開始時間",
                     "type": "string",
                     "example": "2024-03-20T10:00:00Z"
                 },
                 "status": {
-                    "description": "予約ステータス\n@Example \"confirmed\"",
+                    "description": "予約ステータス",
                     "type": "string",
                     "example": "confirmed"
                 },
                 "user": {
-                    "description": "ユーザー情報\n@Example {\"id\": \"user123\", \"name\": \"山田太郎\"}",
+                    "description": "ユーザー情報",
                     "allOf": [
                         {
                             "$ref": "#/definitions/dto.UserResponse"
@@ -503,7 +505,7 @@ const docTemplate = `{
                     ]
                 },
                 "user_id": {
-                    "description": "ユーザーID\n@Example \"user123\"",
+                    "description": "ユーザーID",
                     "type": "string",
                     "example": "user123"
                 }
@@ -514,22 +516,22 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "email": {
-                    "description": "メールアドレス\n@Example \"taro.yamada@example.com\"",
+                    "description": "メールアドレス",
                     "type": "string",
                     "example": "taro.yamada@example.com"
                 },
                 "id": {
-                    "description": "ユーザーID\n@Example \"user123\"",
+                    "description": "ユーザーID",
                     "type": "string",
                     "example": "user123"
                 },
                 "name": {
-                    "description": "ユーザー名\n@Example \"山田太郎\"",
+                    "description": "ユーザー名",
                     "type": "string",
                     "example": "山田太郎"
                 },
                 "phone": {
-                    "description": "電話番号\n@Example \"FLAG_dSQVRVTEFUSU9OU19GT1JfRklOSVNISU5H\"",
+                    "description": "電話番号",
                     "type": "string",
                     "example": "FLAG_dSQVRVTEFUSU9OU19GT1JfRklOSVNISU5H"
                 }
@@ -548,7 +550,7 @@ const docTemplate = `{
                     ]
                 },
                 "status": {
-                    "description": "ステータス\n@Example \"success\"",
+                    "description": "ステータス",
                     "type": "string",
                     "example": "success"
                 }
@@ -559,14 +561,14 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "Data プラン情報一覧\n@Description プラン情報の配列",
+                    "description": "Data プラン情報一覧",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.PlanResponse"
                     }
                 },
                 "status": {
-                    "description": "Status レスポンスのステータス\n@Example \"success\"",
+                    "description": "Status レスポンスのステータス\n\t@Example\t\"success\"",
                     "type": "string",
                     "example": "success"
                 }
@@ -577,7 +579,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "Data 予約データ\n@Description 予約の詳細情報",
+                    "description": "Data 予約データ",
                     "allOf": [
                         {
                             "$ref": "#/definitions/dto.ReservationResponse"
@@ -585,7 +587,7 @@ const docTemplate = `{
                     ]
                 },
                 "status": {
-                    "description": "Status レスポンスのステータス\n@Description レスポンスの状態を示す文字列\n@Example \"success\"",
+                    "description": "Status レスポンスのステータス",
                     "type": "string",
                     "example": "success"
                 }
@@ -596,23 +598,25 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "Data 予約データ一覧\n@Description 予約情報の配列",
+                    "description": "Data 予約データ一覧",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.ReservationResponse"
                     }
                 },
                 "status": {
-                    "description": "Status レスポンスのステータス\n@Description レスポンスの状態を示す文字列\n@Example \"success\"",
+                    "description": "Status レスポンスのステータス",
                     "type": "string",
                     "example": "success"
                 }
             }
         },
         "presenters.SecretQuestionResponse": {
+            "description": "秘密の質問のレスポンス.",
             "type": "object",
             "properties": {
                 "secret_question": {
+                    "description": "秘密の質問",
                     "type": "string"
                 }
             }
@@ -622,7 +626,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "Data ユーザー情報\n@Description ユーザーの詳細情報",
+                    "description": "Data ユーザー情報",
                     "allOf": [
                         {
                             "$ref": "#/definitions/dto.UserResponse"
@@ -630,7 +634,7 @@ const docTemplate = `{
                     ]
                 },
                 "status": {
-                    "description": "Status レスポンスのステータス\n@Example \"success\"",
+                    "description": "Status レスポンスのステータス",
                     "type": "string",
                     "example": "success"
                 }
@@ -641,12 +645,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "error": {
-                    "description": "エラーメッセージ\n@Example \"プランが見つかりません\"",
+                    "description": "エラーメッセージ",
                     "type": "string",
                     "example": "プランが見つかりません"
                 },
                 "status": {
-                    "description": "ステータス\n@Example \"error\"",
+                    "description": "ステータス",
                     "type": "string",
                     "example": "error"
                 }
@@ -662,15 +666,15 @@ const docTemplate = `{
             ],
             "properties": {
                 "plan_id": {
-                    "description": "プランID\n@Example \"plan456\"",
+                    "description": "プランID",
                     "type": "string"
                 },
                 "start_date": {
-                    "description": "予約開始日時\n@Example \"2024-04-01T10:00:00+09:00\"",
+                    "description": "予約開始日時",
                     "type": "string"
                 },
                 "user_id": {
-                    "description": "ユーザーID\n@Example \"user123\"",
+                    "description": "ユーザーID",
                     "type": "string"
                 }
             }
@@ -684,14 +688,17 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
+                    "description": "パスワード",
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 3
                 },
                 "user_id": {
+                    "description": "ユーザーID",
                     "type": "string",
                     "maxLength": 50,
-                    "minLength": 3
+                    "minLength": 3,
+                    "example": "u00100"
                 }
             }
         },
@@ -704,10 +711,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "secret_answer": {
+                    "description": "秘密の質問の回答",
                     "type": "string",
                     "minLength": 1
                 },
                 "user_id": {
+                    "description": "ユーザーID",
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 3
@@ -728,7 +737,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "ctfweb2024.sectanlab.jp:8080",
+	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "予約管理システム API",

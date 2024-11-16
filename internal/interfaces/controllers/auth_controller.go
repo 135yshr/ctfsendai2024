@@ -35,17 +35,18 @@ func NewAuthController(
 	}
 }
 
-// @Summary ユーザーログイン
-// @Description ユーザー名とパスワードを使用してログイン認証を行います
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Param request body validators.LoginRequest true "ログイン情報"
-// @Success 200 {object} presenters.LoginResponse "ログイン成功時のレスポンス"
-// @Failure 400 {object} response.ErrorResponse "リクエストの形式が不正"
-// @Failure 401 {object} response.ErrorResponse "パスワードが一致しない"
-// @Failure 500 {object} response.ErrorResponse "サーバー内部エラー"
-// @Router /login [post]
+//	@Summary		ユーザーログイン
+//	@Description	ユーザー名とパスワードを使用してログイン認証を行います
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		validators.LoginRequest		true	"ログイン情報"
+//	@Success		200		{object}	presenters.LoginResponse	"ログイン成功時のレスポンス"
+//	@Failure		400		{object}	response.ErrorResponse		"リクエストの形式が不正"
+//	@Failure		401		{object}	response.ErrorResponse		"パスワードが一致しない"
+//	@Failure		500		{object}	response.ErrorResponse		"サーバー内部エラー"
+//	@Router			/login [post]
+//
 // .
 func (c *AuthController) Login(ctx *gin.Context) {
 	var req validators.LoginRequest
@@ -76,17 +77,18 @@ func (c *AuthController) Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
-// @Summary 秘密の質問によるログイン
-// @Description 秘密の質問の回答を使用してログイン認証を行います
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Param request body validators.SecretLoginRequest true "秘密の質問の回答情報"
-// @Success 200 {object} presenters.LoginResponse "ログイン成功時のレスポンス"
-// @Failure 400 {object} response.ErrorResponse "リクエストの形式が不正"
-// @Failure 401 {object} response.ErrorResponse "秘密の質問の回答が一致しない"
-// @Failure 500 {object} response.ErrorResponse "サーバー内部エラー"
-// @Router /secret-login [post]
+//	@Summary		秘密の質問によるログイン
+//	@Description	秘密の質問の回答を使用してログイン認証を行います
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		validators.SecretLoginRequest	true	"秘密の質問の回答情報"
+//	@Success		200		{object}	presenters.LoginResponse		"ログイン成功時のレスポンス"
+//	@Failure		400		{object}	response.ErrorResponse			"リクエストの形式が不正"
+//	@Failure		401		{object}	response.ErrorResponse			"秘密の質問の回答が一致しない"
+//	@Failure		500		{object}	response.ErrorResponse			"サーバー内部エラー"
+//	@Router			/secret-login [post]
+//
 // .
 func (c *AuthController) SecretLogin(ctx *gin.Context) {
 	var req validators.SecretLoginRequest
@@ -117,17 +119,18 @@ func (c *AuthController) SecretLogin(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
-// @Summary 秘密の質問の取得
-// @Description ユーザーIDに対応する秘密の質問を取得します
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Param user_id query string true "ユーザーID"
-// @Success 200 {object} presenters.SecretQuestionResponse "秘密の質問"
-// @Failure 400 {object} response.ErrorResponse "リクエストの形式が不正"
-// @Failure 404 {object} response.ErrorResponse "ユーザーが見つからない"
-// @Failure 500 {object} response.ErrorResponse "サーバー内部エラー"
-// @Router /secret-question [get]
+//	@Summary		秘密の質問の取得
+//	@Description	ユーザーIDに対応する秘密の質問を取得します
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			user_id	query		string								true	"ユーザーID"
+//	@Success		200		{object}	presenters.SecretQuestionResponse	"秘密の質問"
+//	@Failure		400		{object}	response.ErrorResponse				"リクエストの形式が不正"
+//	@Failure		404		{object}	response.ErrorResponse				"ユーザーが見つからない"
+//	@Failure		500		{object}	response.ErrorResponse				"サーバー内部エラー"
+//	@Router			/secret-question [get]
+//
 // .
 func (c *AuthController) GetSecretQuestion(ctx *gin.Context) {
 	var req validators.SecretQuestionRequest

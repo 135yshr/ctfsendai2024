@@ -6,25 +6,26 @@ import (
 )
 
 // ReservationPresenter インターフェース
-// @Description 予約情報のプレゼンター
-// @interface.
+//
+//	@Description	予約情報のプレゼンター
+//	@interface.
 type ReservationPresenter interface {
 	// PresentReservations 予約情報一覧をレスポンス形式に変換する
-	// @Summary 予約情報一覧を変換
-	// @Description 予約情報一覧を成功レスポンスの形式に変換する
-	// @Return ReservationsResponse 変換された予約一覧レスポンス
+	//	@Summary		予約情報一覧を変換
+	//	@Description	予約情報一覧を成功レスポンスの形式に変換する
+	//	@Return			ReservationsResponse 変換された予約一覧レスポンス
 	PresentReservations(reservations []*dto.ReservationResponse) ReservationsResponse
 
 	// PresentReservation 単一の予約情報を変換
-	// @Summary 予約情報を変換
-	// @Description 単一の予約情報をレスポンス形式に変換する
-	// @Return ReservationResponse 変換された予約レスポンス
+	//	@Summary		予約情報を変換
+	//	@Description	単一の予約情報をレスポンス形式に変換する
+	//	@Return			ReservationResponse 変換された予約レスポンス
 	PresentReservation(reservation *dto.ReservationResponse) ReservationResponse
 
 	// PresentError エラー情報を変換
-	// @Summary エラー情報を変換
-	// @Description エラー情報をエラーレスポンスの形式に変換する
-	// @Return response.ErrorResponse エラーレスポンス
+	//	@Summary		エラー情報を変換
+	//	@Description	エラー情報をエラーレスポンスの形式に変換する
+	//	@Return			response.ErrorResponse エラーレスポンス
 	PresentError(err error) response.ErrorResponse
 }
 
@@ -35,16 +36,14 @@ func NewReservationPresenter() ReservationPresenter {
 }
 
 // ReservationResponse 予約レスポンス
-// @Description 予約のレスポンス
-// @Object ReservationResponse.
+//
+//	@Description	予約のレスポンス
+//	@Object			ReservationResponse.
 type ReservationResponse struct {
 	// Status レスポンスのステータス
-	// @Description レスポンスの状態を示す文字列
-	// @Example "success"
 	Status string `example:"success" json:"status"`
 
 	// Data 予約データ
-	// @Description 予約の詳細情報
 	Data *dto.ReservationResponse `json:"data"`
 }
 
@@ -56,16 +55,14 @@ func (p *reservationPresenter) PresentReservation(reservation *dto.ReservationRe
 }
 
 // ReservationsResponse 予約一覧レスポンス
-// @Description 予約一覧のレスポンス
-// @Object ReservationsResponse.
+//
+//	@Description	予約一覧のレスポンス
+//	@Object			ReservationsResponse.
 type ReservationsResponse struct {
 	// Status レスポンスのステータス
-	// @Description レスポンスの状態を示す文字列
-	// @Example "success"
 	Status string `example:"success" json:"status"`
 
 	// Data 予約データ一覧
-	// @Description 予約情報の配列
 	Data []*dto.ReservationResponse `json:"data"`
 }
 

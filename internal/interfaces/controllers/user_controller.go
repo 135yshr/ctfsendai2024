@@ -29,15 +29,17 @@ func NewUserController(
 }
 
 // GetMe ログイン中のユーザー情報を取得します
-// @Summary ログインユーザー情報取得
-// @Description ログイン中のユーザー情報を取得します
-// @Tags users
-// @Accept json
-// @Produce json
-// @Security Bearer
-// @Success 200 {object} presenters.UserResponse
-// @Failure 401 {object} response.ErrorResponse
-// @Router /users/me [get]
+//
+//	@Summary		ログインユーザー情報取得
+//	@Description	ログイン中のユーザー情報を取得します
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Security		Bearer
+//	@Success		200	{object}	presenters.UserResponse
+//	@Failure		401	{object}	response.ErrorResponse
+//	@Router			/users/me [get]
+//
 // .
 func (uc *UserController) GetMe(c *gin.Context) {
 	auth, ok := utils.GetUserFromContext(c)
@@ -61,16 +63,18 @@ func (uc *UserController) GetMe(c *gin.Context) {
 }
 
 // GetUsers 全ユーザー情報を取得します
-// @Summary ユーザー一覧取得
-// @Description 全ユーザーの情報を取得します（管理者のみ）
-// @Tags users
-// @Accept json
-// @Produce json
-// @Security Bearer
-// @Success 200 {array} presenters.UserResponse
-// @Failure 401 {object} response.ErrorResponse
-// @Failure 403 {object} response.ErrorResponse
-// @Router /users [get]
+//
+//	@Summary		ユーザー一覧取得
+//	@Description	全ユーザーの情報を取得します（管理者のみ）
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Security		Bearer
+//	@Success		200	{array}		presenters.UserResponse
+//	@Failure		401	{object}	response.ErrorResponse
+//	@Failure		403	{object}	response.ErrorResponse
+//	@Router			/users [get]
+//
 // .
 func (uc *UserController) GetUsers(c *gin.Context) {
 	users, err := uc.getUsersUseCase.Execute(c)

@@ -10,7 +10,6 @@ import (
 // @Description 予約一覧を取得するためのリクエストパラメータ.
 type GetReservationsRequest struct {
 	// ユーザーID
-	// @Example "user123"
 	UserID string `binding:"required,min=3,max=50" form:"user_id"`
 }
 
@@ -18,13 +17,12 @@ type GetReservationsRequest struct {
 // @Description 新規予約を作成するためのリクエストパラメータ.
 type CreateReservationRequest struct {
 	// ユーザーID
-	// @Example "user123"
 	UserID string `binding:"required" json:"user_id"`
+
 	// プランID
-	// @Example "plan456"
 	PlanID string `binding:"required" json:"plan_id"`
+
 	// 予約開始日時
-	// @Example "2024-04-01T10:00:00+09:00"
 	StartDate time.Time `binding:"required,future" json:"start_date"`
 }
 

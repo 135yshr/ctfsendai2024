@@ -6,24 +6,25 @@ import (
 )
 
 // UserPresenter ユーザー情報のプレゼンテーション層のインターフェース
-// @Description ユーザー情報の表示形式を管理するプレゼンター.
+//
+//	@Description	ユーザー情報の表示形式を管理するプレゼンター.
 type UserPresenter interface {
 	// PresentUser ユーザー情報を表示用の形式に変換する
-	// @Description 単一のユーザー情報を成功レスポンスの形式に変換する
-	// @Param user 変換対象のユーザー情報
-	// @Return UserResponse 変換されたユーザーレスポンス
+	//	@Description	単一のユーザー情報を成功レスポンスの形式に変換する
+	//	@Param			user	変換対象のユーザー情報
+	//	@Return			UserResponse 変換されたユーザーレスポンス
 	PresentUser(user *dto.UserResponse) UserResponse
 
 	// PresentUsers ユーザー情報を表示用の形式に変換する
-	// @Description 複数のユーザー情報を成功レスポンスの形式に変換する
-	// @Param users 変換対象のユーザー情報一覧
-	// @Return UsersResponse 変換されたユーザー一覧レスポンス
+	//	@Description	複数のユーザー情報を成功レスポンスの形式に変換する
+	//	@Param			users	変換対象のユーザー情報一覧
+	//	@Return			UsersResponse 変換されたユーザー一覧レスポンス
 	PresentUsers(users []*dto.UserResponse) UsersResponse
 
 	// PresentError エラー情報を表示用の形式に変換する
-	// @Description エラー情報をエラーレスポンスの形式に変換する
-	// @Param err 変換対象のエラー
-	// @Return ErrorResponse 変換されたエラーレスポンス
+	//	@Description	エラー情報をエラーレスポンスの形式に変換する
+	//	@Param			err	変換対象のエラー
+	//	@Return			ErrorResponse 変換されたエラーレスポンス
 	PresentError(err error) response.ErrorResponse
 }
 
@@ -34,13 +35,13 @@ func NewUserPresenter() UserPresenter {
 }
 
 // UserResponse ユーザー情報のレスポンス構造体
-// @Description ユーザー情報の単一レスポンス形式を定義する.
+//
+//	@Description	ユーザー情報の単一レスポンス形式を定義する.
 type UserResponse struct {
 	// Status レスポンスのステータス
-	// @Example "success"
 	Status string `example:"success" json:"status"`
+
 	// Data ユーザー情報
-	// @Description ユーザーの詳細情報
 	Data *dto.UserResponse `json:"data"`
 }
 
@@ -52,13 +53,13 @@ func (p *userPresenter) PresentUser(user *dto.UserResponse) UserResponse {
 }
 
 // UsersResponse ユーザー情報のレスポンス構造体
-// @Description ユーザー情報の一覧レスポンス形式を定義する.
+//
+//	@Description	ユーザー情報の一覧レスポンス形式を定義する.
 type UsersResponse struct {
 	// Status レスポンスのステータス
-	// @Example "success"
 	Status string `example:"success" json:"status"`
+
 	// Data ユーザー情報一覧
-	// @Description ユーザー情報の配列
 	Data []*dto.UserResponse `json:"data"`
 }
 

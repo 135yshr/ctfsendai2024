@@ -5,9 +5,14 @@ type LoginRequest struct {
 	Password string `binding:"required" json:"password"`
 }
 
+// LoginResponse ログインレスポンス
+// @Description ログイン処理のレスポンス.
 type LoginResponse struct {
+	// アクセストークン
 	AccessToken string `json:"access_token"`
-	ExpiresAt   int64  `json:"expires_at"`
+
+	// トークンの有効期限
+	ExpiresAt int64 `json:"expires_at"`
 }
 
 type SecretLoginRequest struct {
