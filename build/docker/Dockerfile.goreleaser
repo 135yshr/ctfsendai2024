@@ -1,5 +1,4 @@
-#FROM scratch
-FROM alpine
+FROM scratch
 
 EXPOSE 8080
 
