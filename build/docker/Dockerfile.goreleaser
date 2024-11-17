@@ -1,8 +1,12 @@
 FROM scratch
 
-ADD ./configs /configs
-ADD ./web /web
+EXPOSE 8080
+
+WORKDIR /app
+
+COPY ./configs ./configs
+COPY ./web ./web
 
 COPY ctfsendai2024 .
 
-CMD ["./ctfsendai2024"]
+ENTRYPOINT ["./ctfsendai2024"]

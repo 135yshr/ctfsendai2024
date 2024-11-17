@@ -9,7 +9,7 @@ includes:
 tasks:
   build:
     cmds:
-      - goreleaser build --snapshot --clean
+      - docker build -t ctfsendai2024:latest -f build/docker/Dockerfile .
 
   run:
     vars:
