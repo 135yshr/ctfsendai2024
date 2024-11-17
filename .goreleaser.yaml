@@ -21,7 +21,7 @@ dockers:
   - image_templates:
       - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}:{{ .Version }}"
       - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}:latest"
-    dockerfile: build/docker/Dockerfile
+    dockerfile: build/docker/Dockerfile.goreleaser
     build_flag_templates:
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.created={{ .Date }}"
