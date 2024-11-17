@@ -4,8 +4,8 @@ EXPOSE 8080
 
 WORKDIR /app
 
-COPY ./configs ./configs
-COPY ./web ./web
+COPY ./configs .
+COPY ./web .
 
 COPY ctfsendai2024 .
 
