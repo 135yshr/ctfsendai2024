@@ -7,7 +7,7 @@ A07:2021 - 識別と認証の失敗
 
 フラグは、すべて「FLAG_」で始まり、大文字小文字を区別します。
 
-サイト: http://ctfweb2024.sectanlab.jp:8080/static/index.html
+サイト: http://localhost:8080/static/index.html
 
 ### ［問題］
 本番環境には、動作を確認用にテストで使っているアカウント「u00100」が存在します。
